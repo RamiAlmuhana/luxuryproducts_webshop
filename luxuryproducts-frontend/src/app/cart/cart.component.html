@@ -1,0 +1,51 @@
+<section class="w-100 px-3 py-5 bg-light" style="border-radius: .5rem;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="fw-normal mb-0">Shopping Cart</h3>
+        </div>
+
+        <div *ngFor="let product of products_in_cart; let i = index" class="card mb-4">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-3">
+                <img src="{{ product.imgURL }}" class="img-fluid rounded" alt="Productafbeelding">
+              </div>
+              <div class="col-md-4">
+                <p class="lead mb-1">{{ product.name }}</p>
+                <p>Quantity: {{ product.amount }}</p>
+              </div>
+              <div class="col-md-3">
+                <h5>{{ product.price | currency: 'EUR' }}</h5>
+                <p>Total: {{ product.price * product.amount | currency: 'EUR' }}</p>
+              </div>
+              <div class="col-md-2 text-end">
+                <button (click)="removeProductFromCart(i)" class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 mt-5">
+          <div class="d-flex justify-content-end">
+            <p class="lead me-4">Total: {{ getTotalPrice() | currency: 'EUR' }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <button [disabled]="onInvalidOrder()" (click)="clearCart()" class="btn btn-secondary w-100">
+              Empty shopping cart
+            </button>
+          </div>
+          <div class="col-md-6 mt-3 mt-md-0">
+            <button [disabled]="onInvalidOrder()" (click)="onOrder()" class="btn btn-primary w-100">
+              Buy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
