@@ -1,0 +1,9 @@
+postgres-data
+
+luxuryproducts-frontend/.angular
+luxuryproducts-frontend/node_modules
+luxuryproducts-frontend/dist
+
+luxuryproducts-backend/.idea
+luxuryproducts-backend/.mvn
+luxuryproducts-backend/target
