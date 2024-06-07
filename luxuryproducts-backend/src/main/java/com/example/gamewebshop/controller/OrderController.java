@@ -56,7 +56,6 @@ public class OrderController {
             String promoCode = placedOrder.getPromoCode();
             String giftCardCode = placedOrder.getGiftCardCode();
 
-            System.out.println("Received giftCardCode in Controller: " + giftCardCode); // Debug statement
 
             orderDAO.createOrder(placedOrder, userEmail, promoCode, giftCardCode);
             return ResponseEntity.ok(Map.of(
