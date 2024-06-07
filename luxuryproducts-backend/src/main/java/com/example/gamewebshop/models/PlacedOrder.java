@@ -29,6 +29,12 @@ public class PlacedOrder {
     private int totalProducts;
     @Column(nullable = true)
     private LocalDateTime orderDate;
+    @Column(nullable = true)
+    private double totalPrice;
+    @Column(nullable = true)
+    private double discountedPrice;
+    @Column(nullable = true)
+    private String promoCode;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JsonBackReference
     private CustomUser user;
@@ -142,5 +148,28 @@ public class PlacedOrder {
         this.products = products;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public double getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(double discountedPrice) {
+        this.discountedPrice = discountedPrice;
+    }
+
+
+    public String getPromoCode() {
+        return promoCode;
+    }
+
+    public void setPromoCode(String promoCode) {
+        this.promoCode = promoCode;
+    }
 }

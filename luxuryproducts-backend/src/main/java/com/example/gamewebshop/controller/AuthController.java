@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://s1148232.student.inf-hsleiden.nl:18232"})
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -36,7 +36,6 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
         this.validator = validator;
     }
-
 
 
     @PostMapping("/register")
@@ -62,12 +61,13 @@ public class AuthController {
         }
         String encodedPassword = passwordEncoder.encode(authenticationDTO.password);
 
-        CustomUser registeredCustomUser = new CustomUser(authenticationDTO.name, authenticationDTO.infix, authenticationDTO.lastName, authenticationDTO.email, encodedPassword);
+        CustomUser registeredCustomUser = new CustomUser(authenticationDTO.name, authenticationDTO.infix, authenticationDTO.lastName, authenticationDTO.email, encodedPassword, "user");
         userDAO.save(registeredCustomUser);
         String token = jwtUtil.generateToken(registeredCustomUser.getEmail());
         LoginResponse loginResponse = new LoginResponse(registeredCustomUser.getEmail(), token);
         return ResponseEntity.ok(loginResponse);
     }
+
 
 
 
@@ -80,11 +80,10 @@ public class AuthController {
 
             authManager.authenticate(authInputToken);
 
-            String token = jwtUtil.generateToken(body.email);
-
             CustomUser customUser = userDAO.findByEmail(body.email);
-            LoginResponse loginResponse = new LoginResponse(customUser.getEmail(), token);
 
+            String token = jwtUtil.generateToken(body.email);
+            LoginResponse loginResponse = new LoginResponse(customUser.getEmail(), token);
 
             return ResponseEntity.ok(loginResponse);
 
@@ -94,6 +93,8 @@ public class AuthController {
             );
         }
     }
+
+
 
     @GetMapping("/user")
     public ResponseEntity<CustomUser> getUser() {

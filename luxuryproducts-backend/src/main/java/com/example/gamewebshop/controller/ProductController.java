@@ -2,46 +2,48 @@ package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.dao.ProductDAO;
 import com.example.gamewebshop.dto.ProductDTO;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.models.PromoCode;
+import com.example.gamewebshop.dao.PromoCodeDAO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://s1148232.student.inf-hsleiden.nl:18232"})
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/products")
 public class ProductController {
 
     private final ProductDAO productDAO;
+    private final PromoCodeDAO promoCodeDAO;
 
-    public ProductController(ProductDAO productDAO) {
+    public ProductController(ProductDAO productDAO, PromoCodeDAO promoCodeDAO) {
         this.productDAO = productDAO;
+        this.promoCodeDAO = promoCodeDAO;
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts(){
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         return ResponseEntity.ok(this.productDAO.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id){
-
-        return ResponseEntity.ok(this.productDAO.getProductById(id));
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+        ProductDTO productDTO = this.productDAO.getProductById(id);
+        if (productDTO != null) {
+            Optional<PromoCode> promoCodeOptional = promoCodeDAO.getPromoCodeByCategory(productDTO.getCategoryId());
+            promoCodeOptional.ifPresent(promoCode -> {
+                productDTO.setPromoCode(promoCode.getCode());
+                productDTO.setPromoDiscount(promoCode.getDiscount());
+                productDTO.setPromoType(promoCode.getType().toString());
+            });
+        }
+        return ResponseEntity.ok(productDTO);
     }
 
-    @GetMapping(params = "categoryId")
-    public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam Long categoryId){
 
-        return ResponseEntity.ok(this.productDAO.getAllProductsByCategory(categoryId));
-    }
-
-//    @PostMapping
-//    public ResponseEntity<String> createProduct(@RequestBody ProductDTO productDTO){
-//        this.productDAO.createProduct(productDTO);
-//        return ResponseEntity.ok("Created a product");
-//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO){
@@ -56,5 +58,10 @@ public class ProductController {
         this.productDAO.deleteById(id);
 
         return ResponseEntity.ok("Product deleted with id " + id);
+    }
+
+    @GetMapping(params = "categoryId")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@RequestParam Long categoryId) {
+        return ResponseEntity.ok(this.productDAO.getAllProductsByCategory(categoryId));
     }
 }

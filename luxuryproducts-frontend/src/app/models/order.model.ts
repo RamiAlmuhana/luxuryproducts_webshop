@@ -10,5 +10,7 @@ export class Order {
   public notes: string;
   public orderDate: string;
   public products: Product[];
-
+  public totalPrice: number;
+  public discountedPrice: number; // Nieuw veld voor discountedPrice
+  public promoCode: string | null;
 }
