@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -36,37 +36,6 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
         this.validator = validator;
     }
-
-//    @PostMapping("/register")
-//    public ResponseEntity<LoginResponse> register(@RequestBody AuthenticationDTO authenticationDTO) {
-//        if (!validator.isValidEmail(authenticationDTO.email)) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.BAD_REQUEST, "No valid email provided"
-//            );
-//        }
-//
-//        if (!validator.isValidPassword(authenticationDTO.password)) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.BAD_REQUEST, "No valid password provided"
-//            );
-//        }
-//
-//        CustomUser customUser = userDAO.findByEmail(authenticationDTO.email);
-//
-//        if (customUser != null){
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Can not register with this email"
-//            );
-//        }
-//        String encodedPassword = passwordEncoder.encode(authenticationDTO.password);
-//
-//        CustomUser registerdCustomUser = new CustomUser(authenticationDTO.name, authenticationDTO.infix, authenticationDTO.lastName, authenticationDTO.email, encodedPassword);
-//        userDAO.save(registerdCustomUser);
-//        String token = jwtUtil.generateToken(registerdCustomUser.getEmail());
-//        LoginResponse loginResponse = new LoginResponse(registerdCustomUser.getEmail(), token);
-//        return ResponseEntity.ok(loginResponse);
-//    }
-
 
 
     @PostMapping("/register")

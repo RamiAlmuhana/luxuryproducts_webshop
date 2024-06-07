@@ -16,20 +16,9 @@ public class ProductDTO {
     public long categoryId;
 
     private String categoryName;
-    private String promoCode; // New field
-    private double promoDiscount; // New field
-    private String promoType; // New field
-
-//    public ProductDTO(String name, String description, Number price, String imgURL, String specifications, String publisher, String releaseDate, long categoryId) {
-//        this.name = name;
-//        this.description = description;
-//        this.price = price;
-//        this.imgURL = imgURL;
-//        this.specifications = specifications;
-//        this.publisher = publisher;
-//        this.releaseDate = releaseDate;
-//        this.categoryId = categoryId;
-//    }
+    private String promoCode;
+    private double promoDiscount;
+    private String promoType;
 
     public long getId() {
         return id;
