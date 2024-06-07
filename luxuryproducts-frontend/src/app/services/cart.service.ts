@@ -7,6 +7,8 @@ import { Order } from '../models/order.model';
 
 const localStorageKey: string = "products-in-cart";
 const promoAppliedKey: string = "promoApplied";
+const discountAmountKey: string = "applied-discount-amount";
+const discountCodesKey: string = "applied-discount-codes";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,9 @@ export class CartService {
   public totalDiscount: number = 0;
   public totalPriceWithDiscount: number = this.loadInitialDiscountedPrice();
   private baseUrl: string = environment.base_url + "/orders";
+  private validGiftCardCodes: { [key: string]: number } = {};
+  private appliedDiscountAmount: number = 0;
+
 
   constructor(private http: HttpClient) {
     this.loadProductsFromLocalStorage();
@@ -58,6 +63,7 @@ export class CartService {
     this.productsInCart = [];
     localStorage.removeItem(promoAppliedKey);
     this.saveProductsAndNotifyChange();
+    this.clearDiscountFromLocalStorage();
   }
 
   public allProductsInCart(): Product[] {
@@ -137,4 +143,32 @@ export class CartService {
       this.$productInCart.next(this.productsInCart.slice());
     }
   }
+
+  public generateGiftCardCode(discountAmount: number): string {
+    const code = (Math.random() + 1).toString(36).substring(7);
+    this.validGiftCardCodes[code] = discountAmount;
+    return code;
+  }
+
+  public getGiftCardDiscount(code: string): number {
+    return this.validGiftCardCodes[code] || 0;
+  }
+
+  
+  public saveDiscountToLocalStorage(discountAmount: number, discountCodes: string[]): void {
+    localStorage.setItem(discountAmountKey, discountAmount.toString());
+    localStorage.setItem(discountCodesKey, JSON.stringify(discountCodes));
+  }
+
+  public loadDiscountFromLocalStorage(): { discountAmount: number, discountCodes: string[] } {
+    const discountAmount = parseFloat(localStorage.getItem(discountAmountKey) || '0');
+    const discountCodes = JSON.parse(localStorage.getItem(discountCodesKey) || '[]');
+    return { discountAmount, discountCodes };
+  }
+
+  public clearDiscountFromLocalStorage(): void {
+    localStorage.removeItem(discountAmountKey);
+    localStorage.removeItem(discountCodesKey);
+  }
+
 }

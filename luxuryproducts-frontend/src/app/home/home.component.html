@@ -54,3 +54,68 @@
     </div>
   </div>
 </section>
+
+<section>
+  <div>
+    <h2 class="text-center mb-5">Giftcards</h2>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <img src="https://products.eneba.games/resized-products/s2-oGZMZknb1g4OYL-PbQS7HhJGDhlxqu0_cXsJs66c_350x200_1x-0.jpeg" style="width: 100%; height: 300px; border-radius: 30px;">
+          <p class="card-title"><b>Giftcard: €5</b></p>
+          <button *ngIf="userIsLoggedIn" (click)="generateGiftCard(5)" class="btn btn-primary mb-2">Buy</button>
+          <p *ngIf="!userIsLoggedIn" class="p-3 mb-2 bg-primary text-white">Log in to buy</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <img src="https://livekaarten.nl/pl/nintendo-10-usd-66837.png" style="width: 400px;" alt="" >
+          <p class="card-title"><b>Giftcard: €10</b></p>
+          <button *ngIf="userIsLoggedIn" (click)="generateGiftCard(10)" class="btn btn-primary mb-2">Buy</button>
+          <p *ngIf="!userIsLoggedIn" class="p-3 mb-2 bg-success text-white">Log in to buy</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <img src="https://kaartdirect.nl/storage/thumbnails/default/a0/1m/cs9zmu8k4co08cw84kgsw.png?p=kaartdirect.nl%2Fimages%2Fproducts%2Fnintendo-eshop-code-eur15-1643936874.png&s=https&widen=400" alt="">
+          <p class="card-title"><b>Giftcard: €15</b></p>
+          <button *ngIf="userIsLoggedIn" (click)="generateGiftCard(15)" class="btn btn-primary mb-2">Buy</button>
+          <p *ngIf="!userIsLoggedIn" class="p-3 mb-2 bg-danger text-white">Log in to buy</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <img src="https://kaartdirect.nl/storage/thumbnails/default/ck/7f/333ayds80w444ssws4g4g.png?p=kaartdirect.nl%2Fimages%2Fproducts%2Fnintendo-eshop-code-eur50-1643936889.png&s=https&widen=400" alt="" style="width: 400px;">
+          <p class="card-title"><b>Giftcard: €50</b></p>
+          <button *ngIf="userIsLoggedIn" (click)="generateGiftCard(50)" class="btn btn-primary mb-2">Buy</button>
+          <p *ngIf="!userIsLoggedIn" class="p-3 mb-2 bg-dark text-white">Log in to buy</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <img src="https://kaartdirect.nl/storage/thumbnails/default/9t/7m/skmp6ww0coc8wwkww88o.png?p=kaartdirect.nl%2Fimages%2Fproducts%2Fnintendo-eshop-code-eur100-1639574122.png&s=https&widen=400" alt="">
+          <p class="card-title"><b>Giftcard: €100</b></p>
+          <button *ngIf="userIsLoggedIn" (click)="generateGiftCard(100)" class="btn btn-primary mb-2">Buy</button>
+          <p *ngIf="!userIsLoggedIn" class="p-3 mb-2 bg-warning text-dark">Log in to buy</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
