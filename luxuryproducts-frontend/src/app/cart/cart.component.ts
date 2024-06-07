@@ -33,7 +33,7 @@ export class CartComponent implements OnInit {
   private minSpendAmount: number = 0;
   public giftCardCode: string = '';
   public appliedDiscountCodes: string[] = [];
-  private appliedDiscountAmount: number = 0;
+  public appliedDiscountAmount: number = 0;
 
   constructor(private cartService: CartService, private router: Router, private authService: AuthService, private http: HttpClient) {}
 
@@ -77,7 +77,6 @@ export class CartComponent implements OnInit {
       this.clearDiscount();
     }
 
-
     const hasProductInCategory = this.products_in_cart.some(product => product.categoryId === removedProduct.categoryId);
 
     if (!hasProductInCategory && this.appliedPromoCode) {
@@ -86,8 +85,6 @@ export class CartComponent implements OnInit {
 
     this.applyAutomaticDiscount();
     this.checkPromoCodeValidity();
-
-    
   }
 
   private clearDiscount() {
@@ -96,20 +93,14 @@ export class CartComponent implements OnInit {
     this.cartService.clearDiscountFromLocalStorage();
   }
 
-
   public getTotalPrice(): number {
-    return this.cartService.calculateTotalPrice();
-    
+    return this.products_in_cart.reduce((total, product) => total + product.price * product.amount, 0);
   }
 
-  public getTotalePrice(): number {
-    let total = this.products_in_cart.reduce((total, product) => total + product.price * product.amount, 0);
-    total -= this.appliedDiscountAmount;
-    return Math.max(total, 0);
-}
-
   public getTotalPriceWithDiscount(): number {
-    return this.cartService.totalPriceWithDiscount;
+    let total = this.getTotalPrice();
+    total -= this.discount + this.appliedDiscountAmount;
+    return Math.max(total, 0);
   }
 
   public onInvalidOrder() {
@@ -201,8 +192,6 @@ export class CartComponent implements OnInit {
       }
     });
   }
-
-
 
   public removePromoCode() {
     this.cartService.removeDiscount();
