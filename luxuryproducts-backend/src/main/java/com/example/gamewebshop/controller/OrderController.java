@@ -46,23 +46,31 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createOrder(@RequestBody PlacedOrder placedOrder, Principal principal, @RequestParam(required = false) String promoCode) {
+    public ResponseEntity<Map<String, Object>> createOrder(@RequestBody PlacedOrder placedOrder, Principal principal) {
         String userEmail = principal.getName();
         CustomUser user = userRepository.findByEmail(userEmail);
         if (user == null) {
             return ResponseEntity.badRequest().body(Map.of("message", "User not found"));
         }
         try {
-            orderDAO.createOrder(placedOrder, userEmail, promoCode);
+            String promoCode = placedOrder.getPromoCode();
+            String giftCardCode = placedOrder.getGiftCardCode();
+
+            System.out.println("Received giftCardCode in Controller: " + giftCardCode); // Debug statement
+
+            orderDAO.createOrder(placedOrder, userEmail, promoCode, giftCardCode);
             return ResponseEntity.ok(Map.of(
                     "message", "Order created successfully",
                     "totalPrice", placedOrder.getTotalPrice(),
                     "discountedPrice", placedOrder.getDiscountedPrice(),
-                    "promoCode", placedOrder.getPromoCode() != null ? placedOrder.getPromoCode() : "Automatic discount applied",
-                    "discount", placedOrder.getDiscountedPrice() - placedOrder.getTotalPrice()
+                    "promoCode", promoCode != null ? promoCode : "Automatic discount applied",
+                    "discount", placedOrder.getTotalPrice() - placedOrder.getDiscountedPrice(),
+                    "giftCardCode", giftCardCode != null ? giftCardCode : "No gift card applied"
             ));
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode()).body(Map.of("message", e.getReason()));
         }
     }
+
+
 }

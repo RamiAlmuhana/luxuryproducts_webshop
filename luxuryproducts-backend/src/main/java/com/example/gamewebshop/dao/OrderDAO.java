@@ -1,6 +1,7 @@
 package com.example.gamewebshop.dao;
 
 import com.example.gamewebshop.models.CustomUser;
+import com.example.gamewebshop.models.Giftcard;
 import com.example.gamewebshop.models.PlacedOrder;
 import com.example.gamewebshop.models.Product;
 import com.example.gamewebshop.models.PromoCode;
@@ -20,13 +21,15 @@ public class OrderDAO {
     private final ProductRepository productRepository;
     private final PromoCodeRepository promoCodeRepository;
     private final PromoCodeDAO promoCodeDAO;
+    private final GiftcardRepository giftcardRepository;
 
-    public OrderDAO(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, PromoCodeRepository promoCodeRepository, PromoCodeDAO promoCodeDAO) {
+    public OrderDAO(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, PromoCodeRepository promoCodeRepository, PromoCodeDAO promoCodeDAO, GiftcardRepository giftcardRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.promoCodeRepository = promoCodeRepository;
         this.promoCodeDAO = promoCodeDAO;
+        this.giftcardRepository = giftcardRepository;
     }
 
     public List<PlacedOrder> getAllOrders() {
@@ -34,7 +37,7 @@ public class OrderDAO {
     }
 
     @Transactional
-    public void createOrder(PlacedOrder placedOrder, String userEmail, String promoCode) {
+    public void createOrder(PlacedOrder placedOrder, String userEmail, String promoCode, String giftCardCode) {
         CustomUser user = userRepository.findByEmail(userEmail);
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
@@ -78,7 +81,6 @@ public class OrderDAO {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or expired promo code");
             }
         } else if (totalPrice > 120) {
-            // Try to apply AUTO_DISCOUNT promo code
             Optional<PromoCode> autoDiscountPromo = promoCodeDAO.getPromoCodeByCode("AUTO_DISCOUNT");
             if (autoDiscountPromo.isPresent() && promoCodeDAO.isPromoCodeValid("AUTO_DISCOUNT")) {
                 PromoCode autoDiscountCode = autoDiscountPromo.get();
@@ -95,9 +97,26 @@ public class OrderDAO {
             }
         }
 
+        if (giftCardCode != null && !giftCardCode.isEmpty()) {
+            Optional<Giftcard> giftcardOptional = giftcardRepository.findByCode(giftCardCode);
+            if (giftcardOptional.isPresent() && !giftcardOptional.get().isUsed()) {
+                Giftcard giftcard = giftcardOptional.get();
+                discountedPrice -= giftcard.getDiscountAmount();
+                if (discountedPrice < 0) {
+                    discountedPrice = 0;
+                }
+                giftcard.setUsed(true);
+                giftcardRepository.save(giftcard);
+                placedOrder.setGiftCardCode(giftCardCode);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or used gift card code");
+            }
+        }
+
         placedOrder.setTotalPrice(totalPrice);
         placedOrder.setDiscountedPrice(discountedPrice);
         placedOrder.setPromoCode(effectivePromoCode);
+        placedOrder.setGiftCardCode(giftCardCode);
         orderRepository.save(placedOrder);
     }
 

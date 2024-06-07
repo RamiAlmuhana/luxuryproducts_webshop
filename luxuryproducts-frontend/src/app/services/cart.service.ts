@@ -22,7 +22,6 @@ export class CartService {
   private validGiftCardCodes: { [key: string]: number } = {};
   private appliedDiscountAmount: number = 0;
 
-
   constructor(private http: HttpClient) {
     this.loadProductsFromLocalStorage();
     this.reapplyDiscountIfApplicable();
@@ -108,7 +107,6 @@ export class CartService {
     this.$productInCart.next(this.productsInCart.slice());
   }
 
-
   public calculateTotalPrice(): number {
     return this.productsInCart.reduce((total, product) => total + product.price * product.amount, 0);
   }
@@ -154,7 +152,6 @@ export class CartService {
     return this.validGiftCardCodes[code] || 0;
   }
 
-  
   public saveDiscountToLocalStorage(discountAmount: number, discountCodes: string[]): void {
     localStorage.setItem(discountAmountKey, discountAmount.toString());
     localStorage.setItem(discountCodesKey, JSON.stringify(discountCodes));
@@ -170,5 +167,4 @@ export class CartService {
     localStorage.removeItem(discountAmountKey);
     localStorage.removeItem(discountCodesKey);
   }
-
 }

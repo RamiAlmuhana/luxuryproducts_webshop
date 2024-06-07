@@ -34,6 +34,9 @@ export class CartComponent implements OnInit {
   public giftCardCode: string = '';
   public appliedDiscountCodes: string[] = [];
   public appliedDiscountAmount: number = 0;
+  public appliedGiftCard: boolean = false;
+  public appliedGiftCardCode: string = '';
+  public giftCardDiscount: number = 0;
 
   constructor(private cartService: CartService, private router: Router, private authService: AuthService, private http: HttpClient) {}
 
@@ -56,6 +59,12 @@ export class CartComponent implements OnInit {
     const { discountAmount, discountCodes } = this.cartService.loadDiscountFromLocalStorage();
     this.appliedDiscountAmount = discountAmount;
     this.appliedDiscountCodes = discountCodes;
+
+    this.appliedGiftCardCode = localStorage.getItem('appliedGiftCardCode') || '';
+    this.giftCardDiscount = parseFloat(localStorage.getItem('giftCardDiscount') || '0');
+    if (this.appliedGiftCardCode) {
+      this.appliedGiftCard = true;
+    }
   }
 
   public clearCart() {
@@ -68,6 +77,7 @@ export class CartComponent implements OnInit {
     this.orderError = false;
     this.autoDiscountManuallyRemoved = false;
     this.clearDiscount();
+    this.removeGiftCard();
   }
 
   public removeProductFromCart(product_index: number) {
@@ -99,7 +109,7 @@ export class CartComponent implements OnInit {
 
   public getTotalPriceWithDiscount(): number {
     let total = this.getTotalPrice();
-    total -= this.discount + this.appliedDiscountAmount;
+    total -= this.discount + this.appliedDiscountAmount + this.giftCardDiscount;
     return Math.max(total, 0);
   }
 
@@ -259,10 +269,28 @@ export class CartComponent implements OnInit {
       this.appliedDiscountAmount += discountAmount;
       this.appliedDiscountCodes.push(this.giftCardCode);
       this.cartService.saveDiscountToLocalStorage(this.appliedDiscountAmount, this.appliedDiscountCodes);
+
+      localStorage.setItem('appliedGiftCardCode', this.giftCardCode);
+      localStorage.setItem('giftCardDiscount', discountAmount.toString());
+
+      this.appliedGiftCard = true;
+      this.appliedGiftCardCode = this.giftCardCode;
+      this.giftCardDiscount = discountAmount;
     } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
-      alert('This giftcard code is already been used');
+      alert('This giftcard code has already been used');
     } else {
       alert('Invalid giftcard code');
     }
+  }
+
+  public removeGiftCard() {
+    localStorage.removeItem('appliedGiftCardCode');
+    localStorage.removeItem('giftCardDiscount');
+    this.appliedGiftCard = false;
+    this.appliedGiftCardCode = '';
+    this.giftCardDiscount = 0;
+    this.appliedDiscountAmount = 0;
+    this.appliedDiscountCodes = [];
+    this.cartService.clearDiscountFromLocalStorage();
   }
 }

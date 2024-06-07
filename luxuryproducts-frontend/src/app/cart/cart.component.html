@@ -54,6 +54,11 @@
                   <p *ngIf="discount > 0" class="mb-1">Discount Applied: <strong>{{ discount | currency: 'EUR' }}</strong></p>
                   <button class="btn btn-sm" (click)="removePromoCode()">Remove</button>
                 </div>
+                <div *ngIf="appliedGiftCard">
+                  <p class="mb-1">Gift Card Applied: <strong>{{ appliedGiftCardCode }}</strong></p>
+                  <p class="mb-1">Discount Applied: <strong>{{ giftCardDiscount | currency: 'EUR' }}</strong></p>
+                  <button class="btn btn-sm" (click)="removeGiftCard()">Remove</button>
+                </div>
               </div>
             </div>
             <!-- Total Price Section -->
