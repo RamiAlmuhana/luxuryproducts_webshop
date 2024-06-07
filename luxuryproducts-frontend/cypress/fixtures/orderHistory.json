@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "John",
+    "infix": "van",
+    "lastName": "Doe",
+    "zipcode": "1234AB",
+    "houseNumber": 10,
+    "notes": "Please deliver between 9 AM and 5 PM",
+    "totalPrice": 15.99,
+    "discountedPrice": 5.99,
+    "promoCode": "SUMMER2024",
+    "orderDate": "2024-05-24T10:00:00Z",
+    "products": [
+      {
+        "id": 1,
+        "name": "Tom Clancy's Rainbow Six Siege",
+        "description": "Tom Clancy's Rainbow Six® Siege is an elite, tactical team-based shooter where superior planning and execution triumph.",
+        "price": 15.99,
+        "imgURL": "https://store.ubisoft.com/on/demandware.static/-/Sites-masterCatalog/default/dw63e24d90/images/large/56c494ad88a7e300458b4d5a.jpg",
+        "amount": 1
+      }
+    ]
+  }
+]

@@ -1,0 +1,45 @@
+<form [formGroup]="promoCodeForm" (ngSubmit)="onSubmit()" class="p-4 shadow-sm bg-light rounded">
+  <h2 class="text-center mb-4">Update Promo Code</h2>
+  <div class="mb-3">
+    <label for="code" class="form-label">Promo Code:</label>
+    <input type="text" class="form-control" id="code" formControlName="code" placeholder="Enter promo code">
+  </div>
+  <div class="mb-3">
+    <label for="discount" class="form-label">Discount:</label>
+    <div class="input-group">
+      <input type="number" class="form-control" id="discount" formControlName="discount" placeholder="Enter discount amount">
+      <span class="input-group-text">%</span>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="startDate" class="form-label">Start Date:</label>
+    <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate">
+  </div>
+  <div class="mb-3">
+    <label for="expiryDate" class="form-label">Expiry Date:</label>
+    <input type="datetime-local" class="form-control" id="expiryDate" formControlName="expiryDate">
+  </div>
+  <div class="mb-3">
+    <label for="maxUsageCount" class="form-label">Max Usage Count:</label>
+    <input type="number" class="form-control" id="maxUsageCount" formControlName="maxUsageCount" placeholder="Enter max usage count">
+  </div>
+  <div class="mb-3">
+    <label for="type" class="form-label">Type:</label>
+    <select class="form-select" id="type" formControlName="type">
+      <option value="FIXED_AMOUNT">Fixed Amount</option>
+      <option value="PERCENTAGE">Percentage</option>
+    </select>
+  </div>
+  <div class="mb-3"> <!-- New field for minSpendAmount -->
+    <label for="minSpendAmount" class="form-label">Minimum Spend Amount:</label>
+    <input type="number" class="form-control" id="minSpendAmount" formControlName="minSpendAmount" placeholder="Enter minimum spend amount">
+  </div>
+  <div class="mb-3">
+    <label for="categoryId" class="form-label">Category:</label>
+    <select class="form-select" id="categoryId" formControlName="categoryId">
+      <option [ngValue]="null">None</option>
+      <option *ngFor="let category of categories" [ngValue]="category.id">{{ category.name }}</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary w-100">Edit Promo Code</button>
+</form>

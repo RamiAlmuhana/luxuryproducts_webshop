@@ -3,6 +3,7 @@ package com.example.gamewebshop.dto;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class ProductDTO {
+    private long id;
     public String name;
     public String description;
     public Number price;
@@ -14,15 +15,28 @@ public class ProductDTO {
     @JsonAlias("category_id")
     public long categoryId;
 
-    public ProductDTO(String name, String description, Number price, String imgURL, String specifications, String publisher, String releaseDate, long categoryId) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imgURL = imgURL;
-        this.specifications = specifications;
-        this.publisher = publisher;
-        this.releaseDate = releaseDate;
-        this.categoryId = categoryId;
+    private String categoryName;
+    private String promoCode; // New field
+    private double promoDiscount; // New field
+    private String promoType; // New field
+
+//    public ProductDTO(String name, String description, Number price, String imgURL, String specifications, String publisher, String releaseDate, long categoryId) {
+//        this.name = name;
+//        this.description = description;
+//        this.price = price;
+//        this.imgURL = imgURL;
+//        this.specifications = specifications;
+//        this.publisher = publisher;
+//        this.releaseDate = releaseDate;
+//        this.categoryId = categoryId;
+//    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -87,5 +101,37 @@ public class ProductDTO {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getPromoCode() {
+        return promoCode;
+    }
+
+    public void setPromoCode(String promoCode) {
+        this.promoCode = promoCode;
+    }
+
+    public double getPromoDiscount() {
+        return promoDiscount;
+    }
+
+    public void setPromoDiscount(double promoDiscount) {
+        this.promoDiscount = promoDiscount;
+    }
+
+    public String getPromoType() {
+        return promoType;
+    }
+
+    public void setPromoType(String promoType) {
+        this.promoType = promoType;
     }
 }

@@ -1,0 +1,6 @@
+{
+  "statusCode": 403,
+  "body": {
+    "response": "FORBIDDEN"
+  }
+}

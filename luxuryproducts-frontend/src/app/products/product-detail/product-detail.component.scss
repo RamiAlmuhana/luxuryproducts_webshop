@@ -9,3 +9,24 @@
     color: black;
   }
 }
+.product-promo-code {
+  background-color: #e6ffe6; /* Light green background for promo code section */
+  border: 2px dashed #28a745; /* Dashed border to highlight the promo code */
+  padding: 15px;
+  margin-top: 20px;
+
+  .promo-code {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .promo-discount {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000000;
+  }
+
+  button {
+    margin-left: 10px;
+  }
+}

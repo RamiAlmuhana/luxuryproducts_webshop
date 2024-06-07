@@ -1,0 +1,36 @@
+{
+  "promoCodes": [
+    {
+      "id": 1,
+      "discount": 10,
+      "type": "FIXED_AMOUNT",
+      "minSpendAmount": 0,
+      "startDate": "2024-01-01T00:00:00Z",
+      "expiryDate": "2024-12-31T23:59:59Z"
+    },
+    {
+      "id": 2,
+      "discount": 50,
+      "type": "FIXED_AMOUNT",
+      "minSpendAmount": 50,
+      "startDate": "2024-01-01T00:00:00Z",
+      "expiryDate": "2024-12-31T23:59:59Z"
+    },
+    {
+      "id": 3,
+      "discount": 10,
+      "type": "PERCENTAGE",
+      "minSpendAmount": 0,
+      "startDate": "2024-01-01T00:00:00Z",
+      "expiryDate": "2024-12-31T23:59:59Z"
+    },
+    {
+      "id": 4,
+      "discount": 10,
+      "type": "FIXED_AMOUNT",
+      "minSpendAmount": 0,
+      "startDate": "2024-01-01T00:00:00Z",
+      "expiryDate": "2024-02-31T23:59:59Z"
+    }
+  ]
+}

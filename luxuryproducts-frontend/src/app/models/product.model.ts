@@ -8,5 +8,8 @@ export class Product {
   public specifications: string;
   public publisher: string;
   public releaseDate: string;
-  // public category: Category;
+  public promoCode: string;
+  public promoDiscount: number;
+  public promoType: string;
+  public categoryId: number;
 }
