@@ -47,9 +47,6 @@ export class HomeComponent implements OnInit {
           (response: { code: string | null; }) => {
             this.generatedGiftCardCode = response.code;
             confirm(`Giftcard code: ${this.generatedGiftCardCode}`);
-          },
-          (error: any) => {
-            console.error('Error buying gift card:', error);
           }
         );
     } else {
