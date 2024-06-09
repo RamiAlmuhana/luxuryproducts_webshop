@@ -109,9 +109,12 @@ export class CartComponent implements OnInit {
 
   public getTotalPriceWithDiscount(): number {
     let total = this.getTotalPrice();
-    total -= this.discount + this.appliedDiscountAmount + this.giftCardDiscount;
+    total -= this.discount + this.appliedDiscountAmount;
     return Math.max(total, 0);
   }
+
+ 
+
 
   public onInvalidOrder() {
     return this.amountOfProducts === 0;
@@ -282,6 +285,13 @@ export class CartComponent implements OnInit {
       alert('Invalid giftcard code');
     }
   }
+
+ 
+
+
+ 
+
+
 
   public removeGiftCard() {
     localStorage.removeItem('appliedGiftCardCode');
