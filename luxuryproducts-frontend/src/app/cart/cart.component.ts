@@ -31,6 +31,12 @@ export class CartComponent implements OnInit {
   private updatingDiscount: boolean = false;
   private autoDiscountManuallyRemoved: boolean = false;
   private minSpendAmount: number = 0;
+  public giftCardCode: string = '';
+  public appliedDiscountCodes: string[] = [];
+  public appliedDiscountAmount: number = 0;
+  public appliedGiftCard: boolean = false;
+  public appliedGiftCardCode: string = '';
+  public giftCardDiscount: number = 0;
 
   constructor(private cartService: CartService, private router: Router, private authService: AuthService, private http: HttpClient) {}
 
@@ -49,6 +55,16 @@ export class CartComponent implements OnInit {
       }
       this.checkPromoCodeValidity();
     });
+
+    const { discountAmount, discountCodes } = this.cartService.loadDiscountFromLocalStorage();
+    this.appliedDiscountAmount = discountAmount;
+    this.appliedDiscountCodes = discountCodes;
+
+    this.appliedGiftCardCode = localStorage.getItem('appliedGiftCardCode') || '';
+    this.giftCardDiscount = parseFloat(localStorage.getItem('giftCardDiscount') || '0');
+    if (this.appliedGiftCardCode) {
+      this.appliedGiftCard = true;
+    }
   }
 
   public clearCart() {
@@ -60,11 +76,16 @@ export class CartComponent implements OnInit {
     this.promoCodeError = false;
     this.orderError = false;
     this.autoDiscountManuallyRemoved = false;
+    this.clearDiscount();
+    this.removeGiftCard();
   }
 
   public removeProductFromCart(product_index: number) {
     const removedProduct = this.products_in_cart[product_index];
     this.cartService.removeProductFromCart(product_index);
+    if (this.products_in_cart.length === 0) {
+      this.clearDiscount();
+    }
 
     const hasProductInCategory = this.products_in_cart.some(product => product.categoryId === removedProduct.categoryId);
 
@@ -76,14 +97,24 @@ export class CartComponent implements OnInit {
     this.checkPromoCodeValidity();
   }
 
+  private clearDiscount() {
+    this.appliedDiscountAmount = 0;
+    this.appliedDiscountCodes = [];
+    this.cartService.clearDiscountFromLocalStorage();
+  }
 
   public getTotalPrice(): number {
-    return this.cartService.calculateTotalPrice();
+    return this.products_in_cart.reduce((total, product) => total + product.price * product.amount, 0);
   }
 
   public getTotalPriceWithDiscount(): number {
-    return this.cartService.totalPriceWithDiscount;
+    let total = this.getTotalPrice();
+    total -= this.discount + this.appliedDiscountAmount;
+    return Math.max(total, 0);
   }
+
+ 
+
 
   public onInvalidOrder() {
     return this.amountOfProducts === 0;
@@ -175,8 +206,6 @@ export class CartComponent implements OnInit {
     });
   }
 
-
-
   public removePromoCode() {
     this.cartService.removeDiscount();
     this.clearPromoCodeFromLocalStorage();
@@ -235,5 +264,43 @@ export class CartComponent implements OnInit {
     localStorage.removeItem('discountType');
     localStorage.removeItem('displayedDiscount');
     localStorage.removeItem('minSpendAmount');
+  }
+
+  public applyGiftCard() {
+    const discountAmount = this.cartService.getGiftCardDiscount(this.giftCardCode);
+    if (discountAmount > 0 && !this.appliedDiscountCodes.includes(this.giftCardCode)) {
+      this.appliedDiscountAmount += discountAmount;
+      this.appliedDiscountCodes.push(this.giftCardCode);
+      this.cartService.saveDiscountToLocalStorage(this.appliedDiscountAmount, this.appliedDiscountCodes);
+
+      localStorage.setItem('appliedGiftCardCode', this.giftCardCode);
+      localStorage.setItem('giftCardDiscount', discountAmount.toString());
+
+      this.appliedGiftCard = true;
+      this.appliedGiftCardCode = this.giftCardCode;
+      this.giftCardDiscount = discountAmount;
+    } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
+      alert('This giftcard code has already been used');
+    } else {
+      alert('Invalid giftcard code');
+    }
+  }
+
+ 
+
+
+ 
+
+
+
+  public removeGiftCard() {
+    localStorage.removeItem('appliedGiftCardCode');
+    localStorage.removeItem('giftCardDiscount');
+    this.appliedGiftCard = false;
+    this.appliedGiftCardCode = '';
+    this.giftCardDiscount = 0;
+    this.appliedDiscountAmount = 0;
+    this.appliedDiscountCodes = [];
+    this.cartService.clearDiscountFromLocalStorage();
   }
 }

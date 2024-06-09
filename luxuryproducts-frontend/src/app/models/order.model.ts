@@ -11,6 +11,7 @@ export class Order {
   public orderDate: string;
   public products: Product[];
   public totalPrice: number;
-  public discountedPrice: number; // Nieuw veld voor discountedPrice
+  public discountedPrice: number;
   public promoCode: string | null;
+  public giftCardCode: string | null
 }

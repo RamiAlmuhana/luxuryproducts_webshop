@@ -34,10 +34,16 @@
             <!-- Promo Code Section -->
             <div class="card mb-4 shadow-sm border-0">
               <div class="card-body">
-                <h5 class="card-title">Promo Code</h5>
+                <h5 class="card-title">Gift-card/Promo Code</h5>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Promo code" [(ngModel)]="promoCode" name="promoCode">
+                  <input type="text" class="form-control" placeholder="Enter Promo code" [(ngModel)]="promoCode" name="promoCode">
                   <button [disabled]="onInvalidOrder()" class="btn btn-outline-secondary" type="button" (click)="applyPromoCode()">Apply</button>
+                </div>
+                <div class="col-md-12 mt-3">
+                  <div class="input-group mb-3">
+                    <input [(ngModel)]="giftCardCode" type="text" class="form-control" placeholder="Enter giftcard code">
+                    <button (click)="applyGiftCard()" class="btn btn-outline-secondary" type="button">Apply</button>
+                  </div>
                 </div>
                 <!-- Error message for invalid promo code -->
                 <div *ngIf="promoCodeError" class="text-danger mb-2">
@@ -48,6 +54,11 @@
                   <p *ngIf="discount > 0" class="mb-1">Discount Applied: <strong>{{ discount | currency: 'EUR' }}</strong></p>
                   <button class="btn btn-sm" (click)="removePromoCode()">Remove</button>
                 </div>
+                <div *ngIf="appliedGiftCard">
+                  <p class="mb-1">Gift Card Applied: <strong>{{ appliedGiftCardCode }}</strong></p>
+                  <p class="mb-1">Discount Applied: <strong>{{ giftCardDiscount | currency: 'EUR' }}</strong></p>
+                  <button class="btn btn-sm" (click)="removeGiftCard()">Remove</button>
+                </div>
               </div>
             </div>
             <!-- Total Price Section -->
@@ -57,7 +68,7 @@
                   <p class="lead mb-0">Total:</p>
                   <p class="lead mb-0"><strong>{{ getTotalPrice() | currency: 'EUR' }}</strong></p>
                 </div>
-                <div *ngIf="promoApplied" class="d-flex justify-content-between">
+                <div *ngIf="promoApplied || appliedDiscountAmount > 0" class="d-flex justify-content-between">
                   <p class="lead mb-0">Discounted Price:</p>
                   <p class="lead mb-0"><strong>{{ getTotalPriceWithDiscount() | currency:'EUR' }}</strong></p>
                 </div>
