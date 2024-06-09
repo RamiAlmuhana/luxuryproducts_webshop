@@ -16,7 +16,7 @@ import {PromoCodeAddComponent} from "./admin-dashboard/admin-promocode/promocode
 import {PromocodeUpdateComponent} from "./admin-dashboard/admin-promocode/promocode-update/promocode-update.component";
 import {AdminPromocodeComponent} from "./admin-dashboard/admin-promocode/admin-promocode.component";
 import {PromoCodeStatsComponent} from "./admin-dashboard/promocode-stats/promocode-stats.component";
-import {AdminComponent} from "./admin-dashboard/admin/admin.component";
+import {AdminRetourComponent} from "./admin-dashboard/admin-retour/admin-retour.component";
 
 
 export const routes: Routes = [
@@ -38,7 +38,7 @@ export const routes: Routes = [
   {path: 'admin/promocode-stats', component: PromoCodeStatsComponent, canActivate: [authGuard]},
   {path: 'admin/promocode-list/promocode-update/:id', component: PromocodeUpdateComponent, canActivate: [authGuard]},
   {path: 'admin/promocode-list', component: AdminPromocodeComponent, canActivate: [authGuard]},
-  {path: 'admin/retour', component: AdminComponent, canActivate: [authGuard], data: {roles: ['admin']} },
+  {path: 'admin/retour', component: AdminRetourComponent, canActivate: [authGuard], data: {roles: ['admin']} },
 ];
 
 

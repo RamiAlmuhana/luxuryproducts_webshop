@@ -10,12 +10,12 @@ import {ReturnListModel} from "../../models/returnList.model";
 
 @Component({
     selector: 'app-order-history',
-    templateUrl: './admin.component.html',
+    templateUrl: './admin-retour.component.html',
     imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule],
     standalone: true,
-    styleUrls: ['./admin.component.scss']
+    styleUrls: ['./admin-retour.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminRetourComponent implements OnInit {
 
     returns: Return[];
     returnsOfUser: ReturnListModel[] = [];
