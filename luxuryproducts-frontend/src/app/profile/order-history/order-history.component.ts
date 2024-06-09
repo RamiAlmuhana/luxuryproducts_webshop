@@ -42,24 +42,12 @@ export class OrderHistoryComponent implements OnInit {
     this.returnRequest.returnStatus = "pending";
     this.returnRequest.user = this.user;
     product.productReturned = true;
-    // console.log(this.returnRequest)
-
-
     this.returnService.createReturnRequest(this.returnRequest).subscribe((text) => {
       alert("return request created ");
     });
 
 
   }
-
-  calculateTotal(products: any[]): number {
-    let total = 0;
-    for (const product of products) {
-      total += product.price;
-    }
-    return total;
-  }
-
   canbeShown(product: Product): boolean {
 
     return !product.productReturned;
