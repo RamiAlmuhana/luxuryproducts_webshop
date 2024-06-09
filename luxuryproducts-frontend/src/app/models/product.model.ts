@@ -13,4 +13,5 @@ export class Product {
   public promoType: string;
   public categoryId: number;
   public productReturned?: boolean;
+  public returnstatus?: string;
 }

@@ -49,4 +49,13 @@ public class ReturnController {
         return ResponseEntity.ok().body("{\"message\": \"Return request created successfully\"}");
     }
 
+    @PutMapping("/{returnId}/{orderId}")
+    public ResponseEntity<String> putProductReturnstatus(@PathVariable long returnId, @PathVariable long orderId) {
+
+        this.returnDAO.putProductReturnstatus(returnId, orderId);
+
+        return ResponseEntity.ok("succesfully updated produt returnstatus");
+    }
+
+
 }

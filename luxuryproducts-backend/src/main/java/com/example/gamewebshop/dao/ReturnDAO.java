@@ -82,4 +82,28 @@ public class ReturnDAO {
         returnRepository.save(returnRequest.get());
 
     }
+
+
+
+    public void putProductReturnstatus(long returnId, long orderId) {
+        Optional<ReturnRequest> returnRequest = returnRepository.findById(returnId);
+        if (returnRequest.isEmpty()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No returns found with that id"
+            );
+        }
+
+        ReturnRequest returnRequest1 = returnRequest.get();
+
+        Optional<Product> product = productRepository.findById(returnRequest1.getProduct().getId());
+        if (product.isEmpty()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No product found with that id"
+            );
+        }
+        Product product1 = product.get();
+        product1.setReturnStatus(returnRequest1.getReturnStatus());
+
+       productRepository.save(product1);
+    }
 }
