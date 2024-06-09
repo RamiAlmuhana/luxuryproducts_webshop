@@ -17,6 +17,7 @@
                 <ul class="products-list list-unstyled">
                   <li class="product d-flex align-items-start mb-3" *ngFor="let product of order.products">
                     <div class="product-details me-3">
+                      <button *ngIf="canbeShown(product)" (click) = "onReturn(product)" class="btn btn-md btn-dark w-20" >Retour</button>
                       <p class="product-name"><span class="fw-bold">Product Name:</span> {{product.name}}</p>
                       <p class="product-price"><span class="fw-bold">Price:</span> {{product.price | currency: 'EUR'}}</p>
                     </div>
