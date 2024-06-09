@@ -54,7 +54,8 @@ export class OrderComponent implements OnInit {
       orderDate: new Date().toISOString(),
       products: this.products_in_cart,
       totalPrice: this.totalPrice,
-      discountedPrice: this.discountedPrice,
+      // discountedPrice: this.discountedPrice,
+      discountedPrice: JSON.parse(localStorage.getItem('discountedPrice') || ''),
       promoCode: localStorage.getItem('promoCode') || '',
       giftCardCode: localStorage.getItem('appliedGiftCardCode') || ''
     };
@@ -76,13 +77,23 @@ export class OrderComponent implements OnInit {
   private removePromoCodeFromLocalStorage() {
     localStorage.removeItem('promoCode');
     localStorage.removeItem('promoApplied');
-    localStorage.removeItem('discountValue');
+    localStorage.removeItem('applied-discount-amount');
     localStorage.removeItem('discountType');
     localStorage.removeItem('displayedDiscount');
+    localStorage.removeItem("discountedPrice")
+    localStorage.removeItem("totalPriceWithDiscount")
+    localStorage.removeItem("promoCodeApplied")
+    localStorage.removeItem("totalDiscount")
+    localStorage.removeItem("discountValue")
   }
 
   private removeGiftCardFromLocalStorage() {
     localStorage.removeItem('appliedGiftCardCode');
     localStorage.removeItem('giftCardDiscount');
+    localStorage.removeItem("discountedPrice")
+    localStorage.removeItem("totalPriceWithDiscount")
+    localStorage.removeItem("promoCodeApplied")
+    localStorage.removeItem("totalDiscount")
+    localStorage.removeItem("discountValue")
   }
 }

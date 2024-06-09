@@ -78,6 +78,11 @@ export class CartComponent implements OnInit {
     this.autoDiscountManuallyRemoved = false;
     this.clearDiscount();
     this.removeGiftCard();
+    localStorage.removeItem("discountedPrice")
+    localStorage.removeItem("totalPriceWithDiscount")
+    localStorage.removeItem("promoCodeApplied")
+    localStorage.removeItem("totalDiscount")
+    localStorage.removeItem("discountValue")
   }
 
   public removeProductFromCart(product_index: number) {
@@ -110,10 +115,11 @@ export class CartComponent implements OnInit {
   public getTotalPriceWithDiscount(): number {
     let total = this.getTotalPrice();
     total -= this.discount + this.appliedDiscountAmount;
+    localStorage.setItem('discountedPrice', Math.max(total, 0).toString());
     return Math.max(total, 0);
   }
 
- 
+
 
 
   public onInvalidOrder() {
@@ -286,10 +292,10 @@ export class CartComponent implements OnInit {
     }
   }
 
- 
 
 
- 
+
+
 
 
 

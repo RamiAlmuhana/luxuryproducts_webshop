@@ -55,7 +55,6 @@ public class OrderDAO {
         placedOrder.setProducts(productsWithCategory);
 
         double totalPrice = calculateTotalPrice(placedOrder);
-        double discountedPrice = totalPrice;
         double discount = 0.0;
 
         String effectivePromoCode = promoCode != null && !promoCode.isEmpty() ? promoCode : placedOrder.getPromoCode();
@@ -66,10 +65,10 @@ public class OrderDAO {
                 PromoCode code = promoCodeOptional.get();
                 if (totalPrice >= code.getMinSpendAmount()) {
                     discount = calculateDiscount(totalPrice, code);
-                    discountedPrice -= discount;
-                    if (discountedPrice < 0) {
-                        discountedPrice = 0;
-                    }
+//                    discountedPrice -= discount;
+//                    if (discountedPrice < 0) {
+//                        discountedPrice = 0;
+//                    }
                     code.setMaxUsageCount(code.getMaxUsageCount() - 1);
                     code.setUsageCount(code.getUsageCount() + 1);
                     code.setTotalDiscountAmount(code.getTotalDiscountAmount() + discount);
@@ -85,10 +84,10 @@ public class OrderDAO {
             if (autoDiscountPromo.isPresent() && promoCodeDAO.isPromoCodeValid("AUTO_DISCOUNT")) {
                 PromoCode autoDiscountCode = autoDiscountPromo.get();
                 discount = calculateDiscount(totalPrice, autoDiscountCode);
-                discountedPrice -= discount;
-                if (discountedPrice < 0) {
-                    discountedPrice = 0;
-                }
+//                discountedPrice -= discount;
+//                if (discountedPrice < 0) {
+//                    discountedPrice = 0;
+//                }
                 autoDiscountCode.setMaxUsageCount(autoDiscountCode.getMaxUsageCount() - 1);
                 autoDiscountCode.setUsageCount(autoDiscountCode.getUsageCount() + 1);
                 autoDiscountCode.setTotalDiscountAmount(autoDiscountCode.getTotalDiscountAmount() + discount);
@@ -101,10 +100,10 @@ public class OrderDAO {
             Optional<Giftcard> giftcardOptional = giftcardRepository.findByCode(giftCardCode);
             if (giftcardOptional.isPresent() && !giftcardOptional.get().isUsed()) {
                 Giftcard giftcard = giftcardOptional.get();
-                discountedPrice -= giftcard.getDiscountAmount();
-                if (discountedPrice < 0) {
-                    discountedPrice = 0;
-                }
+//                discountedPrice -= giftcard.getDiscountAmount();
+//                if (discountedPrice < 0) {
+//                    discountedPrice = 0;
+//                }
                 giftcard.setUsed(true);
                 giftcardRepository.save(giftcard);
                 placedOrder.setGiftCardCode(giftCardCode);
@@ -114,7 +113,7 @@ public class OrderDAO {
         }
 
         placedOrder.setTotalPrice(totalPrice);
-        placedOrder.setDiscountedPrice(discountedPrice);
+//        placedOrder.setDiscountedPrice(totalPrice);
         placedOrder.setPromoCode(effectivePromoCode);
         placedOrder.setGiftCardCode(giftCardCode);
         orderRepository.save(placedOrder);
