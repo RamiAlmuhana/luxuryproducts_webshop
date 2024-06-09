@@ -28,7 +28,7 @@ public class Product {
     private Category category;
 
 
-
+    private boolean productReturned;
 
 
     //needed by JPA to create the entity must be present no arg constructor
@@ -49,7 +49,13 @@ public class Product {
     //getters and setters are needed to map all the properties to the database by JPA, could
     //also be solved by making the properties public but gives less control over the properties.
 
+    public boolean isProductReturned() {
+        return productReturned;
+    }
 
+    public void setProductReturned(boolean productReturned) {
+        this.productReturned = productReturned;
+    }
     public long getId() {
         return id;
     }
