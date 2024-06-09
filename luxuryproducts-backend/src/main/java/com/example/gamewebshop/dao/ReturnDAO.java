@@ -26,17 +26,6 @@ public class ReturnDAO {
     public List<CustomUser> getAllReturns(){
         return  this.userRepository.findAll();
     }
-
-
-    @Transactional
-    public void createReturn(ReturnRequest returnRequest, ProductRepository productRepository){
-        this.userRepository.save(returnRequest.getUser() );
-        this.productRepository.save(returnRequest.getProduct());
-        this.returnRepository.save(returnRequest);
-
-    }
-
-
     @Transactional
     public void saveReturnWithProducts(ReturnRequest return1, String userEmail) {
         CustomUser user = userRepository.findByEmail(userEmail);
