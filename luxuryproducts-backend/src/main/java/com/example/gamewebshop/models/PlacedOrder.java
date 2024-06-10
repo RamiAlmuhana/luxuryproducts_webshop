@@ -44,7 +44,6 @@ public class PlacedOrder {
     @ManyToOne(cascade = CascadeType.MERGE)
     private CustomUser user;
 
-
     @OneToMany
     private List<CartProduct> cartProducts = new ArrayList<>();
     private double totalPrice;

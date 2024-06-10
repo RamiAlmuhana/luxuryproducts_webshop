@@ -32,7 +32,7 @@ public class Category {
     private String name;
 
     @OneToMany(cascade=ALL, mappedBy="category")
-    private List<Product> product;
+    private List<Product> products;
 
     public Category(String imageUrl, String description, String name) {
         this.imageUrl = imageUrl;

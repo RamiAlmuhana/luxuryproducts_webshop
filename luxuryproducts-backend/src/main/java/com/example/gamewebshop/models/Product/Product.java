@@ -44,8 +44,6 @@ public class Product {
     @JoinColumn(name="PRODUCT_ID", nullable=true)
     private Category category;
 
-//    private boolean productReturned;
-//
 //    private String returnStatus = "pending";
 
     public Product(Brand brand, String name, String country, Category category) {

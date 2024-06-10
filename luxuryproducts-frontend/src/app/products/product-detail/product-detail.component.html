@@ -1,42 +1,198 @@
-<section class="py-5 bg-light">
-  <div class="container px-4 px-lg-5 my-5">
-    <div class="row gx-4 gx-lg-5 align-items-center">
-      <div class="col-md-6 mb-5 mb-md-0">
-        <div class="product-image-container bg-white p-4 shadow-sm rounded">
-          <img class="card-img-top img-fluid" src="{{ product.imgURL }}" alt="Product Image"/>
+@if (loading) {
+<p>Loading...</p>
+}@else {
+
+<div class="image-grid">
+  <div class="flex-box">
+    <div>
+      <a (click)="onPreviousImage()" style="font-size: 400%; color: gray">
+        &lt;
+      </a>
+    </div>
+
+    <img
+      class="product-image"
+      id="productImage1"
+      [src]="
+        product.productVariants[productVariantIndex].productImages[
+          productImage1Index
+        ].imageUrl
+      "
+      class="img-fluid rounded-start album-pic"
+      alt="First Image"
+    />
+
+    <div class="buyProduct-overlay rounded-3">
+      <h5 style="margin-bottom: 20%">{{ product.name }}</h5>
+      <p>
+        price:
+        <span style="font-weight: bold">
+          {{
+            product.productVariants[productVariantIndex].price
+              | currency : "EUR"
+          }}</span
+        >
+      </p>
+      <p>
+        Color: <span style="font-weight: bold"> {{ getColor() }}</span>
+      </p>
+      <p style="margin-bottom: 5%">
+        item fit: <span style="font-weight: bold"> {{ getSizeAndFit() }}</span>
+      </p>
+
+      <div class="form-group">
+        <label for="quantity">Quantity:</label>
+        <select
+          style="cursor: pointer"
+          id="quantity"
+          class="form-control"
+          (change)="Onquantitychange($event)"
+        >
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+      <label for="quantity">size:</label>
+      <select
+        style="cursor: pointer"
+        id="quantity"
+        class="form-control"
+        (change)="OnSizechange($event)"
+        style="margin-bottom: 5%"
+      >
+        @for (productVariatie of
+        product.productVariants[productVariantIndex].productVariatie; track
+        $index) {
+        <option
+          value="{{ $index }}"
+          [disabled]="
+            productVariatie.productionStop || !productVariatie.items_in_stock
+          "
+          [ngClass]="{
+            'disabled-option':
+              productVariatie.productionStop || !productVariatie.items_in_stock
+          }"
+        >
+          {{ productVariatie.size.size }} <span>-</span> ({{
+            productVariatie.quantity_in_stock
+          }})
+        </option>
+        }
+      </select>
+
+      <button
+        type="button"
+        class="btn btn-dark"
+        style="width: 100%"
+        [disabled]="!loginState"
+        (click)="onBuyProduct()"
+      >
+        Add to Cart
+      </button>
+      @if (showCantbuy == true) {
+      <h6 style="color: red">Can`t buy that amount. Stock is too low</h6>
+      }
+    </div>
+  </div>
+
+  <div class="flex-box">
+    <img
+      class="product-image"
+      id="productImage2"
+      [src]="
+        product.productVariants[productVariantIndex].productImages[
+          productImage2Index
+        ].imageUrl
+      "
+      class="img-fluid rounded-start album-pic"
+      alt="Second Image"
+    />
+    <div>
+      <a (click)="onNextImage()" style="font-size: 400%; color: gray"> &gt;</a>
+    </div>
+  </div>
+</div>
+<div class="items-below-picture">
+  <div class="information-grid">
+    <div class="flexbox-extra-information">
+      <div
+        *ngIf="product.promoCode"
+        class="product-promo-code mb-4 p-3 border border-success rounded"
+      >
+        <h6 class="fw-bold mb-2 text-success">PROMO CODE</h6>
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="promo-code">{{ product.promoCode }}</span>
+          <span class="promo-discount">
+            <span *ngIf="product.promoType === 'PERCENTAGE'"
+              >{{ product.promoDiscount }}% off</span
+            >
+            <span *ngIf="product.promoType === 'FIXED_AMOUNT'"
+              >{{ product.promoDiscount | currency : "EUR" }} off</span
+            >
+          </span>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="product-details-container bg-white p-4 shadow-sm rounded">
-          <h1 class="display-4 fw-bold mb-4">{{ product.name }}</h1>
-          <div *ngIf="product.promoCode" class="product-promo-code mb-4 p-3 border border-success rounded">
-            <p class="fw-bold mb-2 text-success">Promo Code Available:</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="promo-code">{{ product.promoCode }}</span>
-              <span class="promo-discount">
-                <span *ngIf="product.promoType === 'PERCENTAGE'">{{ product.promoDiscount }}% off</span>
-                <span *ngIf="product.promoType === 'FIXED_AMOUNT'">{{ product.promoDiscount | currency: 'EUR' }} off</span>
-              </span>
-            </div>
-          </div>
-          <p class="fw-bold mb-2 lead">Description:</p>
-          <p class="lead mb-4">{{ product.description }}</p>
-          <p class="lead mb-4"><span class="fw-bold">Price:</span> {{ product.price | currency: 'EUR' }}</p>
-          <div class="product-info mb-4">
-            <p class="fw-bold mb-2">Release Date:</p>
-            <p>{{ product.releaseDate }}</p>
-          </div>
-          <div class="product-info mb-4">
-            <p class="fw-bold mb-2">Specifications:</p>
-            <p>{{ product.specifications }}</p>
-          </div>
-          <div class="product-info mb-4">
-            <p class="fw-bold mb-2">Publisher:</p>
-            <p>{{ product.publisher }}</p>
-          </div>
-          <button (click)="onBuyProduct(product)" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Add to cart</button>
+      <hr />
+      <div>
+        <h6>VARIATIONS ({{ productVariantCounter() }})</h6>
+        <div class="variation-pictures-flexbox">
+          @for (productVariant of product.productVariants; track $index) {
+
+          <img
+            width="300"
+            [src]="productVariant.productImages[0].imageUrl"
+            class="img-fluid rounded-start album-pic"
+            alt="First Image"
+            style="max-width: 30%; cursor: pointer"
+            (click)="changeProductVariant($index)"
+          />
+
+          }
+        </div>
+      </div>
+      <hr />
+      <div>
+        <h6>BRAND INFO</h6>
+
+        <p>{{ productBrand.description }}</p>
+      </div>
+      <hr />
+      <div>
+        <h6>COUNTRY</h6>
+        <p>{{ product.country }}</p>
+      </div>
+      <hr />
+    </div>
+
+    <div class="">
+      <div class="inner-div">
+        <div class="justify-content-center">
+          <img
+            width="300"
+            [src]="
+              product.productVariants[productVariantIndex].productImages[0]
+                .imageUrl
+            "
+            class="img-fluid rounded-start album-pic"
+            alt="First Image"
+            style="max-width: 50%"
+          />
+        </div>
+        <div>
+          <h6>PRODUCT DETAILS</h6>
+          <p>{{ product.productVariants[productVariantIndex].description }}</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
+
+}

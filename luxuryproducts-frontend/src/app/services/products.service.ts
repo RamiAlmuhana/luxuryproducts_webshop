@@ -1,24 +1,25 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {environment} from '../../environments/environment';
-import {Product} from '../models/product.model';
+import { environment } from '../../environments/environment';
+import { Product } from '../models/product.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductsService {
+  private baseUrl: string = environment.base_url + '/products';
 
-
-  private baseUrl: string = environment.base_url + "/products";
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl);
+  }
+
+  getAllProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.baseUrl}/all`);
   }
 
   createProduct(productData: any): Observable<any> {
@@ -33,8 +34,18 @@ export class ProductsService {
     return this.http.delete<Product>(`${this.baseUrl}/${id}`);
   }
 
-  public updateProductByIndex(id: Product, product: number): Observable<Product> {
+  public updateProductByIndex(
+    id: Product,
+    product: number
+  ): Observable<Product> {
     return this.http.put<Product>(`${this.baseUrl}/${id}`, product);
   }
 
+  public getProductsByColor(color: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.baseUrl}/color/${color}`);
+  }
+
+  public getProductsBySizeAndFit(fit: string): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.baseUrl}/size-fit/${fit}`);
+  }
 }

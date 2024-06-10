@@ -2,10 +2,12 @@ package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.dao.OrderDAO;
 import com.example.gamewebshop.Repositorys.UserRepository;
+import com.example.gamewebshop.dto.ProductVariantDTOS.OrderDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderUserDTO;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.PlacedOrder;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -46,32 +48,27 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    // todo : fix order plaatsen
 //    @PostMapping
-//    public ResponseEntity<Map<String, Object>> createOrder(@RequestBody PlacedOrder placedOrder, Principal principal) {
+//    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO, Principal principal) {
 //        String userEmail = principal.getName();
-//        CustomUser user = userRepository.findByEmail(userEmail);
-//        if (user == null) {
-//            return ResponseEntity.badRequest().body(Map.of("message", "User not found"));
-//        }
-//        try {
-//            String promoCode = placedOrder.getPromoCode();
-//            String giftCardCode = placedOrder.getGiftCardCode();
-//
-//
-//            orderDAO.createOrder(placedOrder, userEmail, promoCode, giftCardCode);
-//            return ResponseEntity.ok(Map.of(
-//                    "message", "Order created successfully",
-//                    "totalPrice", placedOrder.getTotalPrice(),
-//                    "discountedPrice", placedOrder.getDiscountedPrice(),
-//                    "promoCode", promoCode != null ? promoCode : "Automatic discount applied",
-//                    "discount", placedOrder.getTotalPrice() - placedOrder.getDiscountedPrice(),
-//                    "giftCardCode", giftCardCode != null ? giftCardCode : "No gift card applied"
-//            ));
-//        } catch (ResponseStatusException e) {
-//            return ResponseEntity.status(e.getStatusCode()).body(Map.of("message", e.getReason()));
-//        }
+//        this.orderDAO.saveOrderWithProducts(orderDTO, userEmail);
+//        return ResponseEntity.ok().body("{\"message\": \"Order created successfully\"}");
 //    }
+
+    // todo : fix order plaatsen
+    @PostMapping
+    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO, Principal principal) {
+        String userEmail = principal.getName();
+
+        try {
+            orderDAO.saveOrderWithProducts(orderDTO, userEmail);
+            return ResponseEntity.ok().body("{\"message\": \"Order created successfully\"}");
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "order couldnt be created " + e
+            );
+        }
+    }
 
 
 }

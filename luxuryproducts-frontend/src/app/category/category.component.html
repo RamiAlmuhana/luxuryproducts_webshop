@@ -1,0 +1,11 @@
+@if (loadingProducts) {
+<p>Loading products...</p>
+} @else {
+<h3 class="mb-4">{{ category.name }}</h3>
+
+@for (product of category.product; track $index) {
+<app-product-thumbnail
+  [product]="product"
+  (onBuyProduct)="onBuyProduct(product)"
+></app-product-thumbnail>
+} }

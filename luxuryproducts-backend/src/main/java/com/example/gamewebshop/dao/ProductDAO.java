@@ -3,10 +3,13 @@ package com.example.gamewebshop.dao;
 import com.example.gamewebshop.Repositorys.CategoryRepository;
 import com.example.gamewebshop.Repositorys.ProductRepository;
 import com.example.gamewebshop.Repositorys.ProductVariatieRepository;
+import com.example.gamewebshop.dto.ProductVariantDTOS.ProductByIdDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.ProductDTO;
+import com.example.gamewebshop.models.Category;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.Product.ProductVariant;
 import com.example.gamewebshop.models.Product.ProductVariatie;
+import com.example.gamewebshop.models.PromoCode;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -23,11 +26,12 @@ public class ProductDAO {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductVariatieRepository productVariatieRepository;
+    private final PromoCodeDAO promoCodeDAO;
 
 
-    public List<Product> returnProductsWithVariants(List<Product> products){
+    public List<Product> returnProductsWithVariants(List<Product> products) {
         List<Product> productsWithVariants = new ArrayList<>();
-        for (Product product: products){
+        for (Product product : products) {
             if (product.getProductVariants().isEmpty()
             ) {
                 continue;
@@ -39,20 +43,72 @@ public class ProductDAO {
     }
 
 
-    public List<Product> getAllProducts(){
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    public Product getProductById(long id){
+
+    public ProductByIdDTO getProductByIdDTO(Long id) {
         Optional<Product> product = this.productRepository.findById(id);
 
-        if (product.isEmpty()){
+        if (product.isEmpty()) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "No products found with that id"
             );
         }
+
+        return checkIfProductHasPromocode(product.get());
+    }
+
+    public Product getProductById(long id) {
+        Optional<Product> product = this.productRepository.findById(id);
+
+        if (product.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No products found with that id"
+            );
+        }
+
         return product.get();
     }
+
+
+    public ProductByIdDTO checkIfProductHasPromocode(Product product) {
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            for (Product productInCategory : category.getProducts()) {
+                if (productInCategory.getId() == product.getId()) {
+                   return productByIdDTOconverter(category.getId(), product);
+                }
+
+
+            }
+        }
+        throw new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "No category found with that product id"
+        );
+    }
+
+    public ProductByIdDTO productByIdDTOconverter(long categoryId, Product product) {
+        ProductByIdDTO productByIdDTO = new ProductByIdDTO();
+        productByIdDTO.country = product.getCountry();
+        productByIdDTO.id = product.getId();
+        productByIdDTO.productVariants = product.getProductVariants();
+        productByIdDTO.quantity = product.getQuantity();
+        productByIdDTO.name = product.getName();
+        productByIdDTO.categoryId = categoryId;
+
+        Optional<PromoCode> promoCodeOptional = promoCodeDAO.getPromoCodeByCategory(categoryId);
+        if (promoCodeOptional.isPresent()){
+
+            productByIdDTO.promoCode = promoCodeOptional.get().getCode();
+            productByIdDTO.promoDiscount = promoCodeOptional.get().getDiscount();
+            productByIdDTO.promoType = promoCodeOptional.get().getType().toString();
+        }
+        return productByIdDTO;
+    }
+
+
 
     public List<Product> getAllProductsByCategory(long id){
         Optional<List<Product>> products =this.productRepository.findByCategoryId(id);
@@ -163,4 +219,6 @@ public class ProductDAO {
         List<Product> products = this.productRepository.findAll();
         return returnProductsWithVariants(products);
     }
+
+
 }

@@ -39,88 +39,133 @@ public class OrderDAO {
         return this.orderRepository.findAll();
     }
 
-//    @Transactional
-//    public void createOrder(PlacedOrder placedOrder, String userEmail, String promoCode, String giftCardCode) {
-//        CustomUser user = userRepository.findByEmail(userEmail);
-//        if (user == null) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
-//        }
-//        placedOrder.setUser(user);
-//
-//        HashSet<Product> productsWithCategory = new HashSet<>();
-//        for (Product product : placedOrder.getProducts()) {
-//            Product foundProduct = productRepository.findById(product.getId()).orElse(null);
-//            if (foundProduct == null) {
-//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product not found");
-//            }
-//            productsWithCategory.add(foundProduct);
-//        }
-//        placedOrder.setProducts(productsWithCategory);
-//
-//        double totalPrice = calculateTotalPrice(placedOrder);
-//        double discount = 0.0;
-//
-//        String effectivePromoCode = promoCode != null && !promoCode.isEmpty() ? promoCode : placedOrder.getPromoCode();
-//
-//        if (effectivePromoCode != null && !effectivePromoCode.isEmpty()) {
-//            Optional<PromoCode> promoCodeOptional = promoCodeDAO.getPromoCodeByCode(effectivePromoCode);
-//            if (promoCodeOptional.isPresent() && promoCodeDAO.isPromoCodeValid(effectivePromoCode)) {
-//                PromoCode code = promoCodeOptional.get();
-//                if (totalPrice >= code.getMinSpendAmount()) {
-//                    discount = calculateDiscount(totalPrice, code);
-////                    discountedPrice -= discount;
-////                    if (discountedPrice < 0) {
-////                        discountedPrice = 0;
-////                    }
-//                    code.setMaxUsageCount(code.getMaxUsageCount() - 1);
-//                    code.setUsageCount(code.getUsageCount() + 1);
-//                    code.setTotalDiscountAmount(code.getTotalDiscountAmount() + discount);
-//                    promoCodeRepository.save(code);
-//                } else {
-//                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Total price does not meet the minimum spend amount for this promo code");
-//                }
-//            } else {
-//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or expired promo code");
-//            }
-//        } else if (totalPrice > 120) {
-//            Optional<PromoCode> autoDiscountPromo = promoCodeDAO.getPromoCodeByCode("AUTO_DISCOUNT");
-//            if (autoDiscountPromo.isPresent() && promoCodeDAO.isPromoCodeValid("AUTO_DISCOUNT")) {
-//                PromoCode autoDiscountCode = autoDiscountPromo.get();
-//                discount = calculateDiscount(totalPrice, autoDiscountCode);
-////                discountedPrice -= discount;
-////                if (discountedPrice < 0) {
-////                    discountedPrice = 0;
-////                }
-//                autoDiscountCode.setMaxUsageCount(autoDiscountCode.getMaxUsageCount() - 1);
-//                autoDiscountCode.setUsageCount(autoDiscountCode.getUsageCount() + 1);
-//                autoDiscountCode.setTotalDiscountAmount(autoDiscountCode.getTotalDiscountAmount() + discount);
-//                promoCodeRepository.save(autoDiscountCode);
-//                effectivePromoCode = "AUTO_DISCOUNT";
-//            }
-//        }
-//
-//        if (giftCardCode != null && !giftCardCode.isEmpty()) {
-//            Optional<Giftcard> giftcardOptional = giftcardRepository.findByCode(giftCardCode);
-//            if (giftcardOptional.isPresent() && !giftcardOptional.get().isUsed()) {
-//                Giftcard giftcard = giftcardOptional.get();
-////                discountedPrice -= giftcard.getDiscountAmount();
-////                if (discountedPrice < 0) {
-////                    discountedPrice = 0;
-////                }
-//                giftcard.setUsed(true);
-//                giftcardRepository.save(giftcard);
-//                placedOrder.setGiftCardCode(giftCardCode);
-//            } else {
-//                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or used gift card code");
-//            }
-//        }
-//
-//        placedOrder.setTotalPrice(totalPrice);
-////        placedOrder.setDiscountedPrice(totalPrice);
-//        placedOrder.setPromoCode(effectivePromoCode);
-//        placedOrder.setGiftCardCode(giftCardCode);
-//        orderRepository.save(placedOrder);
-//    }
+    public String validatePromocode(String promoCode, double totalPrice){
+
+        double discount = 0.0;
+
+        String effectivePromoCode = promoCode;
+
+        if (effectivePromoCode != null && !effectivePromoCode.isEmpty()) {
+            Optional<PromoCode> promoCodeOptional = promoCodeDAO.getPromoCodeByCode(effectivePromoCode);
+            if (promoCodeOptional.isPresent() && promoCodeDAO.isPromoCodeValid(effectivePromoCode)) {
+                PromoCode code = promoCodeOptional.get();
+                if (totalPrice >= code.getMinSpendAmount()) {
+                    discount = calculateDiscount(totalPrice, code);
+
+                    code.setMaxUsageCount(code.getMaxUsageCount() - 1);
+                    code.setUsageCount(code.getUsageCount() + 1);
+                    code.setTotalDiscountAmount(code.getTotalDiscountAmount() + discount);
+                    promoCodeRepository.save(code);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Total price does not meet the minimum spend amount for this promo code");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or expired promo code");
+            }
+        } else if (totalPrice > 120) {
+            Optional<PromoCode> autoDiscountPromo = promoCodeDAO.getPromoCodeByCode("AUTO_DISCOUNT");
+            if (autoDiscountPromo.isPresent() && promoCodeDAO.isPromoCodeValid("AUTO_DISCOUNT")) {
+                PromoCode autoDiscountCode = autoDiscountPromo.get();
+                discount = calculateDiscount(totalPrice, autoDiscountCode);
+
+                autoDiscountCode.setMaxUsageCount(autoDiscountCode.getMaxUsageCount() - 1);
+                autoDiscountCode.setUsageCount(autoDiscountCode.getUsageCount() + 1);
+                autoDiscountCode.setTotalDiscountAmount(autoDiscountCode.getTotalDiscountAmount() + discount);
+                promoCodeRepository.save(autoDiscountCode);
+                effectivePromoCode = "AUTO_DISCOUNT";
+            }
+        }
+        return effectivePromoCode;
+    }
+
+    public void validateGiftcard(String giftCardCode){
+
+        if (giftCardCode != null && !giftCardCode.isEmpty()) {
+            Optional<Giftcard> giftcardOptional = giftcardRepository.findByCode(giftCardCode);
+            if (giftcardOptional.isPresent() && !giftcardOptional.get().isUsed()) {
+                Giftcard giftcard = giftcardOptional.get();
+
+                giftcard.setUsed(true);
+                giftcardRepository.save(giftcard);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or used gift card code");
+            }
+        }
+    }
+
+
+    @Transactional
+    public void saveOrderWithProducts(OrderDTO orderDTO, String userEmail) {
+        CustomUser user = userRepository.findByEmail(userEmail);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+        PlacedOrder order = new PlacedOrder();
+
+
+        long totalProducts = 0L;
+        List<CartProduct> cartproducts = validateCartproductIds(orderDTO.cartProductId);
+
+        for (CartProduct cartProduct: cartproducts){
+            totalProducts += cartProduct.getQuantity();
+        }
+
+        double totalPrice = calculateTotalPrice(cartproducts);
+
+        changeCartProductStatusAndStock(cartproducts);
+        validateGiftcard(orderDTO.giftCardCode);
+        String effectivePromocode =  validatePromocode(orderDTO.promoCode, totalPrice);
+
+        order.setUser(user);
+        order.setTotalProducts(Math.toIntExact(totalProducts));
+        order.setOrderDate(LocalDateTime.now());
+        order.setCartProducts(cartproducts);
+        order.setName(orderDTO.name);
+        order.setInfix(orderDTO.infix);
+        order.setLast_name(orderDTO.last_name);
+        order.setNotes(orderDTO.notes);
+        order.setHouseNumber(orderDTO.houseNumber);
+        order.setZipcode(orderDTO.zipcode);
+        order.setDiscountedPrice(orderDTO.discountedPrice);
+        order.setPromoCode(effectivePromocode);
+        order.setGiftCardCode(orderDTO.giftCardCode);
+        order.setTotalPrice(totalPrice);
+        orderRepository.save(order);
+    }
+
+    public void changeCartProductStatusAndStock(List<CartProduct> cartproducts){
+        for (CartProduct cartProduct : cartproducts) {
+            cartProduct.setStatus(CartProductStatus.Ordered);
+            productDAO.changeStockOfOrderedProducts(cartProduct.getProduct(), cartProduct.getQuantity(), cartProduct.getImageUrl(), cartProduct.getSize());
+            cartProductRepository.save(cartProduct);
+
+        }
+    }
+
+    public List<CartProduct> validateCartproductIds(List<Long> cartproductIds){
+        List<CartProduct> cartproducts = new ArrayList<>();
+
+        for (Long id: cartproductIds){
+            Optional<CartProduct> cartProduct = cartProductRepository.findById(id);
+
+            if (cartProduct.isEmpty()){
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "No cartproduct found with that id"
+                );
+            }
+            cartproducts.add(cartProduct.get());
+        }
+        return cartproducts;
+    }
+
+
+    public double calculateTotalPrice(List<CartProduct> cartProducts) {
+        long totalPrice = 0;
+        for (CartProduct cartProduct: cartProducts){
+            totalPrice += cartProduct.getPrice();
+        }
+        return totalPrice;
+    }
 
     public List<OrderUserDTO> getOrdersByUserId(CustomUser customUser){
         Optional<List<PlacedOrder>> orderList = this.orderRepository.findAllByUser(customUser);
@@ -158,62 +203,6 @@ public class OrderDAO {
 
         return orderUserDTOS;
     }
-
-
-    @Transactional
-    public void saveOrderWithProducts(OrderDTO orderDTO, String userEmail) {
-        CustomUser user = userRepository.findByEmail(userEmail);
-        PlacedOrder order = new PlacedOrder();
-
-
-        Long totalProducts = 0L;
-        List<CartProduct> cartproducts = new ArrayList<>();
-
-        for (Long id: orderDTO.cartProductId){
-            Optional<CartProduct> cartProduct = cartProductRepository.findById(id);
-
-            if (cartProduct.isEmpty()){
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "No cartproduct found with that id"
-                );
-            }
-            cartproducts.add(cartProduct.get());
-        }
-
-        for (CartProduct cartProduct: cartproducts){
-            totalProducts += cartProduct.getQuantity();
-        }
-
-
-
-
-        for (CartProduct cartProduct : cartproducts) {
-            cartProduct.setStatus(CartProductStatus.Ordered);
-            productDAO.changeStockOfOrderedProducts(cartProduct.getProduct(), cartProduct.getQuantity(), cartProduct.getImageUrl(), cartProduct.getSize());
-            cartProductRepository.save(cartProduct);
-
-        }
-        order.setUser(user);
-        order.setTotalProducts(Math.toIntExact(totalProducts));
-        order.setOrderDate(LocalDateTime.now());
-        order.setCartProducts(cartproducts);
-        order.setName(orderDTO.name);
-        order.setInfix(orderDTO.infix);
-        order.setLast_name(orderDTO.last_name);
-        order.setNotes(orderDTO.notes);
-        order.setHouseNumber(orderDTO.houseNumber);
-        order.setZipcode(orderDTO.zipcode);
-
-
-
-
-        orderRepository.save(order);
-    }
-
-
-//    public double calculateTotalPrice(PlacedOrder placedOrder) {
-//        return placedOrder.getProducts().stream().mapToDouble(Product::getPrice).sum();
-//    }
 
     public double calculateDiscount(double totalPrice, PromoCode promoCode) {
         if (promoCode.getType() == PromoCode.PromoCodeType.FIXED_AMOUNT) {

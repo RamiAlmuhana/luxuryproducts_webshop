@@ -43,6 +43,11 @@ public class CartProduct {
 
     private String returnStatus;
 
+    private long categoryId;
+
+
+
+
 
 
 //    @JsonIgnore
@@ -54,7 +59,7 @@ public class CartProduct {
     @ManyToOne
     private CustomUser customUser;
 
-    public CartProduct(Product product, long quantity, long price, String size, long productVariantPrice, String imageUrl, CustomUser customUser, CartProductStatus status) {
+    public CartProduct(Product product, long quantity, long price, String size, long productVariantPrice, String imageUrl, CustomUser customUser, CartProductStatus status, long categoryId) {
         this.product = product;
         this.quantity = quantity;
         this.price = price;
@@ -63,5 +68,6 @@ public class CartProduct {
         this.imageUrl = imageUrl;
         this.customUser = customUser;
         this.status = status;
+        this.categoryId = categoryId;
     }
 }

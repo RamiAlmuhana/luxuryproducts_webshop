@@ -2,6 +2,8 @@ package com.example.gamewebshop.services;
 
 import com.example.gamewebshop.Repositorys.CartProductRepository;
 import com.example.gamewebshop.Repositorys.ProductRepository;
+import com.example.gamewebshop.dao.ProductDAO;
+import com.example.gamewebshop.dto.ProductVariantDTOS.ProductByIdDTO;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Enums.CartProductStatus;
@@ -21,6 +23,9 @@ public class CartProductService {
 
     private final CartProductRepository cartProductRepository;
     private final ProductRepository productRepository;
+    private final ProductDAO productDAO;
+
+
 
 
 
@@ -47,7 +52,8 @@ public class CartProductService {
 
         if (!wentThroughLoop) {
             long totalPrice = product.getProductVariants().getFirst().getPrice() * product.getQuantity();
-            CartProduct cartProduct = new CartProduct( product ,product.getQuantity(), totalPrice, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getSize().name(), product.getProductVariants().getFirst().getPrice(), product.getProductVariants().getFirst().getProductImages().getFirst().getImageUrl() ,user, CartProductStatus.InCart);
+            ProductByIdDTO productByIdDTO = productDAO.checkIfProductHasPromocode(product);
+            CartProduct cartProduct = new CartProduct(product ,product.getQuantity(), totalPrice, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getSize().name(), product.getProductVariants().getFirst().getPrice(), product.getProductVariants().getFirst().getProductImages().getFirst().getImageUrl() ,user, CartProductStatus.InCart, productByIdDTO.categoryId);
             cartProductRepository.save(cartProduct);
         }
 

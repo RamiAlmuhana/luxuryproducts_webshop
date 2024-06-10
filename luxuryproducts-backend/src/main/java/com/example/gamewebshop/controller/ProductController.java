@@ -1,6 +1,7 @@
 package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.dao.ProductDAO;
+import com.example.gamewebshop.dto.ProductVariantDTOS.ProductByIdDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.ProductDTO;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.PromoCode;
@@ -22,21 +23,8 @@ public class ProductController {
     private final ProductDAO productDAO;
     private final PromoCodeDAO promoCodeDAO;
 
-    // todo : check wrm mans die promocode aan het id toevoegt
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-//        ProductDTO productDTO = this.productDAO.getProductById(id);
-//        if (productDTO != null) {
-//            Optional<PromoCode> promoCodeOptional = promoCodeDAO.getPromoCodeByCategory(productDTO.getCategoryId());
-//            promoCodeOptional.ifPresent(promoCode -> {
-//                productDTO.setPromoCode(promoCode.getCode());
-//                productDTO.setPromoDiscount(promoCode.getDiscount());
-//                productDTO.setPromoType(promoCode.getType().toString());
-//            });
-//        }
-//        return ResponseEntity.ok(productDTO);
-//    }
+
 
     @GetMapping
     public ResponseEntity<List<Product>> getProductsWithVariants(){
@@ -49,9 +37,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+    public ResponseEntity<ProductByIdDTO> getProductById(@PathVariable Long id){
 
-        return ResponseEntity.ok(this.productDAO.getProductById(id));
+        return ResponseEntity.ok(this.productDAO.getProductByIdDTO(id));
     }
 
     @GetMapping("/color/{color}")

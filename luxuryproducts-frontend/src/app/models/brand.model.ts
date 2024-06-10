@@ -1,9 +1,8 @@
 import { Product } from './product.model';
 
-export class Category {
+export class Brand {
   public id: number;
-  public imageUrl: string;
+  public brandName: string;
   public description: string;
-  public name: string;
   public product: Product[];
 }
