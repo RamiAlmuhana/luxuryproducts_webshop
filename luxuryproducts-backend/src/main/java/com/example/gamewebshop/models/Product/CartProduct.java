@@ -39,6 +39,10 @@ public class CartProduct {
 
     private String imageUrl;
 
+    private boolean productReturned;
+
+    private String returnStatus;
+
 
 
 //    @JsonIgnore

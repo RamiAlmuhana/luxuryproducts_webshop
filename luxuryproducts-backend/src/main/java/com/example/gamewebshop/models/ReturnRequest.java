@@ -1,5 +1,6 @@
 package com.example.gamewebshop.models;
 
+import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.Product.ProductVariant;
 import jakarta.persistence.*;
@@ -20,16 +21,16 @@ public class ReturnRequest {
     private Long id;
     
     @OneToOne
-    private ProductVariant productVariant;
+    private CartProduct cartProduct;
     private String returnStatus;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private CustomUser user;
 
-    public ReturnRequest(Long id, CustomUser user, ProductVariant productVariant, String returnStatus) {
+    public ReturnRequest(Long id, CustomUser user, CartProduct cartProduct, String returnStatus) {
         this.id = id;
         this.user = user;
-        this.productVariant = productVariant;
+        this.cartProduct = cartProduct;
         this.returnStatus = returnStatus;
     }
 

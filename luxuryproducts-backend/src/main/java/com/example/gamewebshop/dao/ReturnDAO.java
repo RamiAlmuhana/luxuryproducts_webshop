@@ -1,30 +1,26 @@
 package com.example.gamewebshop.dao;
 
-import com.example.gamewebshop.Repositorys.ProductRepository;
-import com.example.gamewebshop.Repositorys.ReturnRepository;
-import com.example.gamewebshop.Repositorys.UserRepository;
+import com.example.gamewebshop.Repositorys.*;
 import com.example.gamewebshop.models.CustomUser;
+import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Product;
+import com.example.gamewebshop.models.Product.ProductVariatie;
 import com.example.gamewebshop.models.ReturnRequest;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-
+@AllArgsConstructor
 @Component
 public class ReturnDAO {
     private final ReturnRepository returnRepository;
     private final UserRepository userRepository;
-    private final ProductRepository productRepository;
+    private final CartProductRepository cartProductRepository;
 
-    public ReturnDAO(ReturnRepository returnRepository, UserRepository userRepository, ProductRepository productRepository) {
-        this.returnRepository = returnRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-    }
 
     public List<CustomUser> getAllReturns(){
         return  this.userRepository.findAll();
@@ -34,19 +30,19 @@ public class ReturnDAO {
         CustomUser user = userRepository.findByEmail(userEmail);
         ReturnRequest returnNew = new ReturnRequest();
         returnNew.setReturnStatus(return1.getReturnStatus());
-        returnNew.setProduct(return1.getProduct());
+        returnNew.setCartProduct(return1.getCartProduct());
         returnNew.setUser(user);
-        Optional<Product> product = productRepository.findById(return1.getProduct().getId());
+        Optional<CartProduct> cartProduct = cartProductRepository.findById(return1.getCartProduct().getId());
 
-        if (product.isEmpty()){
+        if (cartProduct.isEmpty()){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "No product found with that id"
             );
         }
 
-       Product product1 = product.get();
-        product1.setProductReturned(true);
-        productRepository.save(product1);
+       CartProduct cartProduct1 = cartProduct.get();
+        cartProduct1.setProductReturned(true);
+        cartProductRepository.save(cartProduct1);
         
 
         returnRepository.save(returnNew);
@@ -87,15 +83,15 @@ public class ReturnDAO {
 
         ReturnRequest returnRequest1 = returnRequest.get();
 
-        Optional<Product> product = productRepository.findById(returnRequest1.getProduct().getId());
-        if (product.isEmpty()){
+        Optional<CartProduct> cartProduct = cartProductRepository.findById(returnRequest1.getCartProduct().getId());
+        if (cartProduct.isEmpty()){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "No product found with that id"
             );
         }
-        Product product1 = product.get();
-        product1.setReturnStatus(returnRequest1.getReturnStatus());
+        CartProduct cartProduct1 = cartProduct.get();
+        cartProduct1.setReturnStatus(returnRequest1.getReturnStatus());
 
-       productRepository.save(product1);
+       cartProductRepository.save(cartProduct1);
     }
 }

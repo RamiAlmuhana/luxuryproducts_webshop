@@ -4,21 +4,19 @@ import com.example.gamewebshop.Repositorys.CategoryRepository;
 import com.example.gamewebshop.Repositorys.PromoCodeRepository;
 import com.example.gamewebshop.models.Category;
 import com.example.gamewebshop.models.PromoCode;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
+@AllArgsConstructor
 @Service
 public class PromoCodeDAO {
     private final PromoCodeRepository promoCodeRepository;
     private final CategoryRepository categoryRepository;
 
-    public PromoCodeDAO(PromoCodeRepository promoCodeRepository, CategoryRepository categoryRepository) {
-        this.promoCodeRepository = promoCodeRepository;
-        this.categoryRepository = categoryRepository;
-    }
+
 
     public List<PromoCode> getAllPromoCodes() {
         return promoCodeRepository.findAll();

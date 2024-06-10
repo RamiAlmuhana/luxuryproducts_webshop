@@ -2,18 +2,15 @@ package com.example.gamewebshop.dao;
 
 import com.example.gamewebshop.Repositorys.GiftcardRepository;
 import com.example.gamewebshop.models.Giftcard;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
+@AllArgsConstructor
 @Component
 public class GiftcardDAO {
 
     private GiftcardRepository giftcardRepository;
-
-    public GiftcardDAO(GiftcardRepository giftcardRepository) {
-        this.giftcardRepository = giftcardRepository;
-    }
 
     public Giftcard saveGiftcard(Giftcard giftcard){
         return giftcardRepository.save(giftcard);
