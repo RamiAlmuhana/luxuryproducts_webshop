@@ -1,7 +1,7 @@
 package com.example.gamewebshop;
 
 import com.example.gamewebshop.controller.PromoCodeController;
-import com.example.gamewebshop.dao.PromoCodeRepository;
+import com.example.gamewebshop.Repositorys.PromoCodeRepository;
 import com.example.gamewebshop.models.PromoCode;
 import com.example.gamewebshop.models.PromoCode.PromoCodeType;
 import com.example.gamewebshop.dao.PromoCodeDAO;

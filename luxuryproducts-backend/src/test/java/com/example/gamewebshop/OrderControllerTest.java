@@ -2,7 +2,7 @@ package com.example.gamewebshop;
 
 import com.example.gamewebshop.controller.OrderController;
 import com.example.gamewebshop.dao.OrderDAO;
-import com.example.gamewebshop.dao.UserRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.PlacedOrder;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,6 @@
 package com.example.gamewebshop.controller;
 
-import com.example.gamewebshop.dao.PromoCodeRepository;
+import com.example.gamewebshop.Repositorys.PromoCodeRepository;
 import com.example.gamewebshop.models.PromoCode;
 import com.example.gamewebshop.dao.PromoCodeDAO;
 import org.springframework.http.ResponseEntity;

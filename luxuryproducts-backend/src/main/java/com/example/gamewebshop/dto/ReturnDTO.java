@@ -1,7 +1,7 @@
 package com.example.gamewebshop.dto;
 
 import com.example.gamewebshop.models.CustomUser;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.models.Product.Product;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 

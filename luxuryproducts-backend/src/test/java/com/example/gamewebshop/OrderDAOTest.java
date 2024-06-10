@@ -1,12 +1,12 @@
 package com.example.gamewebshop;
 
 import com.example.gamewebshop.dao.OrderDAO;
-import com.example.gamewebshop.dao.OrderRepository;
-import com.example.gamewebshop.dao.ProductRepository;
-import com.example.gamewebshop.dao.UserRepository;
+import com.example.gamewebshop.Repositorys.OrderRepository;
+import com.example.gamewebshop.Repositorys.ProductRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.PlacedOrder;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.PromoCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

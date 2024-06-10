@@ -1,7 +1,7 @@
 package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.config.JWTUtil;
-import com.example.gamewebshop.dao.UserRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.dto.AuthenticationDTO;
 import com.example.gamewebshop.dto.LoginResponse;
 import com.example.gamewebshop.models.CustomUser;

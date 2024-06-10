@@ -1,7 +1,10 @@
 package com.example.gamewebshop.dao;
 
+import com.example.gamewebshop.Repositorys.ProductRepository;
+import com.example.gamewebshop.Repositorys.ReturnRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.models.CustomUser;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.ReturnRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;

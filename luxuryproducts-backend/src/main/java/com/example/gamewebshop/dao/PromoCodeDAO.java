@@ -1,5 +1,7 @@
 package com.example.gamewebshop.dao;
 
+import com.example.gamewebshop.Repositorys.CategoryRepository;
+import com.example.gamewebshop.Repositorys.PromoCodeRepository;
 import com.example.gamewebshop.models.Category;
 import com.example.gamewebshop.models.PromoCode;
 import org.springframework.stereotype.Service;

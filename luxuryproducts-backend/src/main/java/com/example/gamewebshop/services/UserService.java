@@ -1,6 +1,6 @@
 package com.example.gamewebshop.services;
 
-import com.example.gamewebshop.dao.UserRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.models.CustomUser;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

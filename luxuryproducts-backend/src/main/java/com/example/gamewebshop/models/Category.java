@@ -1,59 +1,42 @@
 package com.example.gamewebshop.models;
 
+import com.example.gamewebshop.models.Product.Product;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
+import static jakarta.persistence.CascadeType.ALL;
+
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
+
+    @Column(columnDefinition="TEXT")
+    private String imageUrl;
+
+    @Column(columnDefinition="TEXT")
+    private String description;
 
     private String name;
-    /*
-    maps the one-to-many relationship between category and products, jsonmanaged so that we do not get an
-    infinite dependency loop in the request.
-     */
-    @OneToMany(mappedBy = "category")
-    @JsonManagedReference
-    private Set<Product> products;
 
-    //needed by JPA to create the entity must be present no arg constructor
-    public Category() {
-    }
+    @OneToMany(cascade=ALL, mappedBy="category")
+    private List<Product> product;
 
-    //getters and setters are needed to map all the properties to the database by JPA, could
-    //also be solved by making the properties public but gives less control over the properties.
-    public Category(String name) {
+    public Category(String imageUrl, String description, String name) {
+        this.imageUrl = imageUrl;
+        this.description = description;
         this.name = name;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }

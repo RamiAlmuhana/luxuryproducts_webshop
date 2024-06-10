@@ -1,4 +1,4 @@
-package com.example.gamewebshop.dao;
+package com.example.gamewebshop.Repositorys;
 
 import com.example.gamewebshop.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

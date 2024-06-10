@@ -1,7 +1,7 @@
 package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.dao.OrderDAO;
-import com.example.gamewebshop.dao.UserRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.PlacedOrder;
 import org.springframework.http.ResponseEntity;

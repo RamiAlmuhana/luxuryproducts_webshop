@@ -1,5 +1,6 @@
 package com.example.gamewebshop.dao;
 
+import com.example.gamewebshop.Repositorys.CategoryRepository;
 import com.example.gamewebshop.dto.CategoryDTO;
 import com.example.gamewebshop.models.Category;
 import org.springframework.stereotype.Component;

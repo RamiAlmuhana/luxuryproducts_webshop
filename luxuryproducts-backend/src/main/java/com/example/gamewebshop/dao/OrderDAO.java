@@ -1,9 +1,10 @@
 package com.example.gamewebshop.dao;
 
+import com.example.gamewebshop.Repositorys.*;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.Giftcard;
 import com.example.gamewebshop.models.PlacedOrder;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.PromoCode;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;

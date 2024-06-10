@@ -1,18 +1,30 @@
 package com.example.gamewebshop.models;
 
+import com.example.gamewebshop.models.Product.CartProduct;
+import com.example.gamewebshop.models.Product.Product;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlacedOrder {
+
     @Id
     @GeneratedValue
     private long id;
-
     @Column(nullable = true)
     private String name;
     @Column(nullable = true)
@@ -29,7 +41,12 @@ public class PlacedOrder {
     private int totalProducts;
     @Column(nullable = true)
     private LocalDateTime orderDate;
-    @Column(nullable = true)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private CustomUser user;
+
+
+    @OneToMany
+    private List<CartProduct> cartProducts = new ArrayList<>();
     private double totalPrice;
     @Column(nullable = true)
     private double discountedPrice;
@@ -37,20 +54,8 @@ public class PlacedOrder {
     private String promoCode;
     @Column(nullable = true)
     private String giftCardCode;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JsonBackReference
-    private CustomUser user;
 
-    @ManyToMany
-    @JoinTable(name = "product_order",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products = new HashSet<>();
-
-    public PlacedOrder() {
-    }
-
-    public PlacedOrder(String name, String infix, String last_name, String zipcode, int houseNumber, String notes, CustomUser user, Set<Product> products) {
+    public PlacedOrder(String name, String infix, String last_name, String zipcode, int houseNumber, String notes, CustomUser user, ArrayList<CartProduct> cartProducts) {
         this.name = name;
         this.infix = infix;
         this.last_name = last_name;
@@ -58,128 +63,7 @@ public class PlacedOrder {
         this.houseNumber = houseNumber;
         this.notes = notes;
         this.user = user;
-        this.products = products;
+        this.cartProducts = cartProducts;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getInfix() {
-        return infix;
-    }
-
-    public void setInfix(String infix) {
-        this.infix = infix;
-    }
-
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-
-    public Number getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(int houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public int getTotalProducts() {
-        return totalProducts;
-    }
-
-    public void setTotalProducts(int totalProducts) {
-        this.totalProducts = totalProducts;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDateTime orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public CustomUser getUser() {
-        return user;
-    }
-
-    public void setUser(CustomUser user) {
-        this.user = user;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public double getDiscountedPrice() {
-        return discountedPrice;
-    }
-
-    public void setDiscountedPrice(double discountedPrice) {
-        this.discountedPrice = discountedPrice;
-    }
-
-
-    public String getPromoCode() {
-        return promoCode;
-    }
-
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
-    }
-
-    public String getGiftCardCode() {
-        return giftCardCode;
-    }
-
-    public void setGiftCardCode(String giftCardCode) {
-        this.giftCardCode = giftCardCode;
-    }
 }

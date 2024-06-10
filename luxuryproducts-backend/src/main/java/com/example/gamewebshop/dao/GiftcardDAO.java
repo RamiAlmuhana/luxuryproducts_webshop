@@ -1,5 +1,6 @@
 package com.example.gamewebshop.dao;
 
+import com.example.gamewebshop.Repositorys.GiftcardRepository;
 import com.example.gamewebshop.models.Giftcard;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,9 @@
 package com.example.gamewebshop.dao;
 
+import com.example.gamewebshop.Repositorys.CategoryRepository;
+import com.example.gamewebshop.Repositorys.ProductRepository;
 import com.example.gamewebshop.dto.ProductDTO;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.models.Product.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
