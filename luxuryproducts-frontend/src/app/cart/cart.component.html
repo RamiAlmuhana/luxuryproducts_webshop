@@ -22,20 +22,20 @@
                     />
                   </div>
                   <div class="col-md-3">
-                    <p class="lead mb-1">{{ product.product.name }}</p>
+                    <p class="lead mb-1 smaller">{{ product.product.name }}</p>
                     <p>Quantity: {{ product.quantity }}</p>
                   </div>
                   <div class="col-md-3">
-                    <h5>
+                    <h6>
                       {{ product.productVariantPrice | currency : "EUR" }}
-                    </h5>
+                    </h6>
                     <p>
                       Total:
                       {{ product.price | currency : "EUR" }}
                     </p>
                   </div>
                   <div class="col-md-1">
-                    <p class="lead mb-1">size</p>
+                    <p class="lead mb-1 smaller2">size</p>
                     <p>
                       {{ product.size }}
                     </p>
@@ -90,6 +90,7 @@
                       (click)="applyGiftCard()"
                       class="btn btn-outline-secondary"
                       type="button"
+                      [disabled]="onInvalidOrder()"
                     >
                       Apply
                     </button>
@@ -132,7 +133,7 @@
                 <div class="d-flex justify-content-between">
                   <p class="lead mb-0">Total:</p>
                   <p class="lead mb-0">
-                    <strong>{{ getTotalPrice() | currency : "EUR" }}</strong>
+                    <strong>{{ totalPrice | currency : "EUR" }}</strong>
                   </p>
                 </div>
                 <div

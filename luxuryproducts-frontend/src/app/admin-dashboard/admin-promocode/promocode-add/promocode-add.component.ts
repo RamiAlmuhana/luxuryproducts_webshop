@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PromoCodeService } from "../../../services/promocode.service";
-import { CategoryService } from "../../../services/category.service";
-import { Category } from "../../../models/category.model";
-import {NgForOf} from "@angular/common";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { PromoCodeService } from '../../../services/promocode.service';
+import { CategoryService } from '../../../services/category.service';
+import { Category } from '../../../models/category.model';
+import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-promocode-add',
   templateUrl: 'promocode-add.component.html',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    NgForOf
-  ],
-  styleUrls: ['promocode-add.component.scss']
+  imports: [ReactiveFormsModule, NgForOf],
+  styleUrls: ['promocode-add.component.scss'],
 })
 export class PromoCodeAddComponent implements OnInit {
   promoCodeForm: FormGroup;
@@ -32,7 +34,7 @@ export class PromoCodeAddComponent implements OnInit {
       maxUsageCount: ['', [Validators.required, Validators.min(1)]],
       minSpendAmount: ['', [Validators.required, Validators.min(0)]],
       type: ['', Validators.required],
-      categoryId: [null]
+      categoryId: [null],
     });
   }
 
@@ -41,7 +43,7 @@ export class PromoCodeAddComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe(
+    this.categoryService.getCategorys().subscribe(
       (categories) => {
         this.categories = categories;
       },
@@ -62,7 +64,7 @@ export class PromoCodeAddComponent implements OnInit {
       ...formValue,
       expiryDate: new Date(formValue.expiryDate).toISOString(),
       startDate: new Date(formValue.startDate).toISOString(),
-      category: formValue.categoryId ? { id: formValue.categoryId } : null
+      category: formValue.categoryId ? { id: formValue.categoryId } : null,
     };
 
     this.promoCodeService.createPromoCode(promoCodeData).subscribe(

@@ -3,7 +3,6 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Return } from '../models/return.model';
-import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +24,6 @@ export class ReturnService {
 
   updateReturns(returnStatus: String, id: number) {
     return this.http.put(`${this.baseUrl}/${id}`, returnStatus, {
-      responseType: 'text',
-    });
-  }
-
-  updateProductReturnStatus(returnid: number, orderid: number) {
-    return this.http.put(`${this.baseUrl}/${returnid}/${orderid}`, {
       responseType: 'text',
     });
   }

@@ -15,4 +15,8 @@ export class OrderService {
   getOrdersByCurrentUser(): Observable<OrderUserDTO[]> {
     return this.http.get<OrderUserDTO[]>(this.baseUrl);
   }
+
+  getOrdersByUserId(userId: number): Observable<OrderUserDTO[]> {
+    return this.http.get<OrderUserDTO[]>(`${this.baseUrl}/${userId}`);
+  }
 }

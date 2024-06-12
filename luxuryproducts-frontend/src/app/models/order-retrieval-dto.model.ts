@@ -1,4 +1,5 @@
 export class OrderRetrievalDTO {
+  public cartproductId: number;
   public name: string;
 
   public quantity: number;
@@ -10,4 +11,8 @@ export class OrderRetrievalDTO {
   public productVariantPrice: number;
 
   public imageUrl: string;
+
+  public productReturned: boolean;
+
+  public returnStatus: string;
 }

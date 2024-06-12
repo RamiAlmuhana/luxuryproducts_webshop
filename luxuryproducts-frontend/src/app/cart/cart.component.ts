@@ -40,6 +40,7 @@ export class CartComponent implements OnInit {
   public appliedGiftCard: boolean = false;
   public appliedGiftCardCode: string = '';
   public giftCardDiscount: number = 0;
+  public totalPrice: number;
 
   constructor(
     private cartService: CartService,
@@ -50,22 +51,25 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cartService.updateProductsIncart();
-    this.cartService.$productInCart.subscribe((cartProducts) => {
-      this.products_in_cart = cartProducts;
-      this.amountOfProducts = cartProducts.length;
-      this.checkLoginState();
-      if (this.promoApplied) {
-        this.discount = parseFloat(this.displayedDiscount);
-        this.minSpendAmount = parseFloat(
-          localStorage.getItem('minSpendAmount') || '0'
-        );
-      }
-      if (!this.updatingDiscount && !this.autoDiscountManuallyRemoved) {
-        this.applyAutomaticDiscount();
-      }
-      this.checkPromoCodeValidity();
-    });
+    this.loadLoginState();
+
+    if (this.userIsLoggedIn) {
+      this.cartService.updateProductsIncart();
+      this.getCartProducts();
+      this.cartService.reapplyDiscountIfApplicable();
+    }
+
+    if (this.promoApplied) {
+      this.discount = parseFloat(this.displayedDiscount);
+
+      this.minSpendAmount = parseFloat(
+        localStorage.getItem('minSpendAmount') || '0'
+      );
+    } else if (!this.updatingDiscount && !this.autoDiscountManuallyRemoved) {
+      this.applyAutomaticDiscount();
+    }
+
+    this.checkPromoCodeValidity();
 
     const { discountAmount, discountCodes } =
       this.cartService.loadDiscountFromLocalStorage();
@@ -80,6 +84,20 @@ export class CartComponent implements OnInit {
     if (this.appliedGiftCardCode) {
       this.appliedGiftCard = true;
     }
+  }
+
+  public loadLoginState() {
+    this.authService.$userIsLoggedIn.subscribe((loginState: boolean) => {
+      this.userIsLoggedIn = loginState;
+    });
+  }
+  public getCartProducts() {
+    this.cartService.$productInCart.subscribe((cartProducts) => {
+      this.products_in_cart = cartProducts;
+      this.totalPrice = this.getTotalPrice();
+      this.amountOfProducts = cartProducts.length;
+      this.checkLoginState();
+    });
   }
 
   public clearCartProductsInBackend() {
@@ -109,8 +127,8 @@ export class CartComponent implements OnInit {
 
   public removeProductFromCart(product_index: number, categoryId: number) {
     this.cartService.removeProductFromCart(product_index);
-    if (this.products_in_cart.length === 0) {
-      this.clearDiscount();
+    if (this.products_in_cart.length - 1 == 0) {
+      this.clearCart();
     }
 
     const hasProductInCategory = this.products_in_cart.some(
@@ -140,7 +158,7 @@ export class CartComponent implements OnInit {
   }
 
   public getTotalPriceWithDiscount(): number {
-    let total = this.getTotalPrice();
+    let total = this.totalPrice;
     total -= this.discount + this.appliedDiscountAmount;
     localStorage.setItem('discountedPrice', Math.max(total, 0).toString());
     return Math.max(total, 0);
@@ -192,7 +210,7 @@ export class CartComponent implements OnInit {
       }>(url)
       .subscribe({
         next: (response) => {
-          const total = this.getTotalPrice();
+          const total = this.totalPrice;
           const now = new Date();
           const startDate = new Date(response.startDate);
           const expiryDate = new Date(response.expiryDate);
@@ -272,21 +290,21 @@ export class CartComponent implements OnInit {
 
   private applyAutomaticDiscount() {
     this.updatingDiscount = true;
-    const total = this.getTotalPrice();
+    const total = this.totalPrice;
     if (
-      total > 120 &&
+      total > 20000 &&
       (!this.promoApplied ||
         (this.appliedPromoCode === 'AUTO_DISCOUNT' &&
           !this.autoDiscountManuallyRemoved))
     ) {
-      const discount = 20;
+      const discount = 500;
       this.cartService.applyDiscount(discount, 'FIXED_AMOUNT', 'AUTO_DISCOUNT');
       this.promoApplied = true;
       this.appliedPromoCode = 'AUTO_DISCOUNT';
       this.discount = discount;
       this.autoDiscountManuallyRemoved = false;
     } else if (
-      total < 120 &&
+      total < 20000 &&
       this.promoApplied &&
       this.appliedPromoCode === 'AUTO_DISCOUNT'
     ) {
@@ -296,7 +314,8 @@ export class CartComponent implements OnInit {
   }
 
   private checkPromoCodeValidity() {
-    const total = this.getTotalPrice();
+    const total = this.totalPrice;
+    console.log(total + ' this is the promoApllied ' + this.minSpendAmount);
     if (this.promoApplied && total < this.minSpendAmount) {
       setTimeout(() => {
         this.removePromoCode();

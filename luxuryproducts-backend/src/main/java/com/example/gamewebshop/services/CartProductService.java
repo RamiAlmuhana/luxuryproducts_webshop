@@ -130,4 +130,28 @@ public class CartProductService {
        return true;
 
     }
+
+    public CartProduct getCartProductById(long id){
+        Optional<CartProduct> cartProduct = cartProductRepository.findById(id);
+
+        if (cartProduct.isEmpty()){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No cart product found with that id"
+            );
+        }
+
+        return cartProduct.get();
+    }
+
+    public Long getTotalPriceOfCartByUser(Long id) {
+        List<CartProduct> productsInCart = GetProductsInCartByUserId(id);
+
+        Long totalprice = 0L;
+
+        for (CartProduct cartProduct : productsInCart){
+            totalprice += cartProduct.getPrice();
+        }
+
+        return totalprice;
+    }
 }

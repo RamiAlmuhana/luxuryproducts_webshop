@@ -1,11 +1,13 @@
 package com.example.gamewebshop.dao;
 
 import com.example.gamewebshop.Repositorys.*;
+import com.example.gamewebshop.dto.ReturnDTO;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.Product.ProductVariatie;
 import com.example.gamewebshop.models.ReturnRequest;
+import com.example.gamewebshop.services.CartProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,19 +22,18 @@ public class ReturnDAO {
     private final ReturnRepository returnRepository;
     private final UserRepository userRepository;
     private final CartProductRepository cartProductRepository;
+    private final CartProductService cartProductService;
+
+
 
 
     public List<CustomUser> getAllReturns(){
         return  this.userRepository.findAll();
     }
     @Transactional
-    public void saveReturnWithProducts(ReturnRequest return1, String userEmail) {
+    public void saveReturnWithProducts(ReturnDTO return1, String userEmail) {
         CustomUser user = userRepository.findByEmail(userEmail);
-        ReturnRequest returnNew = new ReturnRequest();
-        returnNew.setReturnStatus(return1.getReturnStatus());
-        returnNew.setCartProduct(return1.getCartProduct());
-        returnNew.setUser(user);
-        Optional<CartProduct> cartProduct = cartProductRepository.findById(return1.getCartProduct().getId());
+        Optional<CartProduct> cartProduct = cartProductRepository.findById(return1.cartProduct.cartproductId);
 
         if (cartProduct.isEmpty()){
             throw new ResponseStatusException(
@@ -41,6 +42,11 @@ public class ReturnDAO {
         }
 
        CartProduct cartProduct1 = cartProduct.get();
+
+        ReturnRequest returnNew = new ReturnRequest();
+        returnNew.setReturnStatus(return1.returnStatus);
+        returnNew.setCartProduct(cartProduct1);
+        returnNew.setUser(user);
         cartProduct1.setProductReturned(true);
         cartProductRepository.save(cartProduct1);
         
@@ -65,11 +71,17 @@ public class ReturnDAO {
                     HttpStatus.NOT_FOUND, "No returns found with that id"
             );
         }
+        ReturnRequest returnRequest1 = returnRequest.get();
+        returnRequest1.setReturnStatus(returnStatus);
 
-        returnRequest.get().setReturnStatus(returnStatus);
+        CartProduct cartProduct = cartProductService.getCartProductById(returnRequest1.getCartProduct().getId());
+
+        cartProduct.setReturnStatus(returnStatus);
+        cartProductRepository.save(cartProduct);
         returnRepository.save(returnRequest.get());
 
     }
+
 
 
 

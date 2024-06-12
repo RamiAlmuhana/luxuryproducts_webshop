@@ -6,8 +6,10 @@ import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.services.CartProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
@@ -87,5 +89,22 @@ public class CartProductController {
 
      return ResponseEntity.ok(this.cartProductService.checkCartProductStock(product,user.getId()));
  }
+
+    @GetMapping("/totalPrice")
+    public ResponseEntity<Long> getTotalPriceOfCartByUser(Principal principal){
+
+        if (principal == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        String userEmail = principal.getName();
+        CustomUser user = userRepository.findByEmail(userEmail);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+       Long totalprice =  this.cartProductService.getTotalPriceOfCartByUser(user.getId());
+        return ResponseEntity.ok(totalprice);
+    }
+
 
 }

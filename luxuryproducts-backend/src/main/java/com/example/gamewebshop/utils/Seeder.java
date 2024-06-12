@@ -22,9 +22,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class Seeder {
-    private ProductDAO productDAO;
     private UserRepository userRepository;
-    private OrderDAO orderDAO;
     private ProductRepository productRepository;
     private final PromoCodeRepository promoCodeRepository;
     private final CategoryRepository categoryRepository;
@@ -493,27 +491,27 @@ public class Seeder {
         LocalDateTime startDate = LocalDateTime.now();
 
         if (watches != null) {
-            PromoCode fpsDiscount = new PromoCode("FPS_DISCOUNT", 20.0, LocalDateTime.of(2025, 5, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.PERCENTAGE, watches, 0);
+            PromoCode fpsDiscount = new PromoCode("FPS_DISCOUNT", 20.0, LocalDateTime.of(2025, 5, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.PERCENTAGE, watches, 5000);
             promoCodeRepository.save(fpsDiscount);
         }
 
         if (jewelry != null) {
-            PromoCode actionDiscount = new PromoCode("ACTION_DISCOUNT", 15.0, LocalDateTime.of(2025, 6, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.FIXED_AMOUNT, jewelry, 0);
+            PromoCode actionDiscount = new PromoCode("ACTION_DISCOUNT", 150.0, LocalDateTime.of(2025, 6, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.FIXED_AMOUNT, jewelry, 2000);
             promoCodeRepository.save(actionDiscount);
         }
 
         if (bags != null) {
-            PromoCode creativeDiscount = new PromoCode("CREATIVE_DISCOUNT", 10.0, LocalDateTime.of(2025, 7, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.FIXED_AMOUNT, bags, 0);
+            PromoCode creativeDiscount = new PromoCode("CREATIVE_DISCOUNT", 100.0, LocalDateTime.of(2025, 7, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.FIXED_AMOUNT, bags, 4000);
             promoCodeRepository.save(creativeDiscount);
         }
 
         // todo : promocode voor Clothes category
 
-        PromoCode promoCode1 = new PromoCode("SUMMER2024", 50, LocalDateTime.of(2024, 8, 31, 23, 59, 59), startDate, 100, PromoCode.PromoCodeType.FIXED_AMOUNT, null, 50);
-        PromoCode promoCode2 = new PromoCode("GAMER2024", 10, LocalDateTime.of(2024, 12, 31, 23, 59, 59), startDate, 50, PromoCode.PromoCodeType.PERCENTAGE, null, 200);
-        PromoCode promoCode3 = new PromoCode("GIFT2024", 20, LocalDateTime.of(2024, 11, 15, 23, 59, 59), startDate, 200, PromoCode.PromoCodeType.PERCENTAGE, null, 200);
-        PromoCode promoCode4 = new PromoCode("FIXED20", 20.0, LocalDateTime.of(2025, 5, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.FIXED_AMOUNT, null, 0);
-        PromoCode promoCode5 = new PromoCode("AUTO_DISCOUNT", 20.0, LocalDateTime.of(2025, 5, 3, 2, 40, 1), startDate, 10000, PromoCode.PromoCodeType.FIXED_AMOUNT, null, 120);
+        PromoCode promoCode1 = new PromoCode("SUMMER2024", 500, LocalDateTime.of(2024, 8, 31, 23, 59, 59), startDate, 100, PromoCode.PromoCodeType.FIXED_AMOUNT, null, 10000);
+        PromoCode promoCode2 = new PromoCode("GAMER2024", 10, LocalDateTime.of(2024, 12, 31, 23, 59, 59), startDate, 50, PromoCode.PromoCodeType.PERCENTAGE, null, 4000);
+        PromoCode promoCode3 = new PromoCode("GIFT2024", 20, LocalDateTime.of(2024, 11, 15, 23, 59, 59), startDate, 200, PromoCode.PromoCodeType.PERCENTAGE, null, 6000);
+        PromoCode promoCode4 = new PromoCode("FIXED20", 200.0, LocalDateTime.of(2025, 5, 3, 2, 40, 1), startDate, 50, PromoCode.PromoCodeType.FIXED_AMOUNT, null, 2000);
+        PromoCode promoCode5 = new PromoCode("AUTO_DISCOUNT", 500.0, LocalDateTime.of(2025, 5, 3, 2, 40, 1), startDate, 10000, PromoCode.PromoCodeType.FIXED_AMOUNT, null, 20000);
 
         promoCodeRepository.save(promoCode1);
         promoCodeRepository.save(promoCode2);

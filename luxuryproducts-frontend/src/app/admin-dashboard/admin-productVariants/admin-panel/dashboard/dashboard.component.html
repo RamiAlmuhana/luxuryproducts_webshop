@@ -1,0 +1,129 @@
+<!-- @if (loading) {
+<p>Loading...</p>
+} @else {
+<h3 style="margin-bottom: 5%">Dashboard</h3>
+@for (user of users; track $index) {
+<div class="col-md-8" style="margin-bottom: 5%">
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">id</h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          {{ user.id }}
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Full Name</h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          {{ user.name + " " + user.infix + " " + user.lastName }}
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">Email</h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          {{ user.email }}
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-sm-3">
+          <h6 class="mb-0">role</h6>
+        </div>
+        <div class="col-sm-9 text-secondary">
+          {{ user.role }}
+        </div>
+      </div>
+       other user details 
+      <hr />
+      <div class="row">
+        <div class="col-sm-12">
+          <a
+            class="btn btn-info"
+            target="__blank"
+            (click)="onViewOrders($index)"
+            >view Orders</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+} @if (viewOrder) {
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div
+        class="orders-container"
+      >
+        <div class="order" *ngFor="let order of user.placedOrders">
+          <div class="order-details">
+            <p class="order-info">
+              <span class="fw-bold">Order Date:</span>
+              {{ order.orderDate | date : "medium" }}
+            </p>
+            <div class="customer-info">
+              <h5><span class="fw-bold">Order Information</span></h5>
+              <p>
+                <span class="fw-bold">Name:</span> {{ order.name }}
+                {{ order.infix }} {{ order.last_name }}
+              </p>
+              <p>
+                <span class="fw-bold">Address:</span> {{ order.houseNumber }},
+                {{ order.zipcode }}
+              </p>
+              <p><span class="fw-bold">Notes:</span> {{ order.notes }}</p>
+            </div>
+            <ul class="products-list">
+              <li class="product" *ngFor="let product of order.cartProducts">
+                <div class="product-details">
+                  <p class="product-name">
+                    <span class="fw-bold">Product Name:</span>
+                    {{ product.product.name }}
+                  </p>
+                  <p class="product-price">
+                    <span class="fw-bold">Price:</span>
+                    {{ product.productVariantPrice | currency : "EUR" }}
+                  </p>
+                  <p class="product-name">
+                    <span class="fw-bold">Product Size:</span>
+                    {{ product.size }}
+                  </p>
+                  <p class="product-name">
+                    <span class="fw-bold">Product Quantity:</span>
+                    {{ product.quantity }}
+                  </p>
+                </div>
+                <div class="product-image">
+                  <img
+                    src="{{ product.imageUrl }}"
+                    alt="{{ product.product.name }}"
+                  />
+                </div>
+              </li>
+            </ul>
+            <p class="order-total">
+              <span class="fw-bold">Total:</span>
+              {{ calculateTotal(order.cartProducts) | currency : "EUR" }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noOrders>
+        <div class="no-orders-message">
+          <p>No orders found.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+ }} -->

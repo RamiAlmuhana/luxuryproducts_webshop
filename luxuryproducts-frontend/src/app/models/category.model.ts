@@ -5,5 +5,5 @@ export class Category {
   public imageUrl: string;
   public description: string;
   public name: string;
-  public product: Product[];
+  public products: Product[];
 }

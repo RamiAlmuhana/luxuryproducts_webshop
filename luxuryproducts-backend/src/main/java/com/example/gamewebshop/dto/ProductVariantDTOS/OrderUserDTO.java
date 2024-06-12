@@ -1,6 +1,7 @@
 package com.example.gamewebshop.dto.ProductVariantDTOS;
 
 import com.example.gamewebshop.models.CustomUser;
+import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,4 +30,8 @@ public class OrderUserDTO {
    public CustomUser user;
 
    public List<OrderRetrievalDTO> cartProducts = new ArrayList<>();
+
+   public double totalPrice;
+   public double discountedPrice;
+   public String promoCode;
 }

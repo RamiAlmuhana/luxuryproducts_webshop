@@ -1,0 +1,51 @@
+<div class="container-grid">
+  <div class="routes">
+    <a
+      [routerLink]="['add-variant']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >Add Variant</a
+    >
+    <a
+      [routerLink]="['delete-variant']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >Delete Variant</a
+    >
+    <a
+      [routerLink]="['update-variant']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >Update Variant</a
+    >
+    <a
+      [routerLink]="['dashboard']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >Dashboard</a
+    >
+    <a
+      [routerLink]="['add-stock']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >Add stock</a
+    >
+    <a
+      [routerLink]="['productionstop']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >Productionstop Variant</a
+    >
+    <a
+      [routerLink]="['add-product']"
+      routerLinkActive="active-active"
+      class="decorate-link"
+      >New Product</a
+    >
+  </div>
+  <div class="child-routes">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- <a [routerLink]="['/']" class="nav-link rounded-3">Home</a> -->

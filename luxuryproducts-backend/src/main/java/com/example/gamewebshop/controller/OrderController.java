@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -48,14 +49,19 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-//    @PostMapping
-//    public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO, Principal principal) {
-//        String userEmail = principal.getName();
-//        this.orderDAO.saveOrderWithProducts(orderDTO, userEmail);
-//        return ResponseEntity.ok().body("{\"message\": \"Order created successfully\"}");
-//    }
+    @GetMapping("/myOrders/{id}")
+    public ResponseEntity<List<OrderUserDTO>> getOrdersByUserId(@PathVariable long id) {
 
-    // todo : fix order plaatsen
+        Optional<CustomUser> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<OrderUserDTO> orders = this.orderDAO.getOrdersByUserIdForDashboard(user.get());
+
+        return ResponseEntity.ok(orders);
+    }
+
+
     @PostMapping
     public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO, Principal principal) {
         String userEmail = principal.getName();

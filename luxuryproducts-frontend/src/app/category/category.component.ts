@@ -37,7 +37,6 @@ export class CategoryComponent implements OnInit {
         this.category = category1;
 
         this.loadingProducts = false;
-        console.log(this.category.product);
       });
   }
 }

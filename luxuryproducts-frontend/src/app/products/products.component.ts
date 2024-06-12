@@ -113,7 +113,7 @@ export class ProductsComponent {
       return;
     }
     this.categoryService.getCategorybyName(item).subscribe((category) => {
-      this.products = category.product;
+      this.products = category.products;
     });
   }
   getBrand(item: string) {

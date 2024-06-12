@@ -30,7 +30,7 @@
 }
 
 .card {
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 
   .card-body {
     padding: 1.5rem;
@@ -38,7 +38,7 @@
 }
 
 .img-fluid {
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .lead {
@@ -61,4 +61,11 @@ h5.card-title {
 
 .text-muted {
   color: #6c757d !important;
+}
+
+.smaller {
+  font-size: 14px;
+}
+.smaller2 {
+  font-size: 16px;
 }

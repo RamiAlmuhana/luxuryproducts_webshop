@@ -29,10 +29,6 @@ public class CustomUser {
     private String role;
 
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private Set<PlacedOrder> placedOrders;
-
     public CustomUser(String name, String infix, String lastName, String email, String password, String role) {
         this.name = name;
         this.infix = infix;

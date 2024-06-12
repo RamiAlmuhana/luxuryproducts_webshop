@@ -123,24 +123,6 @@
 <div class="items-below-picture">
   <div class="information-grid">
     <div class="flexbox-extra-information">
-      <div
-        *ngIf="product.promoCode"
-        class="product-promo-code mb-4 p-3 border border-success rounded"
-      >
-        <h6 class="fw-bold mb-2 text-success">PROMO CODE</h6>
-        <div class="d-flex justify-content-between align-items-center">
-          <span class="promo-code">{{ product.promoCode }}</span>
-          <span class="promo-discount">
-            <span *ngIf="product.promoType === 'PERCENTAGE'"
-              >{{ product.promoDiscount }}% off</span
-            >
-            <span *ngIf="product.promoType === 'FIXED_AMOUNT'"
-              >{{ product.promoDiscount | currency : "EUR" }} off</span
-            >
-          </span>
-        </div>
-      </div>
-      <hr />
       <div>
         <h6>VARIATIONS ({{ productVariantCounter() }})</h6>
         <div class="variation-pictures-flexbox">
@@ -159,6 +141,25 @@
         </div>
       </div>
       <hr />
+      <div *ngIf="product.promoCode">
+        <h6>PROMO CODES (1)</h6>
+        <div class="product-promo-code mb-4 p-3 border border-success rounded">
+          <h6 class="fw-bold mb-2 text-success">PROMO CODE</h6>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="promo-code">{{ product.promoCode }}</span>
+            <span class="promo-discount">
+              <span *ngIf="product.promoType === 'PERCENTAGE'"
+                >{{ product.promoDiscount }}% off</span
+              >
+              <span *ngIf="product.promoType === 'FIXED_AMOUNT'"
+                >{{ product.promoDiscount | currency : "EUR" }} off</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <hr *ngIf="product.promoCode" />
       <div>
         <h6>BRAND INFO</h6>
 
@@ -183,7 +184,7 @@
             "
             class="img-fluid rounded-start album-pic"
             alt="First Image"
-            style="max-width: 50%"
+            style="max-width: 55%; margin-right: 8%"
           />
         </div>
         <div>

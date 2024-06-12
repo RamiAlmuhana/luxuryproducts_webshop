@@ -18,6 +18,14 @@ import { AdminPromocodeComponent } from './admin-dashboard/admin-promocode/admin
 import { PromoCodeStatsComponent } from './admin-dashboard/promocode-stats/promocode-stats.component';
 import { AdminRetourComponent } from './admin-dashboard/admin-retour/admin-retour.component';
 import { CategoryComponent } from './category/category.component';
+import { AddStockComponent } from './admin-dashboard/admin-productVariants/admin-panel/add-stock/add-stock.component';
+import { AddVariantComponent } from './admin-dashboard/admin-productVariants/admin-panel/add-variant/add-variant.component';
+import { AdminPanelComponent } from './admin-dashboard/admin-productVariants/admin-panel/admin-panel.component';
+import { DashboardComponent } from './admin-dashboard/admin-productVariants/admin-panel/dashboard/dashboard.component';
+import { DeleteVariantComponent } from './admin-dashboard/admin-productVariants/admin-panel/delete-variant/delete-variant.component';
+import { NewProductComponent } from './admin-dashboard/admin-productVariants/admin-panel/new-product/new-product.component';
+import { ProductionstopVariantComponent } from './admin-dashboard/admin-productVariants/admin-panel/productionstop-variant/productionstop-variant.component';
+import { UpdateVariantComponent } from './admin-dashboard/admin-productVariants/admin-panel/update-variant/update-variant.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -45,6 +53,40 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
+  {
+    path: 'admin-productvariants',
+    component: AdminPanelComponent,
+    children: [
+      {
+        path: 'add-variant',
+        component: AddVariantComponent,
+      },
+      {
+        path: 'delete-variant',
+        component: DeleteVariantComponent,
+      },
+      {
+        path: 'update-variant',
+        component: UpdateVariantComponent,
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'add-stock',
+        component: AddStockComponent,
+      },
+      {
+        path: 'productionstop',
+        component: ProductionstopVariantComponent,
+      },
+      {
+        path: 'add-product',
+        component: NewProductComponent,
+      },
+    ],
+  },
   {
     path: 'admin',
     component: AdminDashboardComponent,

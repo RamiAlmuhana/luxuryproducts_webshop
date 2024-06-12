@@ -186,6 +186,9 @@ public class OrderDAO {
             orderUserDTO.notes = order.getNotes();
             orderUserDTO.totalProducts = order.getTotalProducts();
             orderUserDTO.zipcode = order.getZipcode();
+            orderUserDTO.totalPrice = order.getTotalPrice();
+            orderUserDTO.discountedPrice = order.getDiscountedPrice();;
+            orderUserDTO.promoCode = order.getPromoCode();
             for (CartProduct cartProduct: order.getCartProducts())
             {
                 OrderRetrievalDTO orderRetrievalDTO = new OrderRetrievalDTO();
@@ -195,6 +198,9 @@ public class OrderDAO {
                 orderRetrievalDTO.productVariantPrice = cartProduct.getProductVariantPrice();
                 orderRetrievalDTO.size = cartProduct.getSize();
                 orderRetrievalDTO.quantity = cartProduct.getQuantity();
+                orderRetrievalDTO.cartproductId = cartProduct.getId();
+                orderRetrievalDTO.productReturned = cartProduct.isProductReturned();
+                orderRetrievalDTO.returnStatus = cartProduct.getReturnStatus();
                 orderUserDTO.cartProducts.add(orderRetrievalDTO);
             }
 
@@ -213,7 +219,12 @@ public class OrderDAO {
         return 0.0;
     }
 
+    public List<OrderUserDTO> getOrdersByUserIdForDashboard(CustomUser customUser) {
 
-
+        return  getOrdersByUserId(customUser);
+    }
 
 }
+
+
+

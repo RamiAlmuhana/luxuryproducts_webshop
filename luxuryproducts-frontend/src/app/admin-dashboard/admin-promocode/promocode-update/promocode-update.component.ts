@@ -1,21 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PromoCodeService } from "../../../services/promocode.service";
-import { CategoryService } from "../../../services/category.service";
-import { PromoCode } from "../../../models/promocode.model";
-import { Category } from "../../../models/category.model";
-import {NgForOf} from "@angular/common";
+import { PromoCodeService } from '../../../services/promocode.service';
+import { CategoryService } from '../../../services/category.service';
+import { PromoCode } from '../../../models/promocode.model';
+import { Category } from '../../../models/category.model';
+import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-promocode-update',
   templateUrl: 'promocode-update.component.html',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    NgForOf
-  ],
-  styleUrls: ['promocode-update.component.scss']
+  imports: [ReactiveFormsModule, NgForOf],
+  styleUrls: ['promocode-update.component.scss'],
 })
 export class PromocodeUpdateComponent implements OnInit {
   promoCodeForm: FormGroup;
@@ -38,12 +40,12 @@ export class PromocodeUpdateComponent implements OnInit {
       maxUsageCount: ['', [Validators.required, Validators.min(1)]],
       minSpendAmount: ['', [Validators.required, Validators.min(0)]],
       type: ['', Validators.required],
-      categoryId: [null]
+      categoryId: [null],
     });
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.promoCodeId = +params['id'];
       if (this.promoCodeId) {
         this.loadPromoCode(this.promoCodeId);
@@ -54,20 +56,20 @@ export class PromocodeUpdateComponent implements OnInit {
 
   loadPromoCode(id: number): void {
     this.promoCodeService.getPromoCode(id).subscribe(
-      promoCode => {
+      (promoCode) => {
         this.promoCodeForm.patchValue({
           ...promoCode,
-          categoryId: promoCode.category ? promoCode.category.id : null
+          categoryId: promoCode.category ? promoCode.category.id : null,
         }); // Populate form with promo code details
       },
-      error => {
+      (error) => {
         console.error('Error loading promo code:', error);
       }
     );
   }
 
   loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe(
+    this.categoryService.getCategorys().subscribe(
       (categories) => {
         this.categories = categories;
       },
@@ -87,18 +89,20 @@ export class PromocodeUpdateComponent implements OnInit {
       ...formValue,
       expiryDate: new Date(formValue.expiryDate).toISOString(),
       startDate: new Date(formValue.startDate).toISOString(),
-      category: formValue.categoryId ? { id: formValue.categoryId } : null
+      category: formValue.categoryId ? { id: formValue.categoryId } : null,
     };
 
-    this.promoCodeService.updatePromoCode(this.promoCodeId, promoCodeData).subscribe(
-      (updatedPromoCode: PromoCode) => {
-        console.log('Promo code updated successfully:', updatedPromoCode);
-        // Redirect to promo code list after successful update
-        this.router.navigate(['admin/promocode-list']);
-      },
-      (error: any) => {
-        console.error('Error updating promo code:', error);
-      }
-    );
+    this.promoCodeService
+      .updatePromoCode(this.promoCodeId, promoCodeData)
+      .subscribe(
+        (updatedPromoCode: PromoCode) => {
+          console.log('Promo code updated successfully:', updatedPromoCode);
+          // Redirect to promo code list after successful update
+          this.router.navigate(['admin/promocode-list']);
+        },
+        (error: any) => {
+          console.error('Error updating promo code:', error);
+        }
+      );
   }
 }

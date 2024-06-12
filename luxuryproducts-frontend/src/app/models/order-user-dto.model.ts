@@ -1,5 +1,5 @@
-import { OrderRetrievalDTO } from "./order-retrieval-dto.model";
-import { User } from "./user.model";
+import { OrderRetrievalDTO } from './order-retrieval-dto.model';
+import { User } from './user.model';
 
 export class OrderUserDTO {
   public name: string;
@@ -21,4 +21,7 @@ export class OrderUserDTO {
   public user: User;
 
   public cartProducts: OrderRetrievalDTO[];
+  public totalPrice: number;
+  public discountedPrice: number;
+  public promoCode: string;
 }
