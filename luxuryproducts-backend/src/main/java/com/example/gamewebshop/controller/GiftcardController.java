@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://s1148232.student.inf-hsleiden.nl:18232"})
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/giftcards")
 public class GiftcardController {
     private GiftcardDAO giftcardDAO;

@@ -1,6 +1,9 @@
-// category.model.ts
+import { Product } from './product.model';
 
-export interface Category {
-  id: number;
-  name: string;
+export class Category {
+  public id: number;
+  public imageUrl: string;
+  public description: string;
+  public name: string;
+  public products: Product[];
 }

@@ -1,145 +1,140 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
-import { Product } from '../models/product.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Order } from '../models/order.model';
+import { Product } from '../models/product.model';
+import { CartProduct } from '../models/cart-product.model';
+import { CartproductService } from './cartproduct.service';
+import { OrderDTO } from '../models/order-dto.model';
 
-const localStorageKey: string = "products-in-cart";
-const promoAppliedKey: string = "promoApplied";
-const discountAmountKey: string = "applied-discount-amount";
-const discountCodesKey: string = "applied-discount-codes";
+const localStorageKey: string = 'products-in-cart';
+const promoAppliedKey: string = 'promoApplied';
+const discountAmountKey: string = 'applied-discount-amount';
+const discountCodesKey: string = 'applied-discount-codes';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
-  private productsInCart: Product[] = [];
-  public $productInCart: BehaviorSubject<Product[]> = new BehaviorSubject<Product[]>([]);
+  private productsInCart: CartProduct[] = [];
+  public $productInCart: BehaviorSubject<CartProduct[]> = new BehaviorSubject<
+    CartProduct[]
+  >([]);
+  public totalPrice: number;
   public totalDiscount: number = 0;
-  public totalPriceWithDiscount: number = this.loadInitialDiscountedPrice();
-  private baseUrl: string = environment.base_url + "/orders";
+  public totalPriceWithDiscount: number;
+
+  private baseUrl: string = environment.base_url + '/orders';
+
   private validGiftCardCodes: { [key: string]: number } = {};
-  private appliedDiscountAmount: number = 0;
 
-  constructor(private http: HttpClient) {
-    this.loadProductsFromLocalStorage();
-    this.reapplyDiscountIfApplicable();
-  }
+  constructor(
+    private http: HttpClient,
+    private cartProductService: CartproductService
+  ) {}
 
-  private reapplyDiscountIfApplicable() {
-    const discountValue = parseFloat(localStorage.getItem('discountValue') || '0');
-    const discountType = localStorage.getItem('discountType') as 'FIXED_AMOUNT' | 'PERCENTAGE' | null;
+  public reapplyDiscountIfApplicable() {
+    const discountValue = parseFloat(
+      localStorage.getItem('discountValue') || '0'
+    );
+    const discountType = localStorage.getItem('discountType') as
+      | 'FIXED_AMOUNT'
+      | 'PERCENTAGE'
+      | null;
     const promoCode = localStorage.getItem('promoCode') || '';
+    const token = localStorage.getItem('token') || undefined;
 
-    if (discountType && discountValue && promoCode) {
+    if (discountType && discountValue && promoCode && token) {
       this.applyDiscount(discountValue, discountType, promoCode);
     }
   }
-
   public addProductToCart(productToAdd: Product) {
-    let existingProductIndex: number = this.productsInCart.findIndex(product => product.name === productToAdd.name);
-    if (existingProductIndex !== -1) {
-      this.productsInCart[existingProductIndex].amount += 1;
-    } else {
-      productToAdd.amount = 1;
-      this.productsInCart.push(productToAdd);
-    }
-    this.saveProductsAndNotifyChange();
+    this.cartProductService
+      .addProductToCart(productToAdd)
+      .subscribe((cartProductList) => {
+        this.saveProductsAndNotifyChange(cartProductList);
+      });
   }
 
   public removeProductFromCart(productIndex: number) {
-    if (this.productsInCart[productIndex].amount > 1) {
-      this.productsInCart[productIndex].amount -= 1;
-    } else {
-      this.productsInCart.splice(productIndex, 1);
-    }
-    this.saveProductsAndNotifyChange();
-    localStorage.removeItem(promoAppliedKey);
+    this.cartProductService
+      .deleteProductInCart(productIndex)
+      .subscribe((cartList) => {
+        localStorage.removeItem(promoAppliedKey);
+        this.saveProductsAndNotifyChange(cartList);
+      });
+  }
+
+  public updateProductsIncart() {
+    this.cartProductService.getProductsInCart().subscribe((cart) => {
+      this.saveProductsAndNotifyChange(cart);
+    });
   }
 
   public clearCart() {
     this.productsInCart = [];
     localStorage.removeItem(promoAppliedKey);
-    this.saveProductsAndNotifyChange();
+    this.saveProductsAndNotifyChange(this.productsInCart);
     this.clearDiscountFromLocalStorage();
   }
 
-  public allProductsInCart(): Product[] {
-    return this.productsInCart.slice();
-  }
+  public addOrder(order: OrderDTO): Observable<Order> {
+    console.log('Ontvangen order: ' + order);
 
-  public addOrder(order: Order): Observable<Order> {
-    console.log("Ontvangen order: " + order);
     return this.http.post<Order>(this.baseUrl, order).pipe(
-      catchError(error => {
+      catchError((error) => {
         console.error('Error adding order:', error);
         return throwError(error);
       })
     );
   }
 
-  public applyDiscount(discountValue: number, discountType: 'FIXED_AMOUNT' | 'PERCENTAGE', promoCode: string) {
-    const total = this.calculateTotalPrice();
-    if (discountType === 'FIXED_AMOUNT') {
-      this.totalDiscount = discountValue;
-    } else if (discountType === 'PERCENTAGE') {
-      this.totalDiscount = total * (discountValue / 100);
-    }
-    this.totalPriceWithDiscount = total - this.totalDiscount;
-    localStorage.setItem('promoApplied', 'true');
-    localStorage.setItem('promoCode', promoCode);
-    localStorage.setItem('discountValue', discountValue.toString());
-    localStorage.setItem('discountType', discountType);
-    localStorage.setItem('displayedDiscount', this.totalDiscount.toString());
-    this.$productInCart.next(this.productsInCart.slice());
+  public applyDiscount(
+    discountValue: number,
+    discountType: 'FIXED_AMOUNT' | 'PERCENTAGE',
+    promoCode: string
+  ) {
+    this.calculateTotalPrice((totalprice) => {
+      const total = totalprice;
+      console.log(total);
+      if (discountType === 'FIXED_AMOUNT') {
+        this.totalDiscount = discountValue;
+      } else if (discountType === 'PERCENTAGE') {
+        this.totalDiscount = total * (discountValue / 100);
+      }
+      this.totalPriceWithDiscount = total - this.totalDiscount;
+      localStorage.setItem('promoApplied', 'true');
+      localStorage.setItem('promoCode', promoCode);
+      localStorage.setItem('discountValue', discountValue.toString());
+      localStorage.setItem('discountType', discountType);
+      localStorage.setItem('displayedDiscount', this.totalDiscount.toString());
+    });
   }
 
   public removeDiscount() {
-    this.totalDiscount = 0;
-    this.totalPriceWithDiscount = this.calculateTotalPrice();
-    localStorage.removeItem('promoApplied');
-    localStorage.removeItem('promoCode');
-    localStorage.removeItem('discountValue');
-    localStorage.removeItem('discountType');
-    localStorage.removeItem('displayedDiscount');
-    localStorage.removeItem('minSpendAmount');
-    this.$productInCart.next(this.productsInCart.slice());
+    this.calculateTotalPrice((totalPrice) => {
+      this.totalPriceWithDiscount = totalPrice;
+      localStorage.removeItem('promoApplied');
+      localStorage.removeItem('promoCode');
+      localStorage.removeItem('discountValue');
+      localStorage.removeItem('discountType');
+      localStorage.removeItem('displayedDiscount');
+      localStorage.removeItem('minSpendAmount');
+    });
   }
 
-  public calculateTotalPrice(): number {
-    return this.productsInCart.reduce((total, product) => total + product.price * product.amount, 0);
+  public calculateTotalPrice(callback: (totalPrice: number) => void): void {
+    this.cartProductService
+      .getTotalPriceOfCartByUser()
+      .subscribe((totalprice) => {
+        callback(totalprice);
+      });
   }
 
-  private loadInitialDiscountedPrice(): number {
-    const total = this.calculateTotalPrice();
-    const discountValue = parseFloat(localStorage.getItem('discountValue') || '0');
-    const discountType = localStorage.getItem('discountType') as 'FIXED_AMOUNT' | 'PERCENTAGE' | null;
-
-    if (discountType === 'FIXED_AMOUNT') {
-      return Math.max(0, total - discountValue);
-    } else if (discountType === 'PERCENTAGE') {
-      return Math.max(0, total - (total * discountValue / 100));
-    }
-    return total;
-  }
-
-  private saveProductsAndNotifyChange(): void {
-    this.saveProductsToLocalStorage(this.productsInCart.slice());
-    this.$productInCart.next(this.productsInCart.slice());
-  }
-
-  private saveProductsToLocalStorage(products: Product[]): void {
-    localStorage.setItem(localStorageKey, JSON.stringify(products));
-  }
-
-  private loadProductsFromLocalStorage(): void {
-    let productsOrNull = localStorage.getItem(localStorageKey);
-    if (productsOrNull != null) {
-      let products: Product[] = JSON.parse(productsOrNull);
-      this.productsInCart = products;
-      this.$productInCart.next(this.productsInCart.slice());
-    }
+  private saveProductsAndNotifyChange(cartproducts: CartProduct[]): void {
+    this.productsInCart = cartproducts;
+    this.$productInCart.next(cartproducts);
   }
 
   public generateGiftCardCode(discountAmount: number): string {
@@ -152,19 +147,39 @@ export class CartService {
     return this.validGiftCardCodes[code] || 0;
   }
 
-  public saveDiscountToLocalStorage(discountAmount: number, discountCodes: string[]): void {
+  public saveDiscountToLocalStorage(
+    discountAmount: number,
+    discountCodes: string[]
+  ): void {
     localStorage.setItem(discountAmountKey, discountAmount.toString());
     localStorage.setItem(discountCodesKey, JSON.stringify(discountCodes));
   }
 
-  public loadDiscountFromLocalStorage(): { discountAmount: number, discountCodes: string[] } {
-    const discountAmount = parseFloat(localStorage.getItem(discountAmountKey) || '0');
-    const discountCodes = JSON.parse(localStorage.getItem(discountCodesKey) || '[]');
+  public loadDiscountFromLocalStorage(): {
+    discountAmount: number;
+    discountCodes: string[];
+  } {
+    const discountAmount = parseFloat(
+      localStorage.getItem(discountAmountKey) || '0'
+    );
+    const discountCodes = JSON.parse(
+      localStorage.getItem(discountCodesKey) || '[]'
+    );
     return { discountAmount, discountCodes };
   }
 
   public clearDiscountFromLocalStorage(): void {
-    localStorage.removeItem(discountAmountKey);
-    localStorage.removeItem(discountCodesKey);
+    this.calculateTotalPrice((totalprice) => {
+      localStorage.removeItem(discountAmountKey);
+      localStorage.removeItem(discountCodesKey);
+      this.totalDiscount = 0;
+      this.totalPriceWithDiscount = totalprice;
+      localStorage.removeItem('promoApplied');
+      localStorage.removeItem('promoCode');
+      localStorage.removeItem('discountValue');
+      localStorage.removeItem('discountType');
+      localStorage.removeItem('displayedDiscount');
+      localStorage.removeItem('minSpendAmount');
+    });
   }
 }

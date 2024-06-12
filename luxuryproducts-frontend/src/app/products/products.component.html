@@ -1,9 +1,37 @@
-<h3 class="mb-4">All Games</h3>
+<h3 class="mb-4">{{ headerName }}</h3>
 
 @if (loadingProducts) {
-  <p>Loading products...</p>
+<p>Loading products...</p>
 } @else {
-  @for (product of products; track $index) {
-    <app-product-thumbnail [product]="product" (onBuyProduct)="onBuyProduct(product)"></app-product-thumbnail>
-  }
-}
+
+<hr />
+<div class="container py-5">
+  <div class="row">
+    <div class="col-3" *ngFor="let button of buttons">
+      <div
+        class="dropdown-wrapper"
+        (click)="toggleDropdown(button)"
+        (mouseleave)="toggleDropdownClose(button)"
+      >
+        <button class="btn btn-secondary w-100">{{ button.label }}</button>
+        <ul class="dropdown-menu" [class.show]="button.showDropdown">
+          <li *ngFor="let item of button.items">
+            <a
+              (click)="onButtonClick(button.label, item)"
+              class="dropdown-item"
+              >{{ item }}</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+
+@for (product of products; track $index) {
+<app-product-thumbnail
+  [product]="product"
+  (onBuyProduct)="onBuyProduct(product)"
+></app-product-thumbnail>
+} }

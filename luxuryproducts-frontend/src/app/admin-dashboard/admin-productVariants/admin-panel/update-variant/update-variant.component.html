@@ -1,0 +1,173 @@
+<h3 style="margin-bottom: 5%">Update Variant</h3>
+
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="container">
+  <div class="row">
+    <!-- Product Selection -->
+    <div class="col-md-6 mb-3">
+      <label for="product" class="form-label">Product</label>
+      <select
+        id="product"
+        formControlName="product"
+        class="form-control"
+        (change)="onProductChange(productForm.get('product')?.value)"
+      >
+        <option *ngFor="let product of products" [ngValue]="product">
+          {{ product.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Product Variant Selection -->
+    <div class="col-md-6 mb-3" *ngIf="selectedProduct">
+      <label for="productVariantIndex" class="form-label"
+        >Product Variant</label
+      >
+      <select
+        id="productVariantIndex"
+        formControlName="productVariantIndex"
+        class="form-control"
+        (change)="
+          onVariantChange(productForm.get('productVariantIndex')?.value)
+        "
+      >
+        <option
+          *ngFor="let variant of productVariants; let i = index"
+          [value]="i"
+        >
+          {{ i + 1 }} - {{ variant.color.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Rest of the Form Fields -->
+    <div *ngIf="productForm.get('productVariantIndex')?.value !== null">
+      <div class="col-md-6 mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input
+          id="description"
+          formControlName="description"
+          class="form-control"
+          type="text"
+        />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input
+          id="price"
+          formControlName="price"
+          class="form-control"
+          type="number"
+        />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="color" class="form-label">Color</label>
+        <select
+          id="color"
+          name="color"
+          formControlName="color"
+          class="form-control"
+        >
+          <option *ngFor="let color of colors" [value]="color">
+            {{ color }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="sizeAndFit" class="form-label">Size and Fit</label>
+        <select
+          id="sizeAndFit"
+          name="sizeAndFit"
+          formControlName="sizeAndFit"
+          class="form-control"
+        >
+          <option *ngFor="let sizeAndFit of sizeAndFits" [value]="sizeAndFit">
+            {{ sizeAndFit }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="imageUrl1" class="form-label">Image URL 1</label>
+        <input
+          id="imageUrl1"
+          formControlName="imageUrl1"
+          class="form-control"
+          type="text"
+        />
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="imageUrl2" class="form-label">Image URL 2</label>
+        <input
+          id="imageUrl2"
+          formControlName="imageUrl2"
+          class="form-control"
+          type="text"
+        />
+      </div>
+
+      <div formArrayName="productVariatieDTOS">
+        <div
+          *ngFor="
+            let productVariatieDTO of productVariatieDTOsFormArray.controls;
+            let i = index
+          "
+          [formGroupName]="i"
+        >
+          <div class="col-md-6 mb-3">
+            <label for="size-{{ i }}" class="form-label">Size</label>
+            <select
+              id="size-{{ i }}"
+              name="size"
+              formControlName="size"
+              class="form-control"
+              [disabled]="i < existingProductVariationsCount"
+            >
+              <option *ngFor="let size of sizes" [value]="size">
+                {{ size }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="stock-{{ i }}" class="form-label">Stock</label>
+            <input
+              id="stock-{{ i }}"
+              formControlName="stock"
+              class="form-control"
+              type="number"
+            />
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-danger"
+            (click)="removeProductVariatieDTO(i)"
+            *ngIf="i >= existingProductVariationsCount"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="addProductVariatieDTO()"
+      >
+        Add Product Variatie
+      </button>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-secondary"
+      [disabled]="!productForm.valid"
+    >
+      Submit
+    </button>
+  </div>
+</form>

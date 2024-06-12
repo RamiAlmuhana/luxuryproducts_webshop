@@ -1,0 +1,137 @@
+<h3 style="margin-bottom: 5%">Add Variant</h3>
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="container">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="product" class="form-label">Product</label>
+      <select id="product" formControlName="product" class="form-control">
+        <option *ngFor="let product of products" [ngValue]="product">
+          {{ product.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input
+        id="description"
+        formControlName="description"
+        type="text"
+        class="form-control"
+      />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input
+        id="price"
+        formControlName="price"
+        type="number"
+        class="form-control"
+      />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="color" class="form-label">Color</label>
+      <select id="color" formControlName="color" class="form-control">
+        @for (color of colors; track $index) {
+        <option [value]="$index + 1">
+          {{ color }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="sizeAndFit" class="form-label">Size and Fit</label>
+      <select id="sizeAndFit" formControlName="sizeAndFit" class="form-control">
+        @for (sizeAndFit of sizeAndFits; track $index) {
+        <option [value]="$index + 1">
+          {{ sizeAndFit }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="imageUrl1" class="form-label">Image URL 1</label>
+      <input
+        id="imageUrl1"
+        formControlName="imageUrl1"
+        type="text"
+        class="form-control"
+      />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="imageUrl2" class="form-label">Image URL 2</label>
+      <input
+        id="imageUrl2"
+        formControlName="imageUrl2"
+        type="text"
+        class="form-control"
+      />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="imageUrl3" class="form-label">Image URL 3</label>
+      <input
+        id="imageUrl3"
+        formControlName="imageUrl3"
+        type="text"
+        class="form-control"
+      />
+    </div>
+
+    <div class="col-12 mb-3">
+      <label>Variations</label>
+      <div formArrayName="productVariatieDTOS">
+        <div
+          *ngFor="let variation of productVariatieDTOS.controls; let i = index"
+          [formGroupName]="i"
+          class="row"
+        >
+          <div class="col-md-6 mb-3">
+            <label for="size-{{ i }}" class="form-label">Size</label>
+            <select
+              id="size-{{ i }}"
+              formControlName="size"
+              class="form-control"
+            >
+              @for (size of sizes; track $index) {
+              <option [value]="$index + 1">
+                {{ size }}
+              </option>
+              }
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="stock-{{ i }}" class="form-label">Stock</label>
+            <input
+              id="stock-{{ i }}"
+              formControlName="stock"
+              type="number"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="addVariation()"
+        >
+          Add Variation
+        </button>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!productForm.valid"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</form>

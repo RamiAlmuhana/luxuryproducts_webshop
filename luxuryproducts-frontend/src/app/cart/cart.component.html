@@ -1,4 +1,4 @@
-<section class="w-100 px-3 py-5 bg-light" style="border-radius: .5rem;">
+<section class="w-100 px-3 py-5 bg-light" style="border-radius: 0.5rem">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
@@ -8,27 +8,53 @@
         <div class="row">
           <!-- Left Column: Shopping Cart Items -->
           <div class="col-md-8">
-            <div *ngFor="let product of products_in_cart; let i = index" class="card mb-4 shadow-sm border-0">
+            <div
+              *ngFor="let product of products_in_cart; let i = index"
+              class="card mb-4"
+            >
               <div class="card-body">
                 <div class="row align-items-center">
                   <div class="col-md-3">
-                    <img src="{{ product.imgURL }}" class="img-fluid rounded shadow-sm" alt="Product Image">
+                    <img
+                      src="{{ product.imageUrl }}"
+                      class="img-fluid rounded"
+                      alt="Productafbeelding"
+                    />
                   </div>
-                  <div class="col-md-4">
-                    <h5 class="mb-1">{{ product.name }}</h5>
-                    <p class="text-muted mb-0">Quantity: {{ product.amount }}</p>
+                  <div class="col-md-3">
+                    <p class="lead mb-1 smaller">{{ product.product.name }}</p>
+                    <p>Quantity: {{ product.quantity }}</p>
                   </div>
-                  <div class="col-md-3 text-end">
-                    <h5>{{ product.price | currency: 'EUR' }}</h5>
-                    <p class="text-muted mb-0">Total: {{ product.price * product.amount | currency: 'EUR' }}</p>
+                  <div class="col-md-3">
+                    <h6>
+                      {{ product.productVariantPrice | currency : "EUR" }}
+                    </h6>
+                    <p>
+                      Total:
+                      {{ product.price | currency : "EUR" }}
+                    </p>
+                  </div>
+                  <div class="col-md-1">
+                    <p class="lead mb-1 smaller2">size</p>
+                    <p>
+                      {{ product.size }}
+                    </p>
                   </div>
                   <div class="col-md-2 text-end">
-                    <button (click)="removeProductFromCart(i)" class="btn btn-sm"><i class="fa-solid fa-trash"></i></button>
+                    <button
+                      (click)="
+                        removeProductFromCart(product.id, product.categoryId)
+                      "
+                      class="btn btn-sm"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <!-- Right Column: Promo Code and Actions -->
           <div class="col-md-4">
             <!-- Promo Code Section -->
@@ -36,13 +62,38 @@
               <div class="card-body">
                 <h5 class="card-title">Gift-card/Promo Code</h5>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Enter Promo code" [(ngModel)]="promoCode" name="promoCode">
-                  <button [disabled]="onInvalidOrder()" class="btn btn-outline-secondary" type="button" (click)="applyPromoCode()">Apply</button>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Promo code"
+                    [(ngModel)]="promoCode"
+                    name="promoCode"
+                  />
+                  <button
+                    [disabled]="onInvalidOrder()"
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="applyPromoCode()"
+                  >
+                    Apply
+                  </button>
                 </div>
                 <div class="col-md-12 mt-3">
                   <div class="input-group mb-3">
-                    <input [(ngModel)]="giftCardCode" type="text" class="form-control" placeholder="Enter giftcard code">
-                    <button (click)="applyGiftCard()" class="btn btn-outline-secondary" type="button">Apply</button>
+                    <input
+                      [(ngModel)]="giftCardCode"
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter giftcard code"
+                    />
+                    <button
+                      (click)="applyGiftCard()"
+                      class="btn btn-outline-secondary"
+                      type="button"
+                      [disabled]="onInvalidOrder()"
+                    >
+                      Apply
+                    </button>
                   </div>
                 </div>
                 <!-- Error message for invalid promo code -->
@@ -50,14 +101,29 @@
                   {{ promoCodeErrorMessage }}
                 </div>
                 <div *ngIf="promoApplied || discount > 0">
-                  <p *ngIf="promoApplied" class="mb-1">Promo Code Applied: <strong>{{ appliedPromoCode }}</strong></p>
-                  <p *ngIf="discount > 0" class="mb-1">Discount Applied: <strong>{{ discount | currency: 'EUR' }}</strong></p>
-                  <button class="btn btn-sm" (click)="removePromoCode()">Remove</button>
+                  <p *ngIf="promoApplied" class="mb-1">
+                    Promo Code Applied: <strong>{{ appliedPromoCode }}</strong>
+                  </p>
+                  <p *ngIf="discount > 0" class="mb-1">
+                    Discount Applied:
+                    <strong>{{ discount | currency : "EUR" }}</strong>
+                  </p>
+                  <button class="btn btn-sm" (click)="removePromoCode()">
+                    Remove
+                  </button>
                 </div>
                 <div *ngIf="appliedGiftCard">
-                  <p class="mb-1">Gift Card Applied: <strong>{{ appliedGiftCardCode }}</strong></p>
-                  <p class="mb-1">Discount Applied: <strong>{{ giftCardDiscount | currency: 'EUR' }}</strong></p>
-                  <button class="btn btn-sm" (click)="removeGiftCard()">Remove</button>
+                  <p class="mb-1">
+                    Gift Card Applied:
+                    <strong>{{ appliedGiftCardCode }}</strong>
+                  </p>
+                  <p class="mb-1">
+                    Discount Applied:
+                    <strong>{{ giftCardDiscount | currency : "EUR" }}</strong>
+                  </p>
+                  <button class="btn btn-sm" (click)="removeGiftCard()">
+                    Remove
+                  </button>
                 </div>
               </div>
             </div>
@@ -66,11 +132,20 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between">
                   <p class="lead mb-0">Total:</p>
-                  <p class="lead mb-0"><strong>{{ getTotalPrice() | currency: 'EUR' }}</strong></p>
+                  <p class="lead mb-0">
+                    <strong>{{ totalPrice | currency : "EUR" }}</strong>
+                  </p>
                 </div>
-                <div *ngIf="promoApplied || appliedDiscountAmount > 0" class="d-flex justify-content-between">
+                <div
+                  *ngIf="promoApplied || appliedDiscountAmount > 0"
+                  class="d-flex justify-content-between"
+                >
                   <p class="lead mb-0">Discounted Price:</p>
-                  <p class="lead mb-0"><strong>{{ getTotalPriceWithDiscount() | currency:'EUR' }}</strong></p>
+                  <p class="lead mb-0">
+                    <strong>{{
+                      getTotalPriceWithDiscount() | currency : "EUR"
+                    }}</strong>
+                  </p>
                 </div>
                 <!-- Error message for order issues -->
                 <div *ngIf="orderError" class="text-danger mb-2">
@@ -81,10 +156,22 @@
             <!-- Action Buttons -->
             <div class="row mt-4">
               <div class="col-12 mb-3">
-                <button [disabled]="onInvalidOrder()" (click)="clearCart()" class="btn btn-outline-secondary w-100"><i class="fa-solid fa-trash"></i> Empty Shopping Cart</button>
+                <button
+                  [disabled]="onInvalidOrder()"
+                  (click)="clearCart()"
+                  class="btn btn-outline-secondary w-100"
+                >
+                  <i class="fa-solid fa-trash"></i> Empty Shopping Cart
+                </button>
               </div>
               <div class="col-12">
-                <button [disabled]="onInvalidOrder()" (click)="onOrder()" class="btn btn-primary w-100"> <i class="fa-solid fa-cart-shopping"></i> Buy</button>
+                <button
+                  [disabled]="onInvalidOrder()"
+                  (click)="onOrder()"
+                  class="btn btn-primary w-100"
+                >
+                  <i class="fa-solid fa-cart-shopping"></i> Buy
+                </button>
               </div>
             </div>
           </div>
@@ -93,3 +180,26 @@
     </div>
   </div>
 </section>
+
+<!-- 
+<div *ngFor="let product of products_in_cart; let i = index" class="card mb-4 shadow-sm border-0">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col-md-3">
+        <img src="{{ product.imgURL }}" class="img-fluid rounded shadow-sm" alt="Product Image">
+      </div>
+      <div class="col-md-4">
+        <h5 class="mb-1">{{ product.name }}</h5>
+        <p class="text-muted mb-0">Quantity: {{ product.amount }}</p>
+      </div>
+      <div class="col-md-3 text-end">
+        <h5>{{ product.price | currency: 'EUR' }}</h5>
+        <p class="text-muted mb-0">Total: {{ product.price * product.amount | currency: 'EUR' }}</p>
+      </div>
+      <div class="col-md-2 text-end">
+        <button (click)="removeProductFromCart(i)" class="btn btn-sm"><i class="fa-solid fa-trash"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+</div> -->

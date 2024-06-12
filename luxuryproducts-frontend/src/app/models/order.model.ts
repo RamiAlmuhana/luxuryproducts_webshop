@@ -1,4 +1,5 @@
-import { Product } from "./product.model";
+import { CartProduct } from './cart-product.model';
+import { Product } from './product.model';
 
 export class Order {
   public id: number;
@@ -9,9 +10,9 @@ export class Order {
   public houseNumber: number;
   public notes: string;
   public orderDate: string;
-  public products: Product[];
+  public cartProducts: CartProduct[];
   public totalPrice: number;
   public discountedPrice: number;
   public promoCode: string | null;
-  public giftCardCode: string | null
+  public giftCardCode: string | null;
 }

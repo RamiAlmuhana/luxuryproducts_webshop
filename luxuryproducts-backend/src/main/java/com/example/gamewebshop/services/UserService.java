@@ -1,23 +1,25 @@
 package com.example.gamewebshop.services;
 
-import com.example.gamewebshop.dao.UserRepository;
+import com.example.gamewebshop.Repositorys.UserRepository;
 import com.example.gamewebshop.models.CustomUser;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.Collections;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
+import java.util.Collections;
+@AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userDAO;
-
-    public UserService(UserRepository userDAO) {
-        this.userDAO = userDAO;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -38,5 +40,21 @@ public class UserService implements UserDetailsService {
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + customUser.getRole())));
     }
 
+    public CustomUser validateUser(Principal principal){
+        if (principal == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No user found"
+            );
+        }
+        String userEmail = principal.getName();
+        CustomUser user = userDAO.findByEmail(userEmail);
+        if (user == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "No user fount with that email"
+            );
+        }
+
+        return user;
+    }
 
 }

@@ -1,10 +1,18 @@
 package com.example.gamewebshop.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PromoCode {
     @Id
     @GeneratedValue
@@ -23,7 +31,6 @@ public class PromoCode {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // Constructors, getters, and setters
 
     public PromoCode(String code, double discount, LocalDateTime expiryDate, LocalDateTime startDate, int maxUsageCount, PromoCodeType type, Category category, double minSpendAmount) {
         this.code = code;
@@ -36,96 +43,6 @@ public class PromoCode {
         this.minSpendAmount = minSpendAmount;
         this.usageCount = 0; // Initialize usage count
         this.totalDiscountAmount = 0;
-    }
-
-    public PromoCode() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public LocalDateTime getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(LocalDateTime expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public int getMaxUsageCount() {
-        return maxUsageCount;
-    }
-
-    public void setMaxUsageCount(int maxUsageCount) {
-        this.maxUsageCount = maxUsageCount;
-    }
-
-    public PromoCodeType getType() {
-        return type;
-    }
-
-    public void setType(PromoCodeType type) {
-        this.type = type;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public double getMinSpendAmount() {
-        return minSpendAmount;
-    }
-
-    public void setMinSpendAmount(double minSpendAmount) {
-        this.minSpendAmount = minSpendAmount;
-    }
-
-    public int getUsageCount() {
-        return usageCount;
-    }
-
-    public void setUsageCount(int usageCount) {
-        this.usageCount = usageCount;
-    }
-
-    public double getTotalDiscountAmount() {
-        return totalDiscountAmount;
-    }
-
-    public void setTotalDiscountAmount(double totalDiscountAmount) {
-        this.totalDiscountAmount = totalDiscountAmount;
     }
 
     public enum PromoCodeType {

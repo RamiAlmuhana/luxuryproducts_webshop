@@ -1,0 +1,55 @@
+<h3 style="margin-bottom: 5%">Create Product</h3>
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="container">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="name" class="form-label">Product name</label>
+      <input
+        id="name"
+        formControlName="name"
+        type="text"
+        class="form-control"
+      />
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="country" class="form-label">Country</label>
+      <input
+        id="country"
+        formControlName="country"
+        type="text"
+        class="form-control"
+      />
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="brandId" class="form-label">Brand</label>
+      <select id="brandId" formControlName="brandId" class="form-control">
+        @for (brand of brands; track $index) {
+        <option [value]="$index + 1">
+          {{ brand }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="categoryId" class="form-label">Category</label>
+      <select id="categoryId" formControlName="categoryId" class="form-control">
+        @for (category of categories; track $index) {
+        <option [value]="$index + 1">
+          {{ category }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-12">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!productForm.valid"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
