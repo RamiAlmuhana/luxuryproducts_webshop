@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { Product } from '../models/product.model';
 import { CartProduct } from '../models/cart-product.model';
 import { CartproductService } from '../services/cartproduct.service';
+import { Giftcard } from '../models/giftcard.model'; // Assuming you have a Giftcard model
 
 @Component({
   selector: 'app-cart',
@@ -346,31 +347,36 @@ export class CartComponent implements OnInit {
   }
 
   public applyGiftCard() {
-    const discountAmount = this.cartService.getGiftCardDiscount(
-      this.giftCardCode
-    );
-    if (
-      discountAmount > 0 &&
-      !this.appliedDiscountCodes.includes(this.giftCardCode)
-    ) {
-      this.appliedDiscountAmount += discountAmount;
-      this.appliedDiscountCodes.push(this.giftCardCode);
-      this.cartService.saveDiscountToLocalStorage(
-        this.appliedDiscountAmount,
-        this.appliedDiscountCodes
-      );
+    const url = `${environment.base_url}/giftcards/use`;
+    this.http.post<Giftcard>(url, { code: this.giftCardCode }).subscribe({
+      next: (response) => {
+        if (
+          response.discountAmount > 0 &&
+          !this.appliedDiscountCodes.includes(this.giftCardCode)
+        ) {
+          const discountAmount = Math.min(response.discountAmount, this.totalPrice);
+          this.appliedDiscountAmount += discountAmount;
+          this.appliedDiscountCodes.push(this.giftCardCode);
+          this.cartService.saveDiscountToLocalStorage(
+            this.appliedDiscountAmount,
+            this.appliedDiscountCodes
+          );
 
-      localStorage.setItem('appliedGiftCardCode', this.giftCardCode);
-      localStorage.setItem('giftCardDiscount', discountAmount.toString());
+          localStorage.setItem('appliedGiftCardCode', this.giftCardCode);
+          localStorage.setItem('giftCardDiscount', discountAmount.toString());
 
-      this.appliedGiftCard = true;
-      this.appliedGiftCardCode = this.giftCardCode;
-      this.giftCardDiscount = discountAmount;
-    } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
-      alert('This giftcard code has already been used');
-    } else {
-      alert('Invalid giftcard code');
-    }
+          this.appliedGiftCard = true;
+          this.appliedGiftCardCode = this.giftCardCode;
+          this.giftCardDiscount = discountAmount;
+          alert(`Gift card applied successfully! Discount: ${discountAmount}`);
+        } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
+          alert('This gift card code has already been used');
+        }
+      },
+      error: (err) => {
+        alert('Invalid or already used gift card code');
+      },
+    });
   }
 
   public removeGiftCard() {

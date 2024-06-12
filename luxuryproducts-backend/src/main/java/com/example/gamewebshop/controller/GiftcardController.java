@@ -6,27 +6,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/giftcards")
 public class GiftcardController {
-    private GiftcardDAO giftcardDAO;
+    private final GiftcardDAO giftcardDAO;
 
     public GiftcardController(GiftcardDAO giftcardDAO) {
         this.giftcardDAO = giftcardDAO;
     }
 
     @PostMapping
-    public ResponseEntity<Giftcard> saveGiftcard(@RequestBody Giftcard giftcard){
-        return ResponseEntity.ok(giftcardDAO.saveGiftcard(giftcard));
+    public ResponseEntity<Giftcard> saveGiftcard(@RequestBody Giftcard giftcard, Principal principal) {
+        String userEmail = principal.getName();
+        return ResponseEntity.ok(giftcardDAO.saveGiftcard(giftcard, userEmail));
     }
 
     @PostMapping("/validate")
-    public ResponseEntity<Giftcard> validateGiftCard(@RequestBody String code){
+    public ResponseEntity<Giftcard> validateGiftCard(@RequestBody String code) {
         Optional<Giftcard> giftcardOptional = giftcardDAO.validateGiftCard(code);
-        if (giftcardOptional.isPresent()){
+        if (giftcardOptional.isPresent()) {
             return ResponseEntity.ok(giftcardOptional.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -34,27 +37,19 @@ public class GiftcardController {
     }
 
     @PostMapping("/use")
-    public ResponseEntity<Giftcard> useGiftCard(@RequestBody String code){
-        Optional<Giftcard> giftcardOptional = giftcardDAO.useGiftCard(code);
-        if (giftcardOptional.isPresent()){
+    public ResponseEntity<Giftcard> useGiftCard(@RequestBody Map<String, String> requestBody) {
+        String code = requestBody.get("code");
+        Optional<Giftcard> giftcardOptional = giftcardDAO.findByCode(code);
+        if (giftcardOptional.isPresent()) {
             Giftcard giftcard = giftcardOptional.get();
-            if (giftcard.isUsed()){
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-            } else {
-                giftcard.setUsed(true);
-                giftcardDAO.saveGiftcard(giftcard);
+            if (giftcard.getDiscountAmount() > 0 && !giftcard.isUsed()) {
                 return ResponseEntity.ok(giftcard);
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
-
-
-
-
-
-
 
 }

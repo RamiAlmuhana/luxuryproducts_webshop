@@ -102,7 +102,6 @@ public class OrderDAO {
         }
         PlacedOrder order = new PlacedOrder();
 
-
         long totalProducts = 0L;
         List<CartProduct> cartproducts = validateCartproductIds(orderDTO.cartProductId);
 
@@ -112,9 +111,33 @@ public class OrderDAO {
 
         double totalPrice = calculateTotalPrice(cartproducts);
 
+
+        if (orderDTO.giftCardCode != null && !orderDTO.giftCardCode.isEmpty()) {
+            Optional<Giftcard> optionalGiftcard = giftcardRepository.findByCode(orderDTO.giftCardCode);
+            if (optionalGiftcard.isPresent()) {
+                Giftcard giftcard = optionalGiftcard.get();
+                if (!giftcard.isUsed()) {
+                    if (giftcard.getDiscountAmount() >= totalPrice) {
+                        giftcard.setDiscountAmount(giftcard.getDiscountAmount() - (int) totalPrice);
+                        if (giftcard.getDiscountAmount() == 0) {
+                            giftcard.setUsed(true);
+                        }
+                        totalPrice = 0;
+                    } else {
+                        totalPrice -= giftcard.getDiscountAmount();
+                        giftcard.setDiscountAmount(0);
+                        giftcard.setUsed(true);
+                    }
+                    giftcardRepository.save(giftcard);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Gift card already used");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid gift card code");
+            }
+        }
+
         changeCartProductStatusAndStock(cartproducts);
-        validateGiftcard(orderDTO.giftCardCode);
-        String effectivePromocode =  validatePromocode(orderDTO.promoCode, totalPrice);
 
         order.setUser(user);
         order.setTotalProducts(Math.toIntExact(totalProducts));
@@ -127,22 +150,19 @@ public class OrderDAO {
         order.setHouseNumber(orderDTO.houseNumber);
         order.setZipcode(orderDTO.zipcode);
         order.setDiscountedPrice(orderDTO.discountedPrice);
-        order.setPromoCode(effectivePromocode);
         order.setGiftCardCode(orderDTO.giftCardCode);
         order.setTotalPrice(totalPrice);
         orderRepository.save(order);
     }
-
-    public void changeCartProductStatusAndStock(List<CartProduct> cartproducts){
+    private void changeCartProductStatusAndStock(List<CartProduct> cartproducts) {
         for (CartProduct cartProduct : cartproducts) {
             cartProduct.setStatus(CartProductStatus.Ordered);
             productDAO.changeStockOfOrderedProducts(cartProduct.getProduct(), cartProduct.getQuantity(), cartProduct.getImageUrl(), cartProduct.getSize());
             cartProductRepository.save(cartProduct);
-
         }
     }
 
-    public List<CartProduct> validateCartproductIds(List<Long> cartproductIds){
+    private List<CartProduct> validateCartproductIds(List<Long> cartproductIds) {
         List<CartProduct> cartproducts = new ArrayList<>();
 
         for (Long id: cartproductIds){
@@ -159,7 +179,7 @@ public class OrderDAO {
     }
 
 
-    public double calculateTotalPrice(List<CartProduct> cartProducts) {
+    private double calculateTotalPrice(List<CartProduct> cartProducts) {
         long totalPrice = 0;
         for (CartProduct cartProduct: cartProducts){
             totalPrice += cartProduct.getPrice();

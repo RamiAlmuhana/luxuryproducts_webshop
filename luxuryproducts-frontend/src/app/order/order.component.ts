@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Product } from '../models/product.model';
-import { Order } from '../models/order.model';
 import { CartProduct } from '../models/cart-product.model';
 import { OrderDTO } from '../models/order-dto.model';
 

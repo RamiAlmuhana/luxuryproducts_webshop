@@ -22,5 +22,6 @@ public class Giftcard {
     private int discountAmount;
     private boolean used;
 
-
+    @ManyToOne
+    private CustomUser user;
 }
