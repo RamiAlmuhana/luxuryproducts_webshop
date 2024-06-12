@@ -40,13 +40,6 @@ export class HeaderComponent implements OnInit {
       this.amountOfProducts = cart.length;
       this.loading = false;
     });
-
-    // this.cartService.$productInCart.subscribe((products: CartProduct[]) => {
-    //   this.amountOfProducts = products.reduce(
-    //     (total, product) => total + product.quantity,
-    //     0
-    //   );
-    // });
   }
 
   public onLogout(): void {

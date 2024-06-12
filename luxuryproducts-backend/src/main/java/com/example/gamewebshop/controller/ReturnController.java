@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "http://s1148232.student.inf-hsleiden.nl:18232"})
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/returns")
 public class ReturnController {
 

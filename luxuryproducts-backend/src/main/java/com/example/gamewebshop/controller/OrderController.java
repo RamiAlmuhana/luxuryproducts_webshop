@@ -6,6 +6,7 @@ import com.example.gamewebshop.dto.ProductVariantDTOS.OrderDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderUserDTO;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.PlacedOrder;
+import com.example.gamewebshop.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,9 @@ import java.util.Optional;
 public class OrderController {
 
     private final OrderDAO orderDAO;
+    private final UserService userService;
     private final UserRepository userRepository;
+
 
 
     @GetMapping
@@ -35,14 +38,8 @@ public class OrderController {
 
     @GetMapping("/myOrders")
     public ResponseEntity<List<OrderUserDTO>> getOrdersByUserPrincipal(Principal principal) {
-        if (principal == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        String userEmail = principal.getName();
-        CustomUser user = userRepository.findByEmail(userEmail);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
+        CustomUser user = userService.validateUser(principal);
+
 
         List<OrderUserDTO> orders = this.orderDAO.getOrdersByUserId(user);
 
@@ -65,7 +62,6 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO, Principal principal) {
         String userEmail = principal.getName();
-
         try {
             orderDAO.saveOrderWithProducts(orderDTO, userEmail);
             return ResponseEntity.ok().body("{\"message\": \"Order created successfully\"}");

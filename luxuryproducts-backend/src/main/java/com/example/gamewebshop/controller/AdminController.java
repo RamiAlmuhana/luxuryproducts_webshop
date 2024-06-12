@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200", "http://s1148232.student.inf-hsleiden.nl:18232"})
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -50,24 +50,17 @@ public class AdminController {
     @DeleteMapping("/product-variant")
     public void deleteProductVariant(@RequestBody DeleteVariantDTO deleteVariantDTO) {
         adminService.deleteProductVariant(deleteVariantDTO);
-
-//        return ResponseEntity.ok("deleted product variant");
-
     }
 
     @GetMapping()
     public ResponseEntity<List<Product>>productsThatCanBeDeleted() {
-
-
         return adminService.productsThatCanBeDeleted();
-
     }
 
 
     @PutMapping("/product-variant")
     public ResponseEntity<String> updateProductVariant(@RequestBody UpdateProductVariatieDTO updateProductVariatieDTO) {
         adminService.updateProductVariant(updateProductVariatieDTO);
-
         return ResponseEntity.ok("updated product variant");
 
     }
@@ -76,7 +69,6 @@ public class AdminController {
     @PutMapping("/stock")
     public ResponseEntity<String> changeStock(@RequestBody AddStockDTO addStockDTO) {
         adminService.addStock(addStockDTO);
-
         return ResponseEntity.ok("updated stock");
 
     }
@@ -84,9 +76,7 @@ public class AdminController {
     @PutMapping("/productionStop")
     public ResponseEntity<String> productionStop(@RequestBody ProductionStopDTO productionStopDTO) {
 
-        log.info("im here coach "+ productionStopDTO);
         adminService.productionStop(productionStopDTO);
-
         return ResponseEntity.ok("Succesful ProductionStop");
 
     }

@@ -21,10 +21,6 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductDAO productDAO;
-    private final PromoCodeDAO promoCodeDAO;
-
-
-
 
     @GetMapping
     public ResponseEntity<List<Product>> getProductsWithVariants(){

@@ -112,8 +112,6 @@ export class ProductDetailComponent {
     }
     this.productImage2Index =
       (this.productImage1Index - 1 + amountOfImages) % amountOfImages;
-
-    // this.productImage2Index = (this.productImage1Index - 1) % amountOfImages;
   }
 
   ammountOfImagesCalculator() {

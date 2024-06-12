@@ -23,7 +23,6 @@ export class CartService {
   >([]);
   public totalPrice: number;
   public totalDiscount: number = 0;
-  // public totalPriceWithDiscount: number = this.loadInitialDiscountedPrice();
   public totalPriceWithDiscount: number;
 
   private baseUrl: string = environment.base_url + '/orders';
@@ -33,9 +32,7 @@ export class CartService {
   constructor(
     private http: HttpClient,
     private cartProductService: CartproductService
-  ) {
-    // this.reapplyDiscountIfApplicable();
-  }
+  ) {}
 
   public reapplyDiscountIfApplicable() {
     const discountValue = parseFloat(
@@ -134,25 +131,6 @@ export class CartService {
         callback(totalprice);
       });
   }
-
-  // private loadInitialDiscountedPrice(discountPrice: number): void {
-  //   this.calculateTotalPrice((totalPrice) => {
-  //     const discountValue = parseFloat(
-  //       localStorage.getItem('discountValue') || '0'
-  //     );
-  //     const discountType = localStorage.getItem('discountType') as
-  //       | 'FIXED_AMOUNT'
-  //       | 'PERCENTAGE'
-  //       | null;
-
-  //     if (discountType === 'FIXED_AMOUNT') {
-  //       return Math.max(0, totalPrice - discountValue);
-  //     } else if (discountType === 'PERCENTAGE') {
-  //       return Math.max(0, totalPrice - (totalPrice * discountValue) / 100);
-  //     }
-  //     return totalPrice;
-  //   });
-  // }
 
   private saveProductsAndNotifyChange(cartproducts: CartProduct[]): void {
     this.productsInCart = cartproducts;
