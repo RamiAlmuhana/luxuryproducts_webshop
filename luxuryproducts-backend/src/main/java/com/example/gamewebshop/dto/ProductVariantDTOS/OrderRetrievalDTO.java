@@ -18,10 +18,6 @@ public class OrderRetrievalDTO {
    public boolean productReturned;
 
    public String returnStatus;
-
-
-
-
-
-
+    public String adminReason;
+    public String returnReason;
 }

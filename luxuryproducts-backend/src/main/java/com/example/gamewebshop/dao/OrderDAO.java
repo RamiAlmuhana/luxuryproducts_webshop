@@ -4,13 +4,10 @@ import com.example.gamewebshop.Repositorys.*;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderRetrievalDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderUserDTO;
-import com.example.gamewebshop.models.CustomUser;
-import com.example.gamewebshop.models.Giftcard;
-import com.example.gamewebshop.models.PlacedOrder;
+import com.example.gamewebshop.models.*;
 import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Enums.CartProductStatus;
 import com.example.gamewebshop.models.Product.Product;
-import com.example.gamewebshop.models.PromoCode;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +24,7 @@ import java.util.Optional;
 public class OrderDAO {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+    private final ReturnRepository returnRepository;
     private final ProductDAO productDAO;
     private final PromoCodeRepository promoCodeRepository;
     private final PromoCodeDAO promoCodeDAO;
@@ -187,7 +185,7 @@ public class OrderDAO {
             orderUserDTO.totalProducts = order.getTotalProducts();
             orderUserDTO.zipcode = order.getZipcode();
             orderUserDTO.totalPrice = order.getTotalPrice();
-            orderUserDTO.discountedPrice = order.getDiscountedPrice();;
+            orderUserDTO.discountedPrice = order.getDiscountedPrice();
             orderUserDTO.promoCode = order.getPromoCode();
             for (CartProduct cartProduct: order.getCartProducts())
             {
@@ -201,6 +199,13 @@ public class OrderDAO {
                 orderRetrievalDTO.cartproductId = cartProduct.getId();
                 orderRetrievalDTO.productReturned = cartProduct.isProductReturned();
                 orderRetrievalDTO.returnStatus = cartProduct.getReturnStatus();
+
+                Optional<ReturnRequest> returnRequest = returnRepository.findByCartProduct(cartProduct);
+                returnRequest.ifPresent(request -> {
+                    orderRetrievalDTO.returnReason = request.getReturnReason();
+                    orderRetrievalDTO.adminReason = request.getAdminReason();
+                });
+
                 orderUserDTO.cartProducts.add(orderRetrievalDTO);
             }
 
@@ -209,6 +214,7 @@ public class OrderDAO {
 
         return orderUserDTOS;
     }
+
 
     public double calculateDiscount(double totalPrice, PromoCode promoCode) {
         if (promoCode.getType() == PromoCode.PromoCodeType.FIXED_AMOUNT) {
