@@ -35,6 +35,8 @@ export class OrderHistoryComponent implements OnInit {
     id: 0,
     cartProduct: this.product,
     returnStatus: '',
+    returnReason: '',
+    adminReason: '',
   };
   constructor(
     private orderService: OrderService,
@@ -56,8 +58,15 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   onReturn(product: OrderRetrievalDTO) {
+    const reason = prompt('Please provide a reason for the return:');
+    if (!reason) {
+      alert('Return reason is required');
+      return;
+    }
+
     this.returnRequest.cartProduct = product;
     this.returnRequest.returnStatus = 'pending';
+    this.returnRequest.returnReason = reason;
     this.returnRequest.user = this.user;
     product.productReturned = true;
     this.returnService

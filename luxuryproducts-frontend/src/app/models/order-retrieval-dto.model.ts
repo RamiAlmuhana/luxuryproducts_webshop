@@ -15,4 +15,6 @@ export class OrderRetrievalDTO {
   public productReturned: boolean;
 
   public returnStatus: string;
+  public adminReason: string;
+  public returnReason: string;
 }

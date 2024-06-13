@@ -22,9 +22,10 @@ export class ReturnService {
     return this.http.get<Return[]>(`${this.baseUrl}/myReturns`);
   }
 
-  updateReturns(returnStatus: String, id: number) {
-    return this.http.put(`${this.baseUrl}/${id}`, returnStatus, {
+  updateReturns(returnData: { returnStatus: string; adminReason: string }, id: number) {
+    return this.http.put(`${this.baseUrl}/${id}`, returnData, {
       responseType: 'text',
     });
   }
+
 }

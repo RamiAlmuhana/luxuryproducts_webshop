@@ -1,10 +1,7 @@
 <h1>Welcome admin</h1>
 <p>These returns are pending:</p>
 
-<div
-  class="returns-container"
-  *ngIf="returnsOfUser && returnsOfUser.length > 0; else noReturns"
->
+<div class="returns-container" *ngIf="returnsOfUser && returnsOfUser.length > 0; else noReturns">
   <div class="return" *ngFor="let returnListModel of returnsOfUser">
     <p class="mb-1">Name: {{ returnListModel.user.name }}</p>
     <p class="mb-1">Infix: {{ returnListModel.user.infix }}</p>
@@ -16,12 +13,13 @@
         <div class="product">
           <div class="product-details">
             <p class="return1-name">
-              <span class="fw-bold">Product Name:</span>
-              {{ return1.cartProduct.name }}
+              <span class="fw-bold">Product Name:</span> {{ return1.cartProduct.name }}
             </p>
             <p class="return1-price">
-              <span class="fw-bold">Price:</span>
-              {{ return1.cartProduct.productVariantPrice | currency : "EUR" }}
+              <span class="fw-bold">Price:</span> {{ return1.cartProduct.productVariantPrice | currency : "EUR" }}
+            </p>
+            <p class="return1-reason">
+              <span class="fw-bold">Customer Reason:</span> {{ return1.returnReason }}
             </p>
             <div class="return-image">
               <img src="{{ return1.cartProduct.imageUrl }}" />
@@ -29,17 +27,10 @@
           </div>
         </div>
         <p>
-          <button
-            (click)="onAccept(return1.id)"
-            class="btn btn-md btn-dark w-20"
-          >
+          <button (click)="onAccept(return1.id)" class="btn btn-md btn-dark w-20">
             Accept
           </button>
-          <button
-            (click)="onDenied(return1.id)"
-            class="btn btn-md btn-dark w-20"
-            style="margin-left: 20px"
-          >
+          <button (click)="onDenied(return1.id)" class="btn btn-md btn-dark w-20" style="margin-left: 20px">
             Deny
           </button>
         </p>

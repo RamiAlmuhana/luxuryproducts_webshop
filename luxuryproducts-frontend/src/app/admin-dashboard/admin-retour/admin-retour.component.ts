@@ -66,15 +66,34 @@ export class AdminRetourComponent implements OnInit {
     }
 
 
-    onAccept(returnID: number){
-        this.returnService.updateReturns("Accepted", returnID).subscribe((text) => {
-            alert(text)
-        })
+  onAccept(returnID: number) {
+    const reason = prompt('Please provide a reason for accepting the return:');
+    if (!reason) {
+      alert('Accept reason is required');
+      return;
     }
-    onDenied(returnID: number){
-        this.returnService.updateReturns("Denied", returnID).subscribe((text) => {
-            alert(text)
-        })
+    this.updateReturnStatus("Accepted", reason, returnID);
+  }
+
+  onDenied(returnID: number) {
+    const reason = prompt('Please provide a reason for denying the return:');
+    if (!reason) {
+      alert('Deny reason is required');
+      return;
     }
+    this.updateReturnStatus("Denied", reason, returnID);
+  }
+
+  updateReturnStatus(status: string, reason: string, returnID: number) {
+    const returnData = {
+      returnStatus: status,
+      adminReason: reason,
+    };
+    this.returnService.updateReturns(returnData, returnID).subscribe((text) => {
+      alert(text);
+      this.loadReturns();
+    });
+  }
+
 
 }
