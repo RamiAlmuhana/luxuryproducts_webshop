@@ -25,7 +25,6 @@ export class OrderComponent implements OnInit {
   public products_in_cart: CartProduct[];
   public giftcards_in_cart: CartGiftCard[];
   public order: OrderDTO;
-  // public totalPrice: number;
   public promoCode: string;
   public discountedPrice: number;
 

@@ -13,10 +13,6 @@ export class GiftcardService {
 
   constructor(private http: HttpClient) {}
 
-  // public buyGiftCard(giftCardCode: string, discountAmount: number, imageUrl: string): Observable<any> {
-  //     return this.http.post<any>(this.baseUrl, { code: giftCardCode, discountAmount: discountAmount, imageUrl: imageUrl });
-  // }
-
   public addGiftcardToCart(
     giftCardCode: string,
     discountAmount: number,

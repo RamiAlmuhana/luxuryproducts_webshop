@@ -20,11 +20,6 @@ public class GiftcardController {
         this.giftcardDAO = giftcardDAO;
     }
 
-//    @PostMapping
-//    public ResponseEntity<Giftcard> saveGiftcard(@RequestBody Giftcard giftcard, Principal principal) {
-//        String userEmail = principal.getName();
-//        return ResponseEntity.ok(giftcardDAO.saveGiftcard(giftcard, userEmail));
-//    }
 
     @PostMapping("/validate")
     public ResponseEntity<Giftcard> validateGiftCard(@RequestBody String code) {
