@@ -53,6 +53,45 @@
                 </div>
               </div>
             </div>
+
+            <div
+              *ngFor="let giftcard of giftcards_in_cart; let i = index"
+              class="card mb-4"
+            >
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-3" style="margin-right: 8%">
+                    <img
+                      src="{{ giftcard.imageUrl }}"
+                      class="img-fluid rounded"
+                      alt="Productafbeelding"
+                      style="height: 110px; width: 200px"
+                    />
+                  </div>
+                  <div class="col-md-2" style="margin-right: 4%">
+                    <p class="lead mb-1 smaller">Code</p>
+
+                    <p class="lead mb-1 smaller">*****</p>
+                  </div>
+                  <div class="col-md-3">
+                    <p class="lead mb-1 smaller">Price</p>
+
+                    <p>
+                      {{ giftcard.giftcard.discountAmount | currency : "EUR" }}
+                    </p>
+                  </div>
+
+                  <div class="col-md-2 text-end">
+                    <button
+                      class="btn btn-sm"
+                      (click)="removeGiftcardFromCart(giftcard.id)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Right Column: Promo Code and Actions -->

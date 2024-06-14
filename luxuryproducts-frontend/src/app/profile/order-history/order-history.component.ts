@@ -10,6 +10,7 @@ import { ReturnService } from '../../services/return.service';
 import { OrderUserDTO } from '../../models/order-user-dto.model';
 import { CartProduct } from '../../models/cart-product.model';
 import { OrderRetrievalDTO } from '../../models/order-retrieval-dto.model';
+import { Giftcard } from '../../models/giftcard.model';
 
 @Component({
   selector: 'app-order-history',
@@ -21,6 +22,7 @@ import { OrderRetrievalDTO } from '../../models/order-retrieval-dto.model';
 export class OrderHistoryComponent implements OnInit {
   //orders: Order[]; // Zorg ervoor dat dit het juiste model gebruikt
   orders: OrderUserDTO[];
+  giftcards: Giftcard[] = [];
   public product!: OrderRetrievalDTO;
   public user: User = {
     id: 0,
@@ -52,6 +54,17 @@ export class OrderHistoryComponent implements OnInit {
   loadOrdersIn() {
     this.orderService.getOrdersByCurrentUser().subscribe((orders) => {
       this.orders = orders;
+      this.getAllGiftCards();
+    });
+  }
+
+  getAllGiftCards() {
+    this.orders.forEach((order) => {
+      order.giftcards.forEach((giftcard) => {
+        if (!giftcard.used) {
+          this.giftcards.push(giftcard);
+        }
+      });
     });
   }
 

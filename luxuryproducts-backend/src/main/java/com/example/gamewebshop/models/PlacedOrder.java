@@ -44,7 +44,7 @@ public class PlacedOrder {
     private List<CartProduct> cartProducts = new ArrayList<>();
 
     @OneToMany
-    private List<Giftcard> giftcards = new ArrayList<>();
+    private List<CartGiftcard> cartGiftcards = new ArrayList<>();
 
     private double totalPrice;
     @Column(nullable = true)

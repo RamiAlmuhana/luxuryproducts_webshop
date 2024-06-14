@@ -1,3 +1,5 @@
+import { CartGiftCard } from './cart-gift-card.model';
+
 export class OrderDTO {
   public name: string;
   public infix: string;
@@ -9,4 +11,5 @@ export class OrderDTO {
   public promoCode: string | null;
   public giftCardCode: string | null;
   public discountedPrice: number;
+  public cartGiftcards: CartGiftCard[];
 }

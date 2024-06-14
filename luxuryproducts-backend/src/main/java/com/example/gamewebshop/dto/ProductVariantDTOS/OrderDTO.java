@@ -1,6 +1,8 @@
 // OrderDTO.java
 package com.example.gamewebshop.dto.ProductVariantDTOS;
 
+import com.example.gamewebshop.models.CartGiftcard;
+
 import java.util.List;
 
 public class OrderDTO {
@@ -14,5 +16,5 @@ public class OrderDTO {
     public double discountedPrice;
     public String promoCode;
     public String giftCardCode;
-    public List<Long> giftcardIds;
+    public List<CartGiftcard> cartGiftcards;
 }

@@ -1,29 +1,28 @@
 package com.example.gamewebshop.models;
 
+import com.example.gamewebshop.models.Product.Enums.CartProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Giftcard {
+@Getter
+@Setter
+@Entity
+public class CartGiftcard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String code;
-    private int discountAmount;
-    private int balance;
-
-    private boolean used;
+    @ManyToOne
+    private Giftcard giftcard;
     private String imageUrl;
+    @Enumerated(EnumType.STRING)
+    private CartProductStatus status;
     @ManyToOne
     private CustomUser user;
 }

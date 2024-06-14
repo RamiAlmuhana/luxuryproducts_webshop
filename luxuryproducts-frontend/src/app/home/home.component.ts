@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { GiftcardService } from '../services/giftcard.service';
 import { Category } from '../models/category.model';
 import { CategoryService } from '../services/category.service';
+import { CartgiftcardService } from '../services/cartgiftcard.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private authService: AuthService,
-    private giftcardService: GiftcardService,
+    private cartGiftCardService: CartgiftcardService,
     private categoryService: CategoryService
   ) {}
 
@@ -44,17 +45,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  public generateGiftCard(discountAmount: number) {
+  public generateGiftCard(discountAmount: number, imageUrl: string) {
     if (this.userIsLoggedIn) {
-      this.giftcardService
-        .buyGiftCard(
-          this.cartService.generateGiftCardCode(discountAmount),
-          discountAmount
-        )
-        .subscribe((response: { code: string | null }) => {
-          this.generatedGiftCardCode = response.code;
-          confirm(`Giftcard code: ${this.generatedGiftCardCode}`);
-        });
+      this.cartGiftCardService.addGiftCardtoCart(
+        this.cartService.generateGiftCardCode(discountAmount),
+        discountAmount,
+        imageUrl
+      );
     } else {
       alert('You need to be logged in to generate a gift card.');
     }

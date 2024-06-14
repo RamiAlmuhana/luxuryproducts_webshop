@@ -20,11 +20,11 @@ public class GiftcardController {
         this.giftcardDAO = giftcardDAO;
     }
 
-    @PostMapping
-    public ResponseEntity<Giftcard> saveGiftcard(@RequestBody Giftcard giftcard, Principal principal) {
-        String userEmail = principal.getName();
-        return ResponseEntity.ok(giftcardDAO.saveGiftcard(giftcard, userEmail));
-    }
+//    @PostMapping
+//    public ResponseEntity<Giftcard> saveGiftcard(@RequestBody Giftcard giftcard, Principal principal) {
+//        String userEmail = principal.getName();
+//        return ResponseEntity.ok(giftcardDAO.saveGiftcard(giftcard, userEmail));
+//    }
 
     @PostMapping("/validate")
     public ResponseEntity<Giftcard> validateGiftCard(@RequestBody String code) {
@@ -42,7 +42,7 @@ public class GiftcardController {
         Optional<Giftcard> giftcardOptional = giftcardDAO.findByCode(code);
         if (giftcardOptional.isPresent()) {
             Giftcard giftcard = giftcardOptional.get();
-            if (giftcard.getDiscountAmount() > 0 && !giftcard.isUsed()) {
+            if (giftcard.getBalance() > 0 && !giftcard.isUsed()) {
                 return ResponseEntity.ok(giftcard);
             } else {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
