@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,36 +27,27 @@ public class OrderController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-
-
     @GetMapping
-    public ResponseEntity<List<PlacedOrder>> getAllOrders(){
+    public ResponseEntity<List<PlacedOrder>> getAllOrders() {
         return ResponseEntity.ok(this.orderDAO.getAllOrders());
     }
-
 
     @GetMapping("/myOrders")
     public ResponseEntity<List<OrderUserDTO>> getOrdersByUserPrincipal(Principal principal) {
         CustomUser user = userService.validateUser(principal);
-
-
         List<OrderUserDTO> orders = this.orderDAO.getOrdersByUserId(user);
-
         return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/myOrders/{id}")
     public ResponseEntity<List<OrderUserDTO>> getOrdersByUserId(@PathVariable long id) {
-
         Optional<CustomUser> user = userRepository.findById(id);
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         List<OrderUserDTO> orders = this.orderDAO.getOrdersByUserIdForDashboard(user.get());
-
         return ResponseEntity.ok(orders);
     }
-
 
     @PostMapping
     public ResponseEntity<String> createOrder(@RequestBody OrderDTO orderDTO, Principal principal) {
@@ -67,10 +57,8 @@ public class OrderController {
             return ResponseEntity.ok().body("{\"message\": \"Order created successfully\"}");
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "order couldnt be created " + e
+                    HttpStatus.NOT_FOUND, "order couldn't be created " + e
             );
         }
     }
-
-
 }

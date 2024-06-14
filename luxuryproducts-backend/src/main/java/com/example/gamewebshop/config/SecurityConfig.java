@@ -44,6 +44,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE,"/promocodes/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/orders").permitAll()
                         .requestMatchers(HttpMethod.POST, "/orders").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/giftcards/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/giftcards/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/category/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/brand/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()

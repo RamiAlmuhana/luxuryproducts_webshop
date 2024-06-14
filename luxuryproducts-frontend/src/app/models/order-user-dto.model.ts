@@ -1,3 +1,4 @@
+import { Giftcard } from './giftcard.model';
 import { OrderRetrievalDTO } from './order-retrieval-dto.model';
 import { User } from './user.model';
 
@@ -24,4 +25,5 @@ export class OrderUserDTO {
   public totalPrice: number;
   public discountedPrice: number;
   public promoCode: string;
+  public giftcards: Giftcard[];
 }

@@ -18,6 +18,8 @@ const discountCodesKey: string = 'applied-discount-codes';
 })
 export class CartService {
   private productsInCart: CartProduct[] = [];
+  public $totalPrice: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
   public $productInCart: BehaviorSubject<CartProduct[]> = new BehaviorSubject<
     CartProduct[]
   >([]);
@@ -132,8 +134,17 @@ export class CartService {
       });
   }
 
+  notifyTotalPrice() {
+    this.cartProductService
+      .getTotalPriceOfCartByUser()
+      .subscribe((totalprice) => {
+        this.$totalPrice.next(totalprice);
+      });
+  }
+
   private saveProductsAndNotifyChange(cartproducts: CartProduct[]): void {
     this.productsInCart = cartproducts;
+    this.notifyTotalPrice();
     this.$productInCart.next(cartproducts);
   }
 

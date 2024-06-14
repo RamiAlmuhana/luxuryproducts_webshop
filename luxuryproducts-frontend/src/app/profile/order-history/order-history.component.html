@@ -5,6 +5,8 @@
         class="orders-container"
         *ngIf="orders && orders.length > 0; else noOrders"
       >
+        <h3>Orders</h3>
+        <hr />
         <div class="row">
           <div
             class="col-lg-4 mb-4"
@@ -92,6 +94,34 @@
                     </div>
                   </li>
                 </ul>
+
+                <ul class="products-list list-unstyled">
+                  <li
+                    class="product d-flex align-items-start mb-3"
+                    *ngFor="let giftcard of order.giftcards"
+                  >
+                    <div class="product-details me-3">
+                      <p class="product-name">
+                        <span class="fw-bold">Giftcard code:</span>
+                        {{ giftcard.code }}
+                      </p>
+                      <p class="product-price">
+                        <span class="fw-bold">Price:</span>
+                        {{ giftcard.discountAmount | currency : "EUR" }}
+                      </p>
+                    </div>
+                    <div class="product-image">
+                      <img
+                        src="{{ giftcard.imageUrl }}"
+                        alt="giftCard image"
+                        class="img-fluid"
+                        style="max-width: 100px"
+                      />
+                    </div>
+                  </li>
+                </ul>
+                <hr />
+
                 <p class="order-total">
                   <span class="fw-bold">Total:</span>
                   {{ order.totalPrice | currency : "EUR" }}
@@ -121,6 +151,37 @@
           <p>Geen bestellingen gevonden.</p>
         </div>
       </ng-template>
+    </div>
+
+    <div class="row" *ngIf="giftcards.length > 0">
+      <h3>Available Giftcards</h3>
+      <hr />
+      <div class="main">
+        <ul class="cards">
+          @for (giftcard of giftcards; track $index) {
+          <li class="cards_item" id="item_fig">
+            <div class="card">
+              <div class="card_price">
+                {{ giftcard.balance | currency : "EUR" }}
+              </div>
+              <div class="card_image">
+                <img
+                  src="{{ giftcard.imageUrl }}"
+                  alt="Image of the giftCard in the order"
+                  style="height: 350px; width: 100%"
+                />
+              </div>
+              <div class="card_content">
+                <h2 class="card_title">{{ giftcard.code }}</h2>
+                <div class="card_text">
+                  <p>Webshop Bob x INSOFAD_1</p>
+                </div>
+              </div>
+            </div>
+          </li>
+          }
+        </ul>
+      </div>
     </div>
   </div>
 </div>

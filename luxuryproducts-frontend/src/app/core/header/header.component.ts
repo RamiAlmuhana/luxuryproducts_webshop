@@ -5,6 +5,7 @@ import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
 import { User } from '../../models/user.model';
 import { CartProduct } from '../../models/cart-product.model';
+import { CartgiftcardService } from '../../services/cartgiftcard.service';
 
 @Component({
   selector: 'app-header',
@@ -14,21 +15,25 @@ import { CartProduct } from '../../models/cart-product.model';
 export class HeaderComponent implements OnInit {
   public userIsLoggedIn: boolean = false;
   public isDropdownOpen: boolean = false;
+  public amountOfItemsInCart: number = 0;
   public amountOfProducts: number = 0;
+  public ammountOfGiftcards: number = 0;
   public userRole: string = ''; // Voeg de rol van de gebruiker toe
   loading: boolean = true;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private cartGiftcardService: CartgiftcardService
   ) {}
 
   public ngOnInit(): void {
     this.checkLoginState();
-    console.log(this.userIsLoggedIn + ' hhahahahaha');
     if (this.userIsLoggedIn) {
       this.cartService.updateProductsIncart();
+      this.cartGiftcardService.updateGiftCardsIncart();
+
       this.putProductAmmount();
     } else {
       this.loading = false;
@@ -38,8 +43,20 @@ export class HeaderComponent implements OnInit {
   putProductAmmount() {
     this.cartService.$productInCart.subscribe((cart) => {
       this.amountOfProducts = cart.length;
-      this.loading = false;
+      this.putGiftCardAmount();
     });
+  }
+
+  putGiftCardAmount() {
+    this.cartGiftcardService.$giftCardsInCart.subscribe((cart) => {
+      this.ammountOfGiftcards = cart.length;
+      this.calculateTotalCartItems();
+    });
+  }
+
+  calculateTotalCartItems() {
+    this.amountOfItemsInCart = this.ammountOfGiftcards + this.amountOfProducts;
+    this.loading = false;
   }
 
   public onLogout(): void {
