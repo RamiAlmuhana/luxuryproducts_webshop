@@ -1,6 +1,7 @@
 package com.example.gamewebshop.dto.ProductVariantDTOS;
 
 import com.example.gamewebshop.models.CustomUser;
+import com.example.gamewebshop.models.Giftcard;
 import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
@@ -34,4 +35,6 @@ public class OrderUserDTO {
    public double totalPrice;
    public double discountedPrice;
    public String promoCode;
+
+   public List<Giftcard> giftcards = new ArrayList<>();
 }

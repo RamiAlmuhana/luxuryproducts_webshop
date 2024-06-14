@@ -9,6 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { Product } from '../models/product.model';
 import { CartProduct } from '../models/cart-product.model';
 import { CartproductService } from '../services/cartproduct.service';
+import { Giftcard } from '../models/giftcard.model'; // Assuming you have a Giftcard model
+import { CartGiftCard } from '../models/cart-gift-card.model';
+import { CartgiftcardService } from '../services/cartgiftcard.service';
 
 @Component({
   selector: 'app-cart',
@@ -18,6 +21,8 @@ import { CartproductService } from '../services/cartproduct.service';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
+  public giftcards_in_cart: CartGiftCard[];
+  public loadingTotalPrice = false;
   public products_in_cart: CartProduct[];
   public userIsLoggedIn: boolean = false;
   public amountOfProducts: number = 0;
@@ -47,7 +52,8 @@ export class CartComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private http: HttpClient,
-    private cartProductService: CartproductService
+    private cartProductService: CartproductService,
+    private cartGiftcardService: CartgiftcardService
   ) {}
 
   ngOnInit() {
@@ -56,7 +62,10 @@ export class CartComponent implements OnInit {
     if (this.userIsLoggedIn) {
       this.cartService.updateProductsIncart();
       this.getCartProducts();
+      this.cartGiftcardService.updateGiftCardsIncart();
+      this.getCartGiftCards();
       this.cartService.reapplyDiscountIfApplicable();
+      this.getTotalPrice();
     }
 
     if (this.promoApplied) {
@@ -86,6 +95,12 @@ export class CartComponent implements OnInit {
     }
   }
 
+  public getTotalPrice() {
+    this.cartService.$totalPrice.subscribe((totalprice) => {
+      this.totalPrice = totalprice;
+    });
+  }
+
   public loadLoginState() {
     this.authService.$userIsLoggedIn.subscribe((loginState: boolean) => {
       this.userIsLoggedIn = loginState;
@@ -94,20 +109,31 @@ export class CartComponent implements OnInit {
   public getCartProducts() {
     this.cartService.$productInCart.subscribe((cartProducts) => {
       this.products_in_cart = cartProducts;
-      this.totalPrice = this.getTotalPrice();
       this.amountOfProducts = cartProducts.length;
       this.checkLoginState();
     });
   }
 
+  public getCartGiftCards() {
+    this.cartGiftcardService.$giftCardsInCart.subscribe((cartGiftcards) => {
+      this.giftcards_in_cart = cartGiftcards;
+    });
+  }
+
   public clearCartProductsInBackend() {
     this.cartProductService.deleteAll().subscribe((text) => {
+      console.log(text);
       this.products_in_cart = [];
     });
   }
 
+  public clearCartGiftcardsInbackend() {
+    this.cartGiftcardService.deleteAllGiftcards();
+  }
+
   public clearCart() {
     this.clearCartProductsInBackend();
+    this.clearCartGiftcardsInbackend();
     this.cartService.clearCart();
     this.clearPromoCodeFromLocalStorage();
     this.promoApplied = false;
@@ -116,6 +142,7 @@ export class CartComponent implements OnInit {
     this.promoCodeError = false;
     this.orderError = false;
     this.autoDiscountManuallyRemoved = false;
+    this.totalPrice = 0;
     this.clearDiscount();
     this.removeGiftCard();
     localStorage.removeItem('discountedPrice');
@@ -127,7 +154,7 @@ export class CartComponent implements OnInit {
 
   public removeProductFromCart(product_index: number, categoryId: number) {
     this.cartService.removeProductFromCart(product_index);
-    if (this.products_in_cart.length - 1 == 0) {
+    if (this.products_in_cart.length + this.giftcards_in_cart.length - 1 == 0) {
       this.clearCart();
     }
 
@@ -143,18 +170,24 @@ export class CartComponent implements OnInit {
     this.checkPromoCodeValidity();
   }
 
+  public removeGiftcardFromCart(cartGiftcardId: number) {
+    this.cartGiftcardService.deleteCartGiftCard(cartGiftcardId);
+    if (this.products_in_cart.length + this.giftcards_in_cart.length - 1 == 0) {
+      this.clearCart();
+    }
+
+    if (this.appliedPromoCode) {
+      this.removePromoCode();
+    }
+
+    this.applyAutomaticDiscount();
+    this.checkPromoCodeValidity();
+  }
+
   private clearDiscount() {
     this.appliedDiscountAmount = 0;
     this.appliedDiscountCodes = [];
     this.cartService.clearDiscountFromLocalStorage();
-  }
-
-  public getTotalPrice(): number {
-    var totalPrice = 0;
-    this.products_in_cart.forEach((cartProduct) => {
-      totalPrice += cartProduct.price;
-    });
-    return totalPrice;
   }
 
   public getTotalPriceWithDiscount(): number {
@@ -165,7 +198,7 @@ export class CartComponent implements OnInit {
   }
 
   public onInvalidOrder() {
-    return this.amountOfProducts === 0;
+    return this.products_in_cart.length + this.giftcards_in_cart.length === 0;
   }
 
   public onOrder() {
@@ -192,7 +225,7 @@ export class CartComponent implements OnInit {
       return;
     }
 
-    if (this.products_in_cart.length === 0) {
+    if (this.products_in_cart.length + this.giftcards_in_cart.length === 0) {
       this.promoCodeError = true;
       this.promoCodeErrorMessage = 'No products found';
       return;
@@ -314,6 +347,8 @@ export class CartComponent implements OnInit {
   }
 
   private checkPromoCodeValidity() {
+    this.getTotalPrice();
+
     const total = this.totalPrice;
     console.log(total + ' this is the promoApllied ' + this.minSpendAmount);
     if (this.promoApplied && total < this.minSpendAmount) {
@@ -346,31 +381,36 @@ export class CartComponent implements OnInit {
   }
 
   public applyGiftCard() {
-    const discountAmount = this.cartService.getGiftCardDiscount(
-      this.giftCardCode
-    );
-    if (
-      discountAmount > 0 &&
-      !this.appliedDiscountCodes.includes(this.giftCardCode)
-    ) {
-      this.appliedDiscountAmount += discountAmount;
-      this.appliedDiscountCodes.push(this.giftCardCode);
-      this.cartService.saveDiscountToLocalStorage(
-        this.appliedDiscountAmount,
-        this.appliedDiscountCodes
-      );
+    const url = `${environment.base_url}/giftcards/use`;
+    this.http.post<Giftcard>(url, { code: this.giftCardCode }).subscribe({
+      next: (response) => {
+        if (
+          response.balance > 0 &&
+          !this.appliedDiscountCodes.includes(this.giftCardCode)
+        ) {
+          const discountAmount = Math.min(response.balance, this.totalPrice);
+          this.appliedDiscountAmount += discountAmount;
+          this.appliedDiscountCodes.push(this.giftCardCode);
+          this.cartService.saveDiscountToLocalStorage(
+            this.appliedDiscountAmount,
+            this.appliedDiscountCodes
+          );
 
-      localStorage.setItem('appliedGiftCardCode', this.giftCardCode);
-      localStorage.setItem('giftCardDiscount', discountAmount.toString());
+          localStorage.setItem('appliedGiftCardCode', this.giftCardCode);
+          localStorage.setItem('giftCardDiscount', discountAmount.toString());
 
-      this.appliedGiftCard = true;
-      this.appliedGiftCardCode = this.giftCardCode;
-      this.giftCardDiscount = discountAmount;
-    } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
-      alert('This giftcard code has already been used');
-    } else {
-      alert('Invalid giftcard code');
-    }
+          this.appliedGiftCard = true;
+          this.appliedGiftCardCode = this.giftCardCode;
+          this.giftCardDiscount = discountAmount;
+          alert(`Gift card applied successfully! Discount: ${discountAmount}`);
+        } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
+          alert('This gift card code has already been used');
+        }
+      },
+      error: (err) => {
+        alert('Invalid or already used gift card code');
+      },
+    });
   }
 
   public removeGiftCard() {

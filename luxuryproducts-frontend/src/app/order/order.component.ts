@@ -8,9 +8,10 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Product } from '../models/product.model';
-import { Order } from '../models/order.model';
 import { CartProduct } from '../models/cart-product.model';
 import { OrderDTO } from '../models/order-dto.model';
+import { CartGiftCard } from '../models/cart-gift-card.model';
+import { CartgiftcardService } from '../services/cartgiftcard.service';
 
 @Component({
   selector: 'app-order',
@@ -22,19 +23,22 @@ import { OrderDTO } from '../models/order-dto.model';
 export class OrderComponent implements OnInit {
   public bestelForm: FormGroup;
   public products_in_cart: CartProduct[];
+  public giftcards_in_cart: CartGiftCard[];
   public order: OrderDTO;
-  // public totalPrice: number;
   public promoCode: string;
   public discountedPrice: number;
 
   constructor(
     private cartService: CartService,
+    private cartGiftcardService: CartgiftcardService,
     private router: Router,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.getProductsInCart();
+    this.getCartGiftCards();
+
     this.bestelForm = this.fb.group({
       name: ['', [Validators.required]],
       infix: [''],
@@ -42,6 +46,12 @@ export class OrderComponent implements OnInit {
       zipCode: ['', [Validators.required]],
       houseNumber: ['', [Validators.required, Validators.maxLength(5)]],
       notes: [''],
+    });
+  }
+
+  public getCartGiftCards() {
+    this.cartGiftcardService.$giftCardsInCart.subscribe((cartGiftcards) => {
+      this.giftcards_in_cart = cartGiftcards;
     });
   }
 
@@ -76,10 +86,11 @@ export class OrderComponent implements OnInit {
       notes: formData.notes,
       cartProductId: this.getCartProductids(),
       discountedPrice: JSON.parse(
-        localStorage.getItem('discountedPrice') || ''
+        localStorage.getItem('discountedPrice') || '0'
       ),
       promoCode: localStorage.getItem('promoCode') || '',
       giftCardCode: localStorage.getItem('appliedGiftCardCode') || '',
+      cartGiftcards: this.giftcards_in_cart,
     };
 
     this.addOrder();

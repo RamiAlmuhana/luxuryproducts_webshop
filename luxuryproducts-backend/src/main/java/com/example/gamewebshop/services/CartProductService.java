@@ -8,6 +8,7 @@ import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Enums.CartProductStatus;
 import com.example.gamewebshop.models.Product.Product;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class CartProductService {
     private final CartProductRepository cartProductRepository;
     private final ProductRepository productRepository;
     private final ProductDAO productDAO;
+    private final CartGiftcardService cartGiftcardService;
+
+
 
 
 
@@ -146,12 +150,15 @@ public class CartProductService {
     public Long getTotalPriceOfCartByUser(Long id) {
         List<CartProduct> productsInCart = GetProductsInCartByUserId(id);
 
-        Long totalprice = 0L;
+        long totalprice = 0L;
 
         for (CartProduct cartProduct : productsInCart){
             totalprice += cartProduct.getPrice();
         }
 
-        return totalprice;
+        long totalPriceCartGiftCards = cartGiftcardService.getTotalPrice(id);
+
+
+        return totalprice + totalPriceCartGiftCards;
     }
 }

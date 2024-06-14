@@ -1,8 +1,6 @@
 package com.example.gamewebshop.models;
 
 import com.example.gamewebshop.models.Product.CartProduct;
-import com.example.gamewebshop.models.Product.Product;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -46,6 +42,10 @@ public class PlacedOrder {
 
     @OneToMany
     private List<CartProduct> cartProducts = new ArrayList<>();
+
+    @OneToMany
+    private List<CartGiftcard> cartGiftcards = new ArrayList<>();
+
     private double totalPrice;
     @Column(nullable = true)
     private double discountedPrice;
@@ -64,5 +64,4 @@ public class PlacedOrder {
         this.user = user;
         this.cartProducts = cartProducts;
     }
-
 }
