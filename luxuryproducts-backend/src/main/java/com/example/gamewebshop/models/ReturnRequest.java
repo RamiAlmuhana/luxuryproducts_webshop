@@ -23,6 +23,8 @@ public class ReturnRequest {
     @OneToOne
     private CartProduct cartProduct;
     private String returnStatus;
+    private String returnReason;
+    private String adminReason;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private CustomUser user;

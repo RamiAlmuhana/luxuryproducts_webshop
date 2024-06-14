@@ -5,5 +5,7 @@ export class Return {
   public id: number;
   public cartProduct: OrderRetrievalDTO;
   public returnStatus: string;
+  public returnReason: string;
+  public adminReason: string;
   public user: User;
 }

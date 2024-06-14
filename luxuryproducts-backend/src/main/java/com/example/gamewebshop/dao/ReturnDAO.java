@@ -47,6 +47,7 @@ public class ReturnDAO {
         returnNew.setReturnStatus(return1.returnStatus);
         returnNew.setCartProduct(cartProduct1);
         returnNew.setUser(user);
+        returnNew.setReturnReason(return1.returnReason);
         cartProduct1.setProductReturned(true);
         cartProductRepository.save(cartProduct1);
         
@@ -64,7 +65,7 @@ public class ReturnDAO {
     }
 
 
-    public void updateReturn(String returnStatus, Long id) {
+    public void updateReturn(String returnStatus, String adminReason, Long id) {
         Optional<ReturnRequest> returnRequest = returnRepository.findById(id);
         if (returnRequest.isEmpty()){
             throw new ResponseStatusException(
@@ -73,6 +74,7 @@ public class ReturnDAO {
         }
         ReturnRequest returnRequest1 = returnRequest.get();
         returnRequest1.setReturnStatus(returnStatus);
+        returnRequest1.setAdminReason(adminReason);
 
         CartProduct cartProduct = cartProductService.getCartProductById(returnRequest1.getCartProduct().getId());
 

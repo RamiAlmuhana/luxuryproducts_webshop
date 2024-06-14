@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -28,11 +29,13 @@ public class ReturnController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateReturn(@RequestBody String returnStatus, @PathVariable Long id ){
-        returnDAO.updateReturn(returnStatus, id);
-        return ResponseEntity.ok("status updated to "+ returnStatus);
-
+    public ResponseEntity<String> updateReturn(@RequestBody Map<String, String> returnData, @PathVariable Long id ){
+        String returnStatus = returnData.get("returnStatus");
+        String adminReason = returnData.get("adminReason");
+        returnDAO.updateReturn(returnStatus, adminReason, id);
+        return ResponseEntity.ok("status updated to " + returnStatus + " with reason: " + adminReason);
     }
+
 
     @PostMapping
     public ResponseEntity<String> createReturn(@RequestBody ReturnDTO returnRequest, Principal principal) {

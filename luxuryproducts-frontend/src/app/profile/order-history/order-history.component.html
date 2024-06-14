@@ -55,6 +55,8 @@
                         >
                           Return Denied
                         </p>
+                        <p *ngIf="product.adminReason"><span class="fw-bold">Admin Reason: </span> {{ product.adminReason }}</p>
+                        <p *ngIf="product.returnReason"><span class="fw-bold">Customer Reason: </span> {{ product.returnReason }}</p>
                       </div>
 
                       <button
