@@ -23,10 +23,9 @@ import { ProductsService } from '../../../../services/products.service';
 })
 export class UpdateVariantComponent implements OnInit {
   productForm: FormGroup;
-  products: Product[] = []; // List of products for the select option
-  selectedProduct: Product | null = null; // Currently selected product
-  productVariants: ProductVariant[] = []; // List of variants for the selected product
-  sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  products: Product[] = [];
+  selectedProduct: Product | null = null;
+  productVariants: ProductVariant[] = [];
   colors = ['Black', 'White', 'Silver', 'Gold', 'Red', 'Green', 'Brown'];
   sizeAndFits = [
     'Classic_Fit',

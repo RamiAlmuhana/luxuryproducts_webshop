@@ -26,7 +26,7 @@ export class AddVariantComponent {
 
   // Sample data for the select options
   products: Product[];
-  sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+  // sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   colors = ['Black', 'White', 'Silver', 'Gold', 'Red', 'Green', 'Brown'];
   sizeAndFits = [
     'Classic_Fit',
@@ -80,7 +80,7 @@ export class AddVariantComponent {
 
   addVariation(): void {
     const variationForm = this.fb.group({
-      size: [null, Validators.required],
+      size: ['', Validators.required],
       stock: [0, [Validators.required, Validators.min(0)]],
     });
     this.productVariatieDTOS.push(variationForm);

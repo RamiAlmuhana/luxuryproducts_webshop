@@ -24,7 +24,7 @@ public class ProductVariatie {
 
     private ProductVariant productVariant;
 
-    @ManyToOne
+   @ManyToOne
     private Size size;
 
     private Long quantity_in_stock;

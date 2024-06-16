@@ -57,7 +57,7 @@ public class CartProductService {
         if (!wentThroughLoop) {
             long totalPrice = product.getProductVariants().getFirst().getPrice() * product.getQuantity();
             ProductByIdDTO productByIdDTO = productDAO.checkIfProductHasPromocode(product);
-            CartProduct cartProduct = new CartProduct(product ,product.getQuantity(), totalPrice, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getSize().name(), product.getProductVariants().getFirst().getPrice(), product.getProductVariants().getFirst().getProductImages().getFirst().getImageUrl() ,user, CartProductStatus.InCart, productByIdDTO.categoryId);
+            CartProduct cartProduct = new CartProduct(product ,product.getQuantity(), totalPrice, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getSize(), product.getProductVariants().getFirst().getPrice(), product.getProductVariants().getFirst().getProductImages().getFirst().getImageUrl() ,user, CartProductStatus.InCart, productByIdDTO.categoryId);
             cartProductRepository.save(cartProduct);
         }
 

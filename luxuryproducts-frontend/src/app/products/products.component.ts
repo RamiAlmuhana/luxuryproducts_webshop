@@ -44,7 +44,7 @@ export class ProductsComponent {
     {
       label: 'Category',
       showDropdown: false,
-      items: ['Watches', 'Jewelry', 'Bags', 'Clothes', 'All'],
+      items: ['All', 'Watches', 'Jewelry', 'Bags', 'Clothes'],
     },
     {
       label: 'Brand',
@@ -67,14 +67,7 @@ export class ProductsComponent {
     {
       label: 'Size And Fit',
       showDropdown: false,
-      items: [
-        'Classic_Fit',
-        'Regular_Fit',
-        'Relaxed_Fit',
-        'Slim_Fit',
-        'Loose_Fit',
-        'Tailored_Fit',
-      ],
+      items: ['Relaxed_Fit', 'Loose_Fit', 'Tailored_Fit'],
     },
   ];
 
@@ -132,8 +125,20 @@ export class ProductsComponent {
     this.productsService
       .getProductsBySizeAndFit(item)
       .subscribe((productOfSizeAndFit) => {
-        this.products = productOfSizeAndFit;
+        this.clothesCheck(productOfSizeAndFit);
       });
+  }
+
+  public clothesCheck(products: Product[]): void {
+    var clothesSizeAndFit: Product[] = [];
+    products.forEach((product) => {
+      if (
+        product.productVariants[0].productVariatie[0].size.category == 'clothes'
+      ) {
+        clothesSizeAndFit.push(product);
+      }
+    });
+    this.products = clothesSizeAndFit;
   }
 
   toggleDropdown(button: any) {

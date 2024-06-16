@@ -92,17 +92,12 @@
         >
           <div class="col-md-6 mb-3">
             <label for="size-{{ i }}" class="form-label">Size</label>
-            <select
+            <input
               id="size-{{ i }}"
               formControlName="size"
               class="form-control"
-            >
-              @for (size of sizes; track $index) {
-              <option [value]="$index + 1">
-                {{ size }}
-              </option>
-              }
-            </select>
+              type="text"
+            />
           </div>
           <div class="col-md-6 mb-3">
             <label for="stock-{{ i }}" class="form-label">Stock</label>

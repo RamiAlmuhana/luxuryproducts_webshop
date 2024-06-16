@@ -216,4 +216,10 @@ export class ProductDetailComponent {
       this.showCantbuy = true;
     }
   }
+
+  productIsCloth(productVariant: ProductVariant): boolean {
+    return productVariant.productVariatie[0].size.category == 'clothes'
+      ? true
+      : false;
+  }
 }
