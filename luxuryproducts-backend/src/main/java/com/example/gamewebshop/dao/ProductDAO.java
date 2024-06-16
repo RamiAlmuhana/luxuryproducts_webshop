@@ -140,7 +140,7 @@ public class ProductDAO {
         }
         ProductVariatie productVariatie63rd = new ProductVariatie();
         for (ProductVariatie productVariatie1: productVariantChosen.getProductVariatie()){
-            if (productVariatie1.getSize().getSize().name().equals(size)) {
+            if (productVariatie1.getSize().getSize().equals(size)) {
                 productVariatie63rd = productVariatie1;
             }
         }

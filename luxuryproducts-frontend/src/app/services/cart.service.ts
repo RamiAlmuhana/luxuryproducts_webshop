@@ -99,7 +99,6 @@ export class CartService {
   ) {
     this.calculateTotalPrice((totalprice) => {
       const total = totalprice;
-      console.log(total);
       if (discountType === 'FIXED_AMOUNT') {
         this.totalDiscount = discountValue;
       } else if (discountType === 'PERCENTAGE') {

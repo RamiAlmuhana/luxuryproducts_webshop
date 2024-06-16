@@ -8,7 +8,6 @@ import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.Product.*;
 import com.example.gamewebshop.models.Product.Enums.Colors;
 import com.example.gamewebshop.models.Product.Enums.Fit;
-import com.example.gamewebshop.models.Product.Enums.Sizes;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,14 +69,10 @@ public class AdminService {
 
 
         for (ProductVariatieDTO productVariatieDTO : createProductVariantDTO.productVariatieDTOS) {
-            Optional<Size> size = sizeRepository.findById(Long.valueOf(productVariatieDTO.size));
+            Size size = new Size(productVariatieDTO.size, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getCategory());
 
-            if (size.isEmpty()){
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "No size id"
-                );
-            }
-            ProductVariatie productVariatie = new ProductVariatie(productVariant, size.get(), productVariatieDTO.stock);
+            ProductVariatie productVariatie = new ProductVariatie(productVariant, size, productVariatieDTO.stock);
+            sizeRepository.save(size);
             productVariatieRepository.save(productVariatie);
         }
     }
@@ -153,7 +148,7 @@ public class AdminService {
         }
 
         Optional<SizeAndFit> sizeAndFit = sizeAndFitRepository.findSizeAndFitByFit(Fit.valueOf(updateProductVariatieDTO.sizeAndFit));
-        Optional<Color> color = colorRepository.findColorByName(Colors.valueOf(updateProductVariatieDTO.color));
+        Optional<Color> color = colorRepository.findColorByName(Colors.valueOf(updateProductVariatieDTO.color.toUpperCase()));
 
         if (sizeAndFit.isEmpty() || color.isEmpty()){
             throw new ResponseStatusException(
@@ -177,34 +172,45 @@ public class AdminService {
 
         productVariantRepository.save(productVariant1);
 
+        updateProductVariatie(updateProductVariatieDTO.productVariatieDTOS, productVariant1, product.get());
 
-        for (ProductVariatieDTO productVariatieDTO : updateProductVariatieDTO.productVariatieDTOS) {
-            Optional<Size> size = sizeRepository.findSizeBySize(Sizes.valueOf(productVariatieDTO.size));
+    }
 
+    private void updateProductVariatie(List<ProductVariatieDTO> productVariatieDTOS, ProductVariant productVariant1, Product product) {
+        for (ProductVariatieDTO productVariatieDTO : productVariatieDTOS) {
+            Optional<Size> size = sizeRepository.findSizeBySizeAndCategory(productVariatieDTO.size, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getCategory() );
             if (size.isEmpty()) {
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "No size id"
-                );
-            }
-
-            // Check if a product variation with the same size already exists
-            Optional<ProductVariatie> existingVariatie = productVariant1.getProductVariatie()
-                    .stream()
-                    .filter(variatie -> variatie.getSize().equals(size.get()))
-                    .findFirst();
-
-            if (existingVariatie.isPresent()) {
-                // Update the quantity in stock of the existing product variation
-                ProductVariatie productVariatie = existingVariatie.get();
-                productVariatie.setQuantity_in_stock(productVariatieDTO.stock);
-                productVariatieRepository.save(productVariatie);
+                createNewVariation(productVariatieDTO, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getCategory(), productVariant1);
             } else {
-                // Create a new product variation with the specified size
-                ProductVariatie productVariatienew = new ProductVariatie(productVariant1, size.get(), productVariatieDTO.stock);
-                productVariatieRepository.save(productVariatienew);
+                // Check if a product variation with the same size already exists
+                Optional<ProductVariatie> existingVariatie = productVariant1.getProductVariatie()
+                        .stream()
+                        .filter(variatie -> variatie.getSize().equals(size.get()))
+                        .findFirst();
+
+                if (existingVariatie.isPresent()) {
+                    // Update the quantity in stock of the existing product variation
+                    ProductVariatie productVariatie = existingVariatie.get();
+                    productVariatie.setQuantity_in_stock(productVariatieDTO.stock);
+                    productVariatieRepository.save(productVariatie);
+                }
+                else {
+                    createNewVariation(productVariatieDTO, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getCategory(), productVariant1);
+
+                }
             }
+
 
         }
+    }
+
+    private void createNewVariation(ProductVariatieDTO productVariatieDTO, String category, ProductVariant productVariant) {
+
+        Size newSize = new Size(productVariatieDTO.size, category);
+        ProductVariatie productVariatienew = new ProductVariatie(productVariant, newSize, productVariatieDTO.stock);
+        sizeRepository.save(newSize);
+        productVariatieRepository.save(productVariatienew);
+
     }
 
     public void productionStop(ProductionStopDTO productionStopDTO) {

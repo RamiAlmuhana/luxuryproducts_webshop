@@ -1,13 +1,11 @@
 package com.example.gamewebshop.utils;
 
 import com.example.gamewebshop.Repositorys.*;
-import com.example.gamewebshop.dao.*;
 import com.example.gamewebshop.models.Category;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.models.Product.*;
 import com.example.gamewebshop.models.Product.Enums.Colors;
 import com.example.gamewebshop.models.Product.Enums.Fit;
-import com.example.gamewebshop.models.Product.Enums.Sizes;
 import com.example.gamewebshop.models.PromoCode;
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -85,12 +83,45 @@ public class Seeder {
         Color green = new Color(Colors.GREEN);
         Color brown = new Color(Colors.BROWN);
 
-        Size xs = new Size(Sizes.XS);
-        Size s = new Size(Sizes.S);
-        Size m = new Size(Sizes.M);
-        Size l = new Size(Sizes.L);
-        Size xl = new Size(Sizes.XL);
-        Size xxl = new Size(Sizes.XXL);
+        // Clothing sizes
+        Size xs = new Size("XS", "clothes");
+        Size s = new Size("S", "clothes");
+        Size m = new Size("M", "clothes");
+        Size l = new Size("L", "clothes");
+        Size xl = new Size("XL", "clothes");
+        Size xxl = new Size("XXL", "clothes");
+
+        // bag sizes
+        Size bag_xs = new Size("XS", "bags");
+        Size bag_s = new Size("S", "bags");
+        Size bag_m = new Size("M", "bags");
+        Size bag_l = new Size("L", "bags");
+        Size bag_xl = new Size("XL", "bags");
+        Size bag_xxl = new Size("XXL", "bags");
+
+       // Jewelry sizes
+        Size jewelrySmall1 = new Size("5", "jewelry");
+        Size jewelrySmall2 = new Size("6", "jewelry");
+        Size jewelryMedium1 = new Size("7", "jewelry");
+        Size jewelryMedium2 = new Size("8", "jewelry");
+        Size jewelryLarge1 = new Size("9", "jewelry");
+        Size jewelryLarge2 = new Size("10", "jewelry");
+
+       // Watch sizes
+        Size watchSmall1 = new Size("38mm", "watches");
+        Size watchSmall2 = new Size("40mm", "watches");
+        Size watchMedium1 = new Size("42mm", "watches");
+        Size watchMedium2 = new Size("44mm", "watches");
+        Size watchLarge1 = new Size("46mm", "watches");
+        Size watchLarge2 = new Size("48mm", "watches");
+
+        Size[] sizes = {
+                xs, s, m, l, xl, xxl,
+                bag_xs, bag_s, bag_m, bag_l, bag_xl, bag_xxl,
+                jewelrySmall1, jewelrySmall2, jewelryMedium1, jewelryMedium2, jewelryLarge1, jewelryLarge2,
+                watchSmall1, watchSmall2, watchMedium1, watchMedium2, watchLarge1, watchLarge2
+        };
+
 
         SizeAndFit classic = new SizeAndFit(Fit.Classic_Fit);
         SizeAndFit relaxed = new SizeAndFit(Fit.Relaxed_Fit);
@@ -309,72 +340,73 @@ public class Seeder {
                 image1bags1v1 , image2bags1v1 , image3bags1v1 ,  image4bags1v1, image1bags1v2 , image2bags1v2 , image3bags1v2 , image4bags1v2 , image1bags2v1 , image2bags2v1 , image3bags2v1 , image4bags2v1 , image1bags2v2 , image2bags2v2 , image3bags2v2 , image4bags2v2 , image1clothes1v1, image2clothes1v1, image3clothes1v1, image4clothes1v1, image1clothes1v2, image2clothes1v2, image3clothes1v2, image4clothes1v2, image1clothes2v1, image2clothes2v1, image3clothes2v1, image1clothes2v2, image2clothes2v2, image3clothes2v2, image4clothes2v2  };
 
 
-        ProductVariatie productVariatie1Watch1v1 = new ProductVariatie(watch1v1, s, 50L);
-        ProductVariatie productVariatie2Watch1v1 = new ProductVariatie(watch1v1, m, 50L);
-        ProductVariatie productVariatie3Watch1v1 = new ProductVariatie(watch1v1, l, 50L);
-
-        ProductVariatie productVariatie1Watch1v2 = new ProductVariatie(watch1v2, s, 50L);
-        ProductVariatie productVariatie2Watch1v2 = new ProductVariatie(watch1v2, m,50L);
-        ProductVariatie productVariatie3Watch1v2 = new ProductVariatie(watch1v2, l,50L);
-
-        ProductVariatie productVariatie1Watch2v1 = new ProductVariatie(watch2v1, s,50L);
-        ProductVariatie productVariatie2Watch2v1 = new ProductVariatie(watch2v1, m,50L);
-        ProductVariatie productVariatie3Watch2v1 = new ProductVariatie(watch2v1, l,50L);
-
-        ProductVariatie productVariatie1Watch2v2 = new ProductVariatie(watch2v2, s,50L);
-        ProductVariatie productVariatie2Watch2v2 = new ProductVariatie(watch2v2, m,50L );
-        ProductVariatie productVariatie3Watch2v2 = new ProductVariatie(watch2v2, l,50L);
-
-        ProductVariatie productVariatie1Watch3v1 = new ProductVariatie(watch3v1, s,50L );
-        ProductVariatie productVariatie2Watch3v1 = new ProductVariatie(watch3v1, m,50L);
-        ProductVariatie productVariatie3Watch3v1 = new ProductVariatie(watch3v1, l,50L);
-
-        ProductVariatie productVariatie1Watch3v2 = new ProductVariatie(watch3v2, s,50L);
-        ProductVariatie productVariatie2Watch3v2 = new ProductVariatie(watch3v2, m,50L);
-        ProductVariatie productVariatie3Watch3v2 = new ProductVariatie(watch3v2, l,50L );
+        ProductVariatie productVariatie1Watch1v1 = new ProductVariatie(watch1v1, watchSmall1, 50L);
+        ProductVariatie productVariatie2Watch1v1 = new ProductVariatie(watch1v1, watchMedium1, 50L);
+        ProductVariatie productVariatie3Watch1v1 = new ProductVariatie(watch1v1, watchLarge1, 50L);
 
 
-        ProductVariatie productVariatie1jewelry1v1 = new ProductVariatie(jewelry1v1, s, 50L);
-        ProductVariatie productVariatie2jewelry1v1 = new ProductVariatie(jewelry1v1, m, 50L);
-        ProductVariatie productVariatie3jewelry1v1 = new ProductVariatie(jewelry1v1, l, 50L);
+        ProductVariatie productVariatie1Watch1v2 = new ProductVariatie(watch1v2, watchSmall1, 50L);
+        ProductVariatie productVariatie2Watch1v2 = new ProductVariatie(watch1v2, watchMedium1,50L);
+        ProductVariatie productVariatie3Watch1v2 = new ProductVariatie(watch1v2, watchLarge1,50L);
 
-        ProductVariatie productVariatie1jewelry1v2 = new ProductVariatie(jewelry1v2, s, 50L);
-        ProductVariatie productVariatie2jewelry1v2 = new ProductVariatie(jewelry1v2, m,50L);
-        ProductVariatie productVariatie3jewelry1v2 = new ProductVariatie(jewelry1v2, l,50L);
+        ProductVariatie productVariatie1Watch2v1 = new ProductVariatie(watch2v1, watchSmall1,50L);
+        ProductVariatie productVariatie2Watch2v1 = new ProductVariatie(watch2v1, watchMedium1,50L);
+        ProductVariatie productVariatie3Watch2v1 = new ProductVariatie(watch2v1, watchLarge1,50L);
 
-        ProductVariatie productVariatie1jewelry2v1 = new ProductVariatie(jewelry2v1, s,50L);
-        ProductVariatie productVariatie2jewelry2v1 = new ProductVariatie(jewelry2v1, m,50L);
-        ProductVariatie productVariatie3jewelry2v1 = new ProductVariatie(jewelry2v1, l,50L);
+        ProductVariatie productVariatie1Watch2v2 = new ProductVariatie(watch2v2, watchSmall1,50L);
+        ProductVariatie productVariatie2Watch2v2 = new ProductVariatie(watch2v2, watchMedium2,50L );
+        ProductVariatie productVariatie3Watch2v2 = new ProductVariatie(watch2v2, watchLarge1,50L);
 
-        ProductVariatie productVariatie1jewelry2v2 = new ProductVariatie(jewelry2v2, s,50L);
-        ProductVariatie productVariatie2jewelry2v2 = new ProductVariatie(jewelry2v2, m,50L );
-        ProductVariatie productVariatie3jewelry2v2 = new ProductVariatie(jewelry2v2, l,50L);
+        ProductVariatie productVariatie1Watch3v1 = new ProductVariatie(watch3v1, watchSmall2,50L );
+        ProductVariatie productVariatie2Watch3v1 = new ProductVariatie(watch3v1, watchMedium2,50L);
+        ProductVariatie productVariatie3Watch3v1 = new ProductVariatie(watch3v1, watchLarge2,50L);
 
-        ProductVariatie productVariatie1jewelry3v1 = new ProductVariatie(jewelry3v1, s,50L );
-        ProductVariatie productVariatie2jewelry3v1 = new ProductVariatie(jewelry3v1, m,50L);
-        ProductVariatie productVariatie3jewelry3v1 = new ProductVariatie(jewelry3v1, l,50L);
-
-        ProductVariatie productVariatie1jewelry3v2 = new ProductVariatie(jewelry3v2, s,50L);
-        ProductVariatie productVariatie2jewelry3v2 = new ProductVariatie(jewelry3v2, m,50L);
-        ProductVariatie productVariatie3jewelry3v2 = new ProductVariatie(jewelry3v2, l,50L );
+        ProductVariatie productVariatie1Watch3v2 = new ProductVariatie(watch3v2, watchSmall2,50L);
+        ProductVariatie productVariatie2Watch3v2 = new ProductVariatie(watch3v2, watchMedium2,50L);
+        ProductVariatie productVariatie3Watch3v2 = new ProductVariatie(watch3v2, watchLarge2,50L );
 
 
+        ProductVariatie productVariatie1jewelry1v1 = new ProductVariatie(jewelry1v1, jewelrySmall1, 50L);
+        ProductVariatie productVariatie2jewelry1v1 = new ProductVariatie(jewelry1v1, jewelryMedium1, 50L);
+        ProductVariatie productVariatie3jewelry1v1 = new ProductVariatie(jewelry1v1, jewelryLarge1, 50L);
 
-        ProductVariatie productVariatie1bags1v1 = new ProductVariatie(bags1v1, s, 50L);
-        ProductVariatie productVariatie2bags1v1 = new ProductVariatie(bags1v1, m, 50L);
-        ProductVariatie productVariatie3bags1v1 = new ProductVariatie(bags1v1, l, 50L);
+        ProductVariatie productVariatie1jewelry1v2 = new ProductVariatie(jewelry1v2, jewelrySmall2, 50L);
+        ProductVariatie productVariatie2jewelry1v2 = new ProductVariatie(jewelry1v2, jewelryMedium2,50L);
+        ProductVariatie productVariatie3jewelry1v2 = new ProductVariatie(jewelry1v2, jewelryLarge2,50L);
 
-        ProductVariatie productVariatie1bags1v2 = new ProductVariatie(bags1v2, s, 50L);
-        ProductVariatie productVariatie2bags1v2 = new ProductVariatie(bags1v2, m,50L);
-        ProductVariatie productVariatie3bags1v2 = new ProductVariatie(bags1v2, l,50L);
+        ProductVariatie productVariatie1jewelry2v1 = new ProductVariatie(jewelry2v1, jewelrySmall1,50L);
+        ProductVariatie productVariatie2jewelry2v1 = new ProductVariatie(jewelry2v1, jewelrySmall2,50L);
+        ProductVariatie productVariatie3jewelry2v1 = new ProductVariatie(jewelry2v1, jewelryLarge1,50L);
 
-        ProductVariatie productVariatie1bags2v1 = new ProductVariatie(bags2v1, s,50L);
-        ProductVariatie productVariatie2bags2v1 = new ProductVariatie(bags2v1, m,50L);
-        ProductVariatie productVariatie3bags2v1 = new ProductVariatie(bags2v1, l,50L);
+        ProductVariatie productVariatie1jewelry2v2 = new ProductVariatie(jewelry2v2, jewelrySmall1,50L);
+        ProductVariatie productVariatie2jewelry2v2 = new ProductVariatie(jewelry2v2, jewelryMedium1,50L );
+        ProductVariatie productVariatie3jewelry2v2 = new ProductVariatie(jewelry2v2, jewelryLarge1,50L);
 
-        ProductVariatie productVariatie1bags2v2 = new ProductVariatie(bags2v2, s,50L);
-        ProductVariatie productVariatie2bags2v2 = new ProductVariatie(bags2v2, m,50L );
-        ProductVariatie productVariatie3bags2v2 = new ProductVariatie(bags2v2, l,50L);
+        ProductVariatie productVariatie1jewelry3v1 = new ProductVariatie(jewelry3v1, jewelrySmall1,50L );
+        ProductVariatie productVariatie2jewelry3v1 = new ProductVariatie(jewelry3v1, jewelryMedium1,50L);
+        ProductVariatie productVariatie3jewelry3v1 = new ProductVariatie(jewelry3v1, jewelryLarge1,50L);
+
+        ProductVariatie productVariatie1jewelry3v2 = new ProductVariatie(jewelry3v2, jewelrySmall2,50L);
+        ProductVariatie productVariatie2jewelry3v2 = new ProductVariatie(jewelry3v2, jewelryMedium1,50L);
+        ProductVariatie productVariatie3jewelry3v2 = new ProductVariatie(jewelry3v2, jewelryLarge1,50L );
+
+
+
+        ProductVariatie productVariatie1bags1v1 = new ProductVariatie(bags1v1, bag_s, 50L);
+        ProductVariatie productVariatie2bags1v1 = new ProductVariatie(bags1v1, bag_m, 50L);
+        ProductVariatie productVariatie3bags1v1 = new ProductVariatie(bags1v1, bag_l, 50L);
+
+        ProductVariatie productVariatie1bags1v2 = new ProductVariatie(bags1v2, bag_s, 50L);
+        ProductVariatie productVariatie2bags1v2 = new ProductVariatie(bags1v2, bag_m,50L);
+        ProductVariatie productVariatie3bags1v2 = new ProductVariatie(bags1v2, bag_l,50L);
+
+        ProductVariatie productVariatie1bags2v1 = new ProductVariatie(bags2v1, bag_s,50L);
+        ProductVariatie productVariatie2bags2v1 = new ProductVariatie(bags2v1, bag_m,50L);
+        ProductVariatie productVariatie3bags2v1 = new ProductVariatie(bags2v1, bag_l,50L);
+
+        ProductVariatie productVariatie1bags2v2 = new ProductVariatie(bags2v2, bag_s,50L);
+        ProductVariatie productVariatie2bags2v2 = new ProductVariatie(bags2v2, bag_m,50L );
+        ProductVariatie productVariatie3bags2v2 = new ProductVariatie(bags2v2, bag_l,50L);
 
         ProductVariatie productVariatie1clothes1v1 = new ProductVariatie(clothes1v1, xs, 50L);
         ProductVariatie productVariatie2clothes1v1 = new ProductVariatie(clothes1v1, s, 50L);
@@ -430,12 +462,9 @@ public class Seeder {
         colorRepository.save(green);
         colorRepository.save(brown);
 
-        sizeRepository.save(xs);
-        sizeRepository.save(s);
-        sizeRepository.save(m);
-        sizeRepository.save(l);
-        sizeRepository.save(xl);
-        sizeRepository.save(xxl);
+        sizeRepository.saveAll(Arrays.asList(sizes));
+
+
 
         sizeAndFitRepository.save(classic);
         sizeAndFitRepository.save(regular);

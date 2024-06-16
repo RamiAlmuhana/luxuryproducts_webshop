@@ -1,6 +1,6 @@
 package com.example.gamewebshop.models.Product;
 
-import com.example.gamewebshop.models.Product.Enums.Sizes;
+import com.example.gamewebshop.models.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,10 +17,13 @@ public class Size {
     @GeneratedValue
     private long id;
 
-    @Enumerated(EnumType.STRING)
-    private Sizes size;
+    private String size;
 
-    public Size(Sizes size) {
+
+    private String category;
+
+    public Size(String size, String category) {
         this.size = size;
+        this.category = category;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.gamewebshop.models;
 
 import com.example.gamewebshop.models.Product.Product;
+import com.example.gamewebshop.models.Product.Size;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class Category {
 
     @OneToMany(cascade=ALL, mappedBy="category")
     private List<Product> products;
+
 
     public Category(String imageUrl, String description, String name) {
         this.imageUrl = imageUrl;

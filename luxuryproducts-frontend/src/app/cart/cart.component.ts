@@ -198,7 +198,10 @@ export class CartComponent implements OnInit {
   }
 
   public onInvalidOrder() {
-    return this.products_in_cart.length + this.giftcards_in_cart.length === 0;
+    return this.products_in_cart == undefined &&
+      this.giftcards_in_cart == undefined
+      ? 0
+      : this.products_in_cart.length + this.giftcards_in_cart.length === 0;
   }
 
   public onOrder() {
@@ -350,7 +353,6 @@ export class CartComponent implements OnInit {
     this.getTotalPrice();
 
     const total = this.totalPrice;
-    console.log(total + ' this is the promoApllied ' + this.minSpendAmount);
     if (this.promoApplied && total < this.minSpendAmount) {
       setTimeout(() => {
         this.removePromoCode();

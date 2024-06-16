@@ -119,17 +119,14 @@
         >
           <div class="col-md-6 mb-3">
             <label for="size-{{ i }}" class="form-label">Size</label>
-            <select
+            <input
               id="size-{{ i }}"
               name="size"
               formControlName="size"
+              type="text"
               class="form-control"
               [disabled]="i < existingProductVariationsCount"
-            >
-              <option *ngFor="let size of sizes" [value]="size">
-                {{ size }}
-              </option>
-            </select>
+            />
           </div>
 
           <div class="col-md-6 mb-3">

@@ -36,7 +36,10 @@
       <p>
         Color: <span style="font-weight: bold"> {{ getColor() }}</span>
       </p>
-      <p style="margin-bottom: 5%">
+      <p
+        *ngIf="productIsCloth(product.productVariants[productVariantIndex])"
+        style="margin-bottom: 5%"
+      >
         item fit: <span style="font-weight: bold"> {{ getSizeAndFit() }}</span>
       </p>
 
