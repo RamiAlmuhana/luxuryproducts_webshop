@@ -142,6 +142,7 @@ export class ProductDetailComponent {
   }
 
   filterBrand(brands: Brand[]) {
+    console.log(brands);
     brands.forEach((brand) => {
       brand.product.forEach((product1) => {
         if (product1.name == this.product.name) {

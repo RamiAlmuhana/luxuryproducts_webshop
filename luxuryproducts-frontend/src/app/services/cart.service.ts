@@ -23,6 +23,7 @@ export class CartService {
   public $productInCart: BehaviorSubject<CartProduct[]> = new BehaviorSubject<
     CartProduct[]
   >([]);
+
   public totalPrice: number;
   public totalDiscount: number = 0;
   public totalPriceWithDiscount: number;

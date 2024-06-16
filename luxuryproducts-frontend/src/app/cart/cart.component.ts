@@ -153,10 +153,9 @@ export class CartComponent implements OnInit {
   }
 
   public removeProductFromCart(product_index: number, categoryId: number) {
-    this.cartService.removeProductFromCart(product_index);
-    if (this.products_in_cart.length + this.giftcards_in_cart.length - 1 == 0) {
-      this.clearCart();
-    }
+    this.products_in_cart.length + this.giftcards_in_cart.length - 1 == 0
+      ? this.clearCart()
+      : this.cartService.removeProductFromCart(product_index);
 
     const hasProductInCategory = this.products_in_cart.some(
       (product) => product.categoryId == categoryId
@@ -165,21 +164,20 @@ export class CartComponent implements OnInit {
     if (!hasProductInCategory && this.appliedPromoCode) {
       this.removePromoCode();
     }
-
-    this.applyAutomaticDiscount();
-    this.checkPromoCodeValidity();
+    this.onRemoveItemValidator();
   }
 
   public removeGiftcardFromCart(cartGiftcardId: number) {
-    this.cartGiftcardService.deleteCartGiftCard(cartGiftcardId);
-    if (this.products_in_cart.length + this.giftcards_in_cart.length - 1 == 0) {
-      this.clearCart();
-    }
-
+    this.products_in_cart.length + this.giftcards_in_cart.length - 1 == 0
+      ? this.clearCart()
+      : this.cartGiftcardService.deleteCartGiftCard(cartGiftcardId);
     if (this.appliedPromoCode) {
       this.removePromoCode();
     }
+    this.onRemoveItemValidator();
+  }
 
+  onRemoveItemValidator() {
     this.applyAutomaticDiscount();
     this.checkPromoCodeValidity();
   }
