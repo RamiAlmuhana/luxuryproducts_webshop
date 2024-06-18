@@ -223,7 +223,6 @@ public class AdminService {
         }
 
 
-
         Optional<ProductVariatie> productVariatie = productVariatieRepository.findById(Long.valueOf(productionStopDTO.productVariatieIndex));
 
         if (productVariatie.isEmpty()){
@@ -233,7 +232,6 @@ public class AdminService {
         }
         ProductVariatie productVariatie1 = productVariatie.get();
 
-        log.info(String.valueOf(Boolean.valueOf(productionStopDTO.productionStop)));
         productVariatie1.setProductionStop(Boolean.valueOf(productionStopDTO.productionStop));
 
         productVariatieRepository.save(productVariatie1);

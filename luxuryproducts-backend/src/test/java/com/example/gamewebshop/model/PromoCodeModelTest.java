@@ -1,4 +1,4 @@
-package com.example.gamewebshop;
+package com.example.gamewebshop.model;
 
 import com.example.gamewebshop.models.Category;
 import com.example.gamewebshop.models.PromoCode;

@@ -1,4 +1,4 @@
-package com.example.gamewebshop;
+package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.controller.OrderController;
 import com.example.gamewebshop.dao.OrderDAO;
@@ -150,6 +150,7 @@ public class OrderControllerTest {
 
     @Test
     public void should_throw_exception_when_order_creation_fails() {
+
         // Arrange
         CustomUser user = new CustomUser();
         user.setEmail("test@example.com");
@@ -170,5 +171,6 @@ public class OrderControllerTest {
 
         // Verify
         verify(orderDAO, times(1)).saveOrderWithProducts(orderDTO, "test@example.com");
+
     }
 }

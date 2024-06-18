@@ -1,4 +1,4 @@
-package com.example.gamewebshop;
+package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.controller.PromoCodeController;
 import com.example.gamewebshop.Repositorys.PromoCodeRepository;

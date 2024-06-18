@@ -1,4 +1,4 @@
-package com.example.gamewebshop;
+package com.example.gamewebshop.dao;
 
 import com.example.gamewebshop.dao.GiftcardDAO;
 import com.example.gamewebshop.dao.OrderDAO;
@@ -8,14 +8,17 @@ import com.example.gamewebshop.dao.PromoCodeDAO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.OrderUserDTO;
 import com.example.gamewebshop.models.CustomUser;
+import com.example.gamewebshop.models.Giftcard;
 import com.example.gamewebshop.models.PlacedOrder;
 import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.PromoCode;
 import com.example.gamewebshop.services.CartGiftcardService;
 import com.example.gamewebshop.services.CartProductService;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -167,4 +170,55 @@ public class OrderDAOTest {
 
         assertThat(exception.getReason(), is("Total price does not meet the minimum spend amount for this promo code"));
     }
+
+//    @Test
+//    void should_save_all_cartproducts_when_placing_order() {
+//
+//        // arrange
+//        OrderDTO orderDTO = new OrderDTO();
+//
+//        List<CartProduct> cartProducts = new ArrayList<>();
+//        orderDTO.giftCardCode = "wdkowedo";
+//        orderDTO.cartProductId = new long[]{1L, 2L, 3L, 4L};
+//        String userEmail = "richmail@test.com";
+//        Giftcard giftcard = new Giftcard();
+//        giftcard.setBalance(500);
+//        giftcard.setUsed(false);
+//        PromoCode promoCode = new PromoCode();
+//        promoCode.setCode("yap1234yap");
+//        promoCode.setDiscount(200);
+//        promoCode.setUsageCount(1);
+//        promoCode.setMaxUsageCount(4);
+//        promoCode.setMinSpendAmount(50);
+//        promoCode.setType(PromoCode.PromoCodeType.FIXED_AMOUNT);
+//        int expectedResult = 4;
+//
+//
+//
+//        // stubs
+//        when(this.userRepository.findByEmail(userEmail)).thenReturn(new CustomUser());
+//        doReturn(cartProducts).when(orderDTO1.cartProductId);
+//        when(this.cartProductService.getTotalPriceOfCartByUser(anyLong())).thenReturn(1000L);
+//
+//
+//        when(this.giftcardRepository.findByCode(anyString())).thenReturn(Optional.of(giftcard));
+//        when(this.promoCodeDAO.getPromoCodeByCode(anyString())).thenReturn(Optional.of(promoCode));
+//        when(this.cartGiftcardService.getTotalPrice(anyLong())).thenReturn(500L);
+//
+//        //        when(this.cartGiftcardService.changeCartGiftCardStatus(anyList()));
+//
+//
+//        // act
+//        orderDAO.saveOrderWithProducts(orderDTO, userEmail);
+//
+//        // assert
+//
+//
+//        ArgumentCaptor<PlacedOrder> placedOrderArgumentCaptor = ArgumentCaptor.forClass(PlacedOrder.class);
+//        verify(this.orderRepository).save(placedOrderArgumentCaptor.capture());
+//        PlacedOrder capturedPlacedOrder = placedOrderArgumentCaptor.getValue();
+//        AssertionsForClassTypes.assertThat(capturedPlacedOrder.getCartGiftcards().size()).isEqualTo(expectedResult);
+//
+//
+//    }
 }
