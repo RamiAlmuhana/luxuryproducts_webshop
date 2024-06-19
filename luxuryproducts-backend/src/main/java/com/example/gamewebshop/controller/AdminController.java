@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @AllArgsConstructor
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 @RequestMapping("/admin")
 public class AdminController {
 
