@@ -7,4 +7,4 @@ luxuryproducts-frontend/dist
 luxuryproducts-backend/.idea
 luxuryproducts-backend/.mvn
 luxuryproducts-backend/target
-luxuryproducts-backend/resources
+luxuryproducts-backend/src/main/resources
