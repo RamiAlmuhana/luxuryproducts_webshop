@@ -1,0 +1,183 @@
+.order {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.order-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.order-id {
+  margin-top: 0;
+}
+
+.customer-info {
+  margin-bottom: 20px;
+}
+
+.customer-name {
+  margin-top: 0;
+}
+
+.customer-address {
+  margin-bottom: 5px;
+}
+
+.customer-notes {
+  margin-top: 0;
+}
+
+.products-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid #dee2e6;
+}
+
+.product-details {
+  flex: 1;
+}
+
+.product-name {
+  margin: 0;
+}
+
+.product-price {
+  margin: 5px 0;
+}
+
+.product-image img {
+  max-width: 100px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.no-orders-message {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  background-color: #324968;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+}
+
+.main {
+  margin: 0 auto;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cards_item {
+  display: flex;
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card_image {
+  max-height: 250px;
+  margin-top: -24px;
+  img {
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    top: -100px;
+    background: linear-gradient(0deg, #091014 10%, rgba(0, 0, 0, 0) 100%);
+  }
+}
+
+.card {
+  background-color: #091014;
+  border-radius: 0.25rem;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card_content {
+  padding: 1rem;
+  z-index: 1;
+  display: block;
+}
+
+.card_title {
+  // font-family: "Lobster", cursive;
+  font-size: 72px;
+  line-height: 72px;
+  margin-top: -50px;
+  margin-bottom: 24px;
+  text-shadow: black 1px 0 15px;
+  color: white;
+}
+
+.card_text {
+  color: #dddacb;
+  font-family: "Raleway", sans-serif;
+  font-weight: 200;
+  p {
+    max-width: 700px;
+  }
+}
+
+.card_price {
+  position: relative;
+  top: 10px;
+  right: 16px;
+  text-align: right;
+  color: white;
+  font-family: "Raleway", sans-serif;
+  height: 24px;
+  font-size: 36px;
+  font-weight: 400;
+  text-shadow: black 3px 0px 6px;
+}
+
+#item_fig .card:after {
+  content: "Seasonal";
+  font-family: "Raleway", sans-serif;
+  color: rgba(234, 225, 175, 0.8);
+  font-weight: 600;
+  // font-style: italic;
+  text-transform: uppercase;
+  display: block;
+  width: 15ch;
+  height: 1.5em;
+  padding: 0.2em 0.4em;
+  position: relative;
+  bottom: calc(100% - 2.5em);
+  left: 1em;
+}

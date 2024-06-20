@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { CartProduct } from '../../../../models/cart-product.model';
 import { User } from '../../../../models/user.model';
 import { AdminService } from '../../../../services/admin.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -33,11 +34,11 @@ export class DashboardComponent implements OnInit {
     this.viewOrder = true;
   }
 
-  calculateTotal(products: CartProduct[]): number {
-    let total = 0;
-    for (let product of products) {
-      total += product.price;
-    }
-    return total;
-  }
+  // calculateTotal(products: CartProduct[]): number {
+  //   let total = 0;
+  //   for (let product of products) {
+  //     total += product.price;
+  //   }
+  //   return total;
+  // }
 }

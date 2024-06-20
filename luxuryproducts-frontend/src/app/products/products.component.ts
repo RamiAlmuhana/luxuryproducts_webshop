@@ -106,6 +106,7 @@ export class ProductsComponent {
       return;
     }
     this.categoryService.getCategorybyName(item).subscribe((category) => {
+      console.log(item);
       this.products = category.products;
     });
   }

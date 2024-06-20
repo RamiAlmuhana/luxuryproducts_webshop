@@ -7,7 +7,6 @@ import com.example.gamewebshop.dto.ProductVariantDTOS.OrderUserDTO;
 import com.example.gamewebshop.models.*;
 import com.example.gamewebshop.models.Product.CartProduct;
 import com.example.gamewebshop.models.Product.Enums.CartProductStatus;
-import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.services.CartGiftcardService;
 import com.example.gamewebshop.services.CartProductService;
 import jakarta.transaction.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 @AllArgsConstructor
@@ -179,7 +177,7 @@ public class OrderDAO {
         }
     }
 
-    private List<CartProduct> validateCartproductIds(List<Long> cartproductIds) {
+    private List<CartProduct> validateCartproductIds(long[] cartproductIds) {
         List<CartProduct> cartproducts = new ArrayList<>();
 
         for (Long id: cartproductIds){

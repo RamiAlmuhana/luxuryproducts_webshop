@@ -12,7 +12,7 @@ public class OrderDTO {
     public String zipcode;
     public int houseNumber;
     public String notes;
-    public List<Long> cartProductId;
+    public long[] cartProductId;
     public double discountedPrice;
     public String promoCode;
     public String giftCardCode;

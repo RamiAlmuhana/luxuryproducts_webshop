@@ -6,7 +6,6 @@ import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { FormsModule } from '@angular/forms';
-import { Product } from '../models/product.model';
 import { CartProduct } from '../models/cart-product.model';
 import { CartproductService } from '../services/cartproduct.service';
 import { Giftcard } from '../models/giftcard.model'; // Assuming you have a Giftcard model
@@ -46,6 +45,7 @@ export class CartComponent implements OnInit {
   public appliedGiftCardCode: string = '';
   public giftCardDiscount: number = 0;
   public totalPrice: number;
+  public newTotalPrice: number;
 
   constructor(
     private cartService: CartService,
@@ -54,20 +54,21 @@ export class CartComponent implements OnInit {
     private http: HttpClient,
     private cartProductService: CartproductService,
     private cartGiftcardService: CartgiftcardService
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.loadLoginState();
 
     if (this.userIsLoggedIn) {
+      this.getTotalPrice();
+
       this.cartService.updateProductsIncart();
       this.getCartProducts();
       this.cartGiftcardService.updateGiftCardsIncart();
       this.getCartGiftCards();
       this.cartService.reapplyDiscountIfApplicable();
-      this.getTotalPrice();
     }
+  }
 
+  ngOnInit() {
     if (this.promoApplied) {
       this.discount = parseFloat(this.displayedDiscount);
 
@@ -77,8 +78,6 @@ export class CartComponent implements OnInit {
     } else if (!this.updatingDiscount && !this.autoDiscountManuallyRemoved) {
       this.applyAutomaticDiscount();
     }
-
-    this.checkPromoCodeValidity();
 
     const { discountAmount, discountCodes } =
       this.cartService.loadDiscountFromLocalStorage();
@@ -97,7 +96,11 @@ export class CartComponent implements OnInit {
 
   public getTotalPrice() {
     this.cartService.$totalPrice.subscribe((totalprice) => {
-      this.totalPrice = totalprice;
+      if (totalprice) {
+        this.totalPrice = totalprice;
+        this.checkPromoCodeValidity();
+        this.getTotalPriceWithDiscount();
+      }
     });
   }
 
@@ -122,7 +125,6 @@ export class CartComponent implements OnInit {
 
   public clearCartProductsInBackend() {
     this.cartProductService.deleteAll().subscribe((text) => {
-      console.log(text);
       this.products_in_cart = [];
     });
   }
@@ -188,11 +190,10 @@ export class CartComponent implements OnInit {
     this.cartService.clearDiscountFromLocalStorage();
   }
 
-  public getTotalPriceWithDiscount(): number {
+  public getTotalPriceWithDiscount(): void {
     let total = this.totalPrice;
     total -= this.discount + this.appliedDiscountAmount;
-    localStorage.setItem('discountedPrice', Math.max(total, 0).toString());
-    return Math.max(total, 0);
+    this.newTotalPrice = Math.max(total, 0);
   }
 
   public onInvalidOrder() {
@@ -279,7 +280,7 @@ export class CartComponent implements OnInit {
               this.discount = discount;
               this.minSpendAmount = response.minSpendAmount;
               this.cartService.applyDiscount(
-                this.discount,
+                response.discount,
                 response.type as 'FIXED_AMOUNT' | 'PERCENTAGE',
                 this.promoCode
               );
@@ -291,6 +292,11 @@ export class CartComponent implements OnInit {
                 'minSpendAmount',
                 this.minSpendAmount.toString()
               );
+              localStorage.setItem(
+                'discountedPrice',
+                Math.max(discount, 0).toString()
+              );
+              this.getTotalPriceWithDiscount();
             } else {
               this.promoCodeError = true;
               this.promoCodeErrorMessage =
@@ -316,6 +322,7 @@ export class CartComponent implements OnInit {
     this.appliedPromoCode = '';
     this.promoCodeError = false;
     this.autoDiscountManuallyRemoved = true;
+    this.getTotalPriceWithDiscount();
   }
 
   private checkPromoApplied(): boolean {
@@ -348,9 +355,7 @@ export class CartComponent implements OnInit {
   }
 
   private checkPromoCodeValidity() {
-    this.getTotalPrice();
-
-    const total = this.totalPrice;
+    let total = this.totalPrice;
     if (this.promoApplied && total < this.minSpendAmount) {
       setTimeout(() => {
         this.removePromoCode();
@@ -389,8 +394,10 @@ export class CartComponent implements OnInit {
           !this.appliedDiscountCodes.includes(this.giftCardCode)
         ) {
           const discountAmount = Math.min(response.balance, this.totalPrice);
+
           this.appliedDiscountAmount += discountAmount;
           this.appliedDiscountCodes.push(this.giftCardCode);
+
           this.cartService.saveDiscountToLocalStorage(
             this.appliedDiscountAmount,
             this.appliedDiscountCodes
@@ -402,6 +409,7 @@ export class CartComponent implements OnInit {
           this.appliedGiftCard = true;
           this.appliedGiftCardCode = this.giftCardCode;
           this.giftCardDiscount = discountAmount;
+          this.getTotalPriceWithDiscount();
           alert(`Gift card applied successfully! Discount: ${discountAmount}`);
         } else if (this.appliedDiscountCodes.includes(this.giftCardCode)) {
           alert('This gift card code has already been used');
@@ -421,6 +429,7 @@ export class CartComponent implements OnInit {
     this.giftCardDiscount = 0;
     this.appliedDiscountAmount = 0;
     this.appliedDiscountCodes = [];
+    this.getTotalPriceWithDiscount();
     this.cartService.clearDiscountFromLocalStorage();
   }
 }

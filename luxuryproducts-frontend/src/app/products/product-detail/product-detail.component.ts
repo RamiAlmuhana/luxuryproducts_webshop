@@ -61,7 +61,6 @@ export class ProductDetailComponent {
     this.checkLoginState();
     this.loadproductIdandCartProductId();
     this.loadproduct();
-    this.loadBrands();
   }
   public loadproductIdandCartProductId() {
     this.activatedRoute.params.subscribe((params) => {
@@ -74,6 +73,7 @@ export class ProductDetailComponent {
       .getProductByIndex(this.productId)
       .subscribe((product: Product) => {
         this.product = product;
+        this.loadBrands();
       });
   }
   public loadBrands() {
@@ -142,7 +142,6 @@ export class ProductDetailComponent {
   }
 
   filterBrand(brands: Brand[]) {
-    console.log(brands);
     brands.forEach((brand) => {
       brand.product.forEach((product1) => {
         if (product1.name == this.product.name) {

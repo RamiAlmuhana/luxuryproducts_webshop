@@ -17,6 +17,7 @@ const discountCodesKey: string = 'applied-discount-codes';
   providedIn: 'root',
 })
 export class CartService {
+  public clearCartBool = false;
   private productsInCart: CartProduct[] = [];
   public $totalPrice: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
@@ -76,6 +77,7 @@ export class CartService {
   }
 
   public clearCart() {
+    this.clearCartBool = true;
     this.productsInCart = [];
     localStorage.removeItem(promoAppliedKey);
     this.saveProductsAndNotifyChange(this.productsInCart);
@@ -135,11 +137,16 @@ export class CartService {
   }
 
   notifyTotalPrice() {
-    this.cartProductService
-      .getTotalPriceOfCartByUser()
-      .subscribe((totalprice) => {
-        this.$totalPrice.next(totalprice);
-      });
+    if (this.clearCartBool) {
+      this.$totalPrice.next(0);
+      this.clearCartBool = false;
+    } else {
+      this.cartProductService
+        .getTotalPriceOfCartByUser()
+        .subscribe((totalprice) => {
+          this.$totalPrice.next(totalprice);
+        });
+    }
   }
 
   private saveProductsAndNotifyChange(cartproducts: CartProduct[]): void {

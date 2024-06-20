@@ -26,6 +26,7 @@ import { DeleteVariantComponent } from './admin-dashboard/admin-productVariants/
 import { NewProductComponent } from './admin-dashboard/admin-productVariants/admin-panel/new-product/new-product.component';
 import { ProductionstopVariantComponent } from './admin-dashboard/admin-productVariants/admin-panel/productionstop-variant/productionstop-variant.component';
 import { UpdateVariantComponent } from './admin-dashboard/admin-productVariants/admin-panel/update-variant/update-variant.component';
+import { ViewUserOdersComponent } from './admin-dashboard/admin-productVariants/admin-panel/dashboard/view-user-orders/view-user-oders.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -53,6 +54,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'orders', component: OrderComponent, canActivate: [authGuard] },
+  {
+    path: 'view-user-orders-admin/:id',
+    component: ViewUserOdersComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin'] },
+  },
   {
     path: 'admin-productvariants',
     component: AdminPanelComponent,

@@ -85,15 +85,24 @@ export class OrderComponent implements OnInit {
       houseNumber: formData.houseNumber,
       notes: formData.notes,
       cartProductId: this.getCartProductids(),
-      discountedPrice: JSON.parse(
-        localStorage.getItem('discountedPrice') || '0'
-      ),
+      discountedPrice: this.calculateDiscountedPrice(),
       promoCode: localStorage.getItem('promoCode') || '',
       giftCardCode: localStorage.getItem('appliedGiftCardCode') || '',
       cartGiftcards: this.giftcards_in_cart,
     };
 
     this.addOrder();
+  }
+
+  public calculateDiscountedPrice() {
+    const promocodeDiscount = JSON.parse(
+      localStorage.getItem('displayedDiscount') || '0'
+    );
+    const giftcardDiscount = JSON.parse(
+      localStorage.getItem('applied-discount-amount') || '0'
+    );
+
+    return promocodeDiscount + giftcardDiscount;
   }
 
   public addOrder() {

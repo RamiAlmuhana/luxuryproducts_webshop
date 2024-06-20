@@ -69,7 +69,7 @@ public class AdminService {
 
 
         for (ProductVariatieDTO productVariatieDTO : createProductVariantDTO.productVariatieDTOS) {
-            Size size = new Size(productVariatieDTO.size, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getCategory());
+            Size size = new Size(productVariatieDTO.size, product.getCategory().getName());
 
             ProductVariatie productVariatie = new ProductVariatie(productVariant, size, productVariatieDTO.stock);
             sizeRepository.save(size);

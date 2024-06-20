@@ -199,6 +199,7 @@ public class ProductDAO {
         List<Product> productListOfSpecifiedSizeAndFit = new ArrayList<>();
         List<Product> productsWithVariants = returnProductsWithVariants(products);
 
+
         for (Product product : productsWithVariants) {
             List<ProductVariant> productVariants = product.getProductVariants();
             for (ProductVariant productVariant: productVariants) {

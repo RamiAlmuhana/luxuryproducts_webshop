@@ -42,7 +42,6 @@ export class CartgiftcardService {
 
   public deleteAllGiftcards() {
     this.giftcardService.deleteAll().subscribe((text) => {
-      console.log(text);
       this.updateGiftCardsIncart();
     });
   }

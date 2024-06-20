@@ -158,7 +158,9 @@
                   </p>
                   <p class="mb-1">
                     Discount Applied:
-                    <strong>{{ giftCardDiscount | currency : "EUR" }}</strong>
+                    <strong>{{
+                      appliedDiscountAmount | currency : "EUR"
+                    }}</strong>
                   </p>
                   <button class="btn btn-sm" (click)="removeGiftCard()">
                     Remove
@@ -181,9 +183,7 @@
                 >
                   <p class="lead mb-0">Discounted Price:</p>
                   <p class="lead mb-0">
-                    <strong>{{
-                      getTotalPriceWithDiscount() | currency : "EUR"
-                    }}</strong>
+                    <strong>{{ newTotalPrice | currency : "EUR" }}</strong>
                   </p>
                 </div>
                 <!-- Error message for order issues -->
@@ -220,7 +220,7 @@
   </div>
 </section>
 
-<!-- 
+<!--
 <div *ngFor="let product of products_in_cart; let i = index" class="card mb-4 shadow-sm border-0">
   <div class="card-body">
     <div class="row align-items-center">

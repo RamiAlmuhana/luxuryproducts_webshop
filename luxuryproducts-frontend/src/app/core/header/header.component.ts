@@ -61,7 +61,9 @@ export class HeaderComponent implements OnInit {
 
   public onLogout(): void {
     this.authService.logOut();
-    this.router.navigate(['/']);
+    this.router.navigate(['/']).then(() => {
+      window.location.reload();
+    });
   }
 
   public checkLoginState(): void {
