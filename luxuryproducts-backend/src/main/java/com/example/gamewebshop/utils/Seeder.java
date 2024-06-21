@@ -492,21 +492,12 @@ public class Seeder {
     }
 
     private void seedUsers(){
-        CustomUser customUser = new CustomUser();
-        customUser.setName("Rami");
-        customUser.setInfix("");
-        customUser.setLastName("Al-Muhana");
-        customUser.setEmail("test@mail.com");
-        customUser.setPassword(new BCryptPasswordEncoder().encode("Test123!"));
-        customUser.setRole("user");
-        userRepository.save(customUser);
-
         CustomUser adminUser = new CustomUser();
-        adminUser.setName("admin");
+        adminUser.setName("bob");
         adminUser.setInfix("");
-        adminUser.setLastName("admin");
-        adminUser.setEmail("admin@mail.com");
-        adminUser.setPassword(new BCryptPasswordEncoder().encode("Test123!"));
+        adminUser.setLastName("Eikdom");
+        adminUser.setEmail("bob@hotmail.com");
+        adminUser.setPassword(new BCryptPasswordEncoder().encode("913enm\"D0DylT?k"));
         adminUser.setRole("admin");
         userRepository.save(adminUser);
     }
