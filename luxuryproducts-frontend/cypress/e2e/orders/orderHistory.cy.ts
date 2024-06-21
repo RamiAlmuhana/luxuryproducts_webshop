@@ -7,8 +7,8 @@ describe('Order History Test with Mock Data', () => {
   });
 
   it('should display the order and the ordered products in order history', () => {
-    cy.contains('label', 'Email').siblings('input').type('test@mail.com');
-    cy.contains('label', 'Password').siblings('input').type('Test123!');
+    cy.contains('label', 'Email').siblings('input').type('bob@hotmail.com');
+    cy.contains('label', 'Password').siblings('input').type('913enm\"D0DylT?k');
     cy.get('button').contains('Login').click();
 
     cy.wait('@login').its('response.statusCode').should('eq', 200);

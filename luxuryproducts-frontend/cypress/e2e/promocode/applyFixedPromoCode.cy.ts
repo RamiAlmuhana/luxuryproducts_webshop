@@ -3,8 +3,8 @@ describe('Apply Promo code', () => {
         cy.visit('/');
 
         cy.contains('Login').click();
-        cy.contains('label', 'Email').siblings('input').type('admin@mail.com');
-        cy.contains('label', 'Password').siblings('input').type('Test123!');
+        cy.contains('label', 'Email').siblings('input').type('bob@hotmail.com');
+        cy.contains('label', 'Password').siblings('input').type('913enm\"D0DylT?k');
         cy.get('button').contains('Login').click();
 
         cy.contains('Products').click();
@@ -25,7 +25,7 @@ describe('Apply Promo code', () => {
         cy.contains('Cart').click();
         cy.get('input[name="promoCode"]').type('ACTION_DISCOUNT');
         cy.contains('Apply').click();
-        
+
         cy.contains('Buy').click();
 
         cy.get('input[id="form1.1"]').type('John');

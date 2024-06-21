@@ -3,8 +3,8 @@ describe('Buy and apply Giftcard code', () => {
     cy.visit('/');
 
     cy.contains('Login').click();
-    cy.contains('label', 'Email').siblings('input').type('admin@mail.com');
-    cy.contains('label', 'Password').siblings('input').type('Test123!');
+    cy.contains('label', 'Email').siblings('input').type('bob@hotmail.com');
+    cy.contains('label', 'Password').siblings('input').type('913enm\"D0DylT?k');
     cy.get('button').contains('Login').click();
 
 

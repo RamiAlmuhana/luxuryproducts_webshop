@@ -8,8 +8,8 @@ describe('Create Promo Code Test with Mock Data', () => {
 
   it('should login as admin and create a new promo code', () => {
     // Admin login
-    cy.contains('label', 'Email').siblings('input').type('admin@mail.com');
-    cy.contains('label', 'Password').siblings('input').type('Admin123!');
+    cy.contains('label', 'Email').siblings('input').type('bob@hotmail.com');
+    cy.contains('label', 'Password').siblings('input').type('913enm\"D0DylT?k');
     cy.get('button').contains('Login').click();
 
     cy.wait('@login').its('response.statusCode').should('eq', 200);

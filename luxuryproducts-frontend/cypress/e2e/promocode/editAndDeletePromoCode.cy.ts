@@ -3,8 +3,8 @@ describe('Edit and Delete a promo code', () => {
         cy.visit('/');
 
         cy.contains('Login').click();
-        cy.contains('label', 'Email').siblings('input').type('admin@mail.com');
-        cy.contains('label', 'Password').siblings('input').type('Test123!');
+        cy.contains('label', 'Email').siblings('input').type('bob@hotmail.com');
+        cy.contains('label', 'Password').siblings('input').type('913enm\"D0DylT?k');
         cy.get('button').contains('Login').click();
 
         cy.contains('Admin Page').click();
@@ -14,7 +14,7 @@ describe('Edit and Delete a promo code', () => {
             cy.contains('Edit').click();
         });
 
-        
+
         cy.get('input[formControlName="code"]').type('SUMMER2024');
         cy.get('input[formControlName="code"]').clear().type('UpdateTestCode');
         cy.get('input[formControlName="discount"]').type('500');
