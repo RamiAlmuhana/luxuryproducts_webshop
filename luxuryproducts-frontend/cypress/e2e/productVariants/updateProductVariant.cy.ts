@@ -8,6 +8,7 @@ describe('ProductVariant Update', () => {
     cy.get('button').contains('Login').click();
 
     cy.get('.navbar').contains('Products').click();
+    cy.get('.navbar').contains('Products').click();
 
     cy.get('.container-fluid.bg-light.py-5 .row.align-items-center')
       .eq(4)
