@@ -67,7 +67,6 @@ public class AdminService {
         productImagesRepository.save(productImages2);
         productImagesRepository.save(productImages3);
 
-
         for (ProductVariatieDTO productVariatieDTO : createProductVariantDTO.productVariatieDTOS) {
             Size size = new Size(productVariatieDTO.size, product.getCategory().getName());
 
@@ -118,7 +117,6 @@ public class AdminService {
         }
          Product mainProduct = product.get();
         ProductVariant productVariant = mainProduct.getProductVariants().get(Integer.parseInt(deleteVariantDTO.productVariantIndex));
-        log.info(String.valueOf(productVariant));
 
         List<ProductVariant> productVariants = mainProduct.getProductVariants();
         productVariants.remove(Integer.parseInt(deleteVariantDTO.productVariantIndex));
@@ -182,14 +180,12 @@ public class AdminService {
             if (size.isEmpty()) {
                 createNewVariation(productVariatieDTO, product.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getCategory(), productVariant1);
             } else {
-                // Check if a product variation with the same size already exists
                 Optional<ProductVariatie> existingVariatie = productVariant1.getProductVariatie()
                         .stream()
                         .filter(variatie -> variatie.getSize().equals(size.get()))
                         .findFirst();
 
                 if (existingVariatie.isPresent()) {
-                    // Update the quantity in stock of the existing product variation
                     ProductVariatie productVariatie = existingVariatie.get();
                     productVariatie.setQuantity_in_stock(productVariatieDTO.stock);
                     productVariatieRepository.save(productVariatie);

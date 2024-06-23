@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @AllArgsConstructor
@@ -23,6 +24,9 @@ public class ReturnDAO {
     private final UserRepository userRepository;
     private final CartProductRepository cartProductRepository;
     private final CartProductService cartProductService;
+    private final OrderDAO orderDAO;
+
+
 
 
 
@@ -59,9 +63,26 @@ public class ReturnDAO {
 
 
 
-    public List<ReturnRequest> getReturnsByUserId(){
+    public List<ReturnDTO> getReturnsByUserId(){
 
-        return this.returnRepository.findAll();
+        List<ReturnDTO> returnDTOS = new ArrayList<>();
+
+        for (ReturnRequest returnRequest : this.returnRepository.findAll()){
+            returnDTOS.add(returnRequestConverter(returnRequest));
+        }
+
+        return returnDTOS;
+    }
+
+    public ReturnDTO returnRequestConverter(ReturnRequest returnRequest){
+
+        ReturnDTO returnDTO = new ReturnDTO();
+        returnDTO.returnReason = returnRequest.getReturnReason();
+        returnDTO.returnStatus = returnRequest.getReturnStatus();
+        returnDTO.cartProduct = orderDAO.orderRetrievalDTOConverter(returnRequest.getCartProduct());
+        returnDTO.user = returnRequest.getUser();
+
+        return returnDTO;
     }
 
 

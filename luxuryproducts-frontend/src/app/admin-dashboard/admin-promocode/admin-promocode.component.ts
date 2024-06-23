@@ -1,23 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { PromoCode } from "../../models/promocode.model";
-import { PromoCodeService } from "../../services/promocode.service";
-import {RouterLink} from "@angular/router";
-import {NgForOf} from "@angular/common";
+import { PromoCode } from '../../models/promocode.model';
+import { PromoCodeService } from '../../services/promocode.service';
+import { RouterLink } from '@angular/router';
+import { CommonModule, NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-promo-code-list',
   templateUrl: 'admin-promocode.component.html',
   standalone: true,
-  imports: [
-    RouterLink,
-    NgForOf
-  ],
-  styleUrls: ['admin-promocode.component.scss']
+  imports: [RouterLink, NgForOf, CommonModule],
+  styleUrls: ['admin-promocode.component.scss'],
 })
 export class AdminPromocodeComponent implements OnInit {
   promoCodes: PromoCode[] = [];
 
-  constructor(private promoCodeService: PromoCodeService) { }
+  constructor(private promoCodeService: PromoCodeService) {}
 
   ngOnInit(): void {
     this.loadPromoCodes();
@@ -25,10 +22,10 @@ export class AdminPromocodeComponent implements OnInit {
 
   loadPromoCodes(): void {
     this.promoCodeService.getAllPromoCodes().subscribe(
-      promoCodes => {
+      (promoCodes) => {
         this.promoCodes = promoCodes;
       },
-      error => {
+      (error) => {
         console.error('Error loading promo codes:', error);
       }
     );
@@ -39,13 +36,19 @@ export class AdminPromocodeComponent implements OnInit {
       this.promoCodeService.deletePromoCode(id).subscribe(
         () => {
           // Remove the deleted promo code from the list
-          this.promoCodes = this.promoCodes.filter(promoCode => promoCode.id !== id);
+          this.promoCodes = this.promoCodes.filter(
+            (promoCode) => promoCode.id !== id
+          );
           console.log('Promo code deleted successfully');
         },
-        error => {
+        (error) => {
           console.error('Error deleting promo code:', error);
         }
       );
     }
+  }
+
+  returnCategoryName(promoCode: PromoCode) {
+    return promoCode.category ? promoCode.category.name : 'none';
   }
 }

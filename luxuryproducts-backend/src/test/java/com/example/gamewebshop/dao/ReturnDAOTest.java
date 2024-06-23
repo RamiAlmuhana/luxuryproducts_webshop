@@ -42,6 +42,8 @@ class ReturnDAOTest {
     private ReturnDTO returnDTO;
     private  ReturnDAO returnDAO;
     @Mock
+    private OrderDAO orderDAO;
+    @Mock
     private  ReturnRepository returnRepository;
     @Mock
     private  UserRepository userRepository;
@@ -53,7 +55,7 @@ class ReturnDAOTest {
 
     @BeforeEach
     void setUp() {
-        returnDAO = new ReturnDAO(returnRepository, userRepository, cartProductRepository, cartProductService);
+        returnDAO = new ReturnDAO(returnRepository, userRepository, cartProductRepository, cartProductService, orderDAO);
         ReturnDTO returnDTO =  new ReturnDTO();
         OrderRetrievalDTO orderRetrievalDTO = new OrderRetrievalDTO();
         orderRetrievalDTO.cartproductId = 1L;

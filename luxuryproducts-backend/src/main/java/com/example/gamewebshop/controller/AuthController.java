@@ -6,6 +6,7 @@ import com.example.gamewebshop.dto.AuthenticationDTO;
 import com.example.gamewebshop.dto.LoginResponse;
 import com.example.gamewebshop.models.CustomUser;
 import com.example.gamewebshop.services.CredentialValidator;
+import com.example.gamewebshop.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,20 +18,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
+
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserRepository userDAO;
+
+    private final UserService userService;
+
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authManager;
     private final PasswordEncoder passwordEncoder;
     private CredentialValidator validator;
 
-    public AuthController(UserRepository userDAO, JWTUtil jwtUtil, AuthenticationManager authManager,
+    public AuthController(UserRepository userDAO, UserService userService, JWTUtil jwtUtil, AuthenticationManager authManager,
                           PasswordEncoder passwordEncoder, CredentialValidator validator) {
         this.userDAO = userDAO;
+        this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.authManager = authManager;
         this.passwordEncoder = passwordEncoder;
@@ -106,8 +113,8 @@ public class AuthController {
 
 
     @PutMapping("/user")
-    public ResponseEntity<CustomUser> updateUser(@RequestBody CustomUser updatedUser) {
-        CustomUser existingUser = userDAO.findByEmail(updatedUser.getEmail());
+    public ResponseEntity<CustomUser> updateUser(@RequestBody CustomUser updatedUser, Principal principal) {
+        CustomUser existingUser = userService.validateUser(principal);
 
         if (existingUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Gebruiker niet gevonden");

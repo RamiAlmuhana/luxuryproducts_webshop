@@ -221,22 +221,7 @@ public class OrderDAO {
             orderUserDTO.giftcards = giftcardDAO.getGiftcardsFromCartGiftCards(order.getCartGiftcards());
             for (CartProduct cartProduct: order.getCartProducts())
             {
-                OrderRetrievalDTO orderRetrievalDTO = new OrderRetrievalDTO();
-                orderRetrievalDTO.name = cartProduct.getProduct().getName();
-                orderRetrievalDTO.imageUrl = cartProduct.getImageUrl();
-                orderRetrievalDTO.price = cartProduct.getPrice();
-                orderRetrievalDTO.productVariantPrice = cartProduct.getProductVariantPrice();
-                orderRetrievalDTO.size = cartProduct.getSize();
-                orderRetrievalDTO.quantity = cartProduct.getQuantity();
-                orderRetrievalDTO.cartproductId = cartProduct.getId();
-                orderRetrievalDTO.productReturned = cartProduct.isProductReturned();
-                orderRetrievalDTO.returnStatus = cartProduct.getReturnStatus();
-
-                Optional<ReturnRequest> returnRequest = returnRepository.findByCartProduct(cartProduct);
-                returnRequest.ifPresent(request -> {
-                    orderRetrievalDTO.returnReason = request.getReturnReason();
-                    orderRetrievalDTO.adminReason = request.getAdminReason();
-                });
+                OrderRetrievalDTO orderRetrievalDTO = orderRetrievalDTOConverter(cartProduct);
 
                 orderUserDTO.cartProducts.add(orderRetrievalDTO);
             }
@@ -245,6 +230,28 @@ public class OrderDAO {
         }
 
         return orderUserDTOS;
+    }
+
+    public OrderRetrievalDTO orderRetrievalDTOConverter(CartProduct cartProduct){
+
+        OrderRetrievalDTO orderRetrievalDTO = new OrderRetrievalDTO();
+        orderRetrievalDTO.name = cartProduct.getProduct().getName();
+        orderRetrievalDTO.imageUrl = cartProduct.getImageUrl();
+        orderRetrievalDTO.price = cartProduct.getPrice();
+        orderRetrievalDTO.productVariantPrice = cartProduct.getProductVariantPrice();
+        orderRetrievalDTO.size = cartProduct.getSize();
+        orderRetrievalDTO.quantity = cartProduct.getQuantity();
+        orderRetrievalDTO.cartproductId = cartProduct.getId();
+        orderRetrievalDTO.productReturned = cartProduct.isProductReturned();
+        orderRetrievalDTO.returnStatus = cartProduct.getReturnStatus();
+
+        Optional<ReturnRequest> returnRequest = returnRepository.findByCartProduct(cartProduct);
+        returnRequest.ifPresent(request -> {
+            orderRetrievalDTO.returnReason = request.getReturnReason();
+            orderRetrievalDTO.adminReason = request.getAdminReason();
+        });
+
+        return orderRetrievalDTO;
     }
 
 

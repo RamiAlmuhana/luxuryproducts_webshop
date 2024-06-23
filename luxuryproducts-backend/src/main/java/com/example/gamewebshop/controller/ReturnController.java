@@ -22,9 +22,9 @@ public class ReturnController {
     private final ReturnDAO returnDAO;
 
     @GetMapping("/myReturns")
-    public ResponseEntity<List<ReturnRequest>> getReturnsByUserPrincipal() {
+    public ResponseEntity<List<ReturnDTO>> getReturnsByUserPrincipal() {
 
-        List<ReturnRequest> returns = this.returnDAO.getReturnsByUserId();
+        List<ReturnDTO> returns = this.returnDAO.getReturnsByUserId();
         return ResponseEntity.ok(returns);
     }
 
