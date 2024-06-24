@@ -113,7 +113,7 @@ class ReturnDAOTest {
         when(this.returnRepository.findAll()).thenReturn(returnRequests);
 
         // act
-        returnDAO.getReturnsByUserId();
+        returnDAO.getAllReturns();
 
         // assert
         verify(returnRepository, times(1)).findAll();
