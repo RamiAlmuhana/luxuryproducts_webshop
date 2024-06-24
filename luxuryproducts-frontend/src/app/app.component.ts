@@ -13,5 +13,5 @@ import {ProductsModule} from "./products/products.module";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Gaming Webshop';
+  title = 'infirfs-auth-project';
 }

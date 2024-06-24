@@ -1,0 +1,126 @@
+<h3 style="margin-bottom: 5%">Production Stop/Continue</h3>
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="container">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="product" class="form-label">Product</label>
+      <select
+        id="product"
+        formControlName="product"
+        class="form-control"
+        #product
+        name="product"
+        [(ngModel)]="product"
+        (ngModelChange)="onProductVariants($event)"
+      >
+        <option *ngFor="let product of products" [ngValue]="product">
+          {{ product.name }}
+        </option>
+      </select>
+    </div>
+
+    @if (productSelected) {
+
+    <div class="col-md-6 mb-3">
+      <label for="productVariantIndex" class="form-label">ProductVariant</label>
+      <select
+        id="productVariantIndex"
+        #productVariantIndex
+        name="productVariantIndex"
+        [(ngModel)]="productVariantindex"
+        formControlName="productVariantIndex"
+        class="form-control"
+        (ngModelChange)="onShowProductVariantDetails($event)"
+      >
+        @for (productVariant1 of productnew.productVariants; track $index) {
+        <option [value]="$index">
+          {{ productVariant1.color.name }}
+        </option>
+        }
+      </select>
+    </div>
+
+    } @if (productVariantSelected && !waitForVariant) {
+
+    <div class="col-md-6 mb-3">
+      <label for="productVariatieIndex" class="form-label"
+        >ProductVariatie</label
+      >
+      <select
+        id="productVariatieIndex"
+        name="productVariatieIndex"
+        formControlName="productVariatieIndex"
+        class="form-control"
+      >
+        @for (productVariatie of productVariant.productVariatie; track $index) {
+        <option [value]="productVariatie.id">
+          {{ productVariatie.size.size }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="productionStop" class="form-label">ProductionStop</label>
+      <select
+        id="productionStop"
+        formControlName="productionStop"
+        class="form-control"
+      >
+        @for (productionStopValue of productionStopValues; track $index) {
+        <option [value]="productionStopValue">
+          {{ productionStopValueMetod(productionStopValue) }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="container hover-image">
+        <div class="row align-items-center">
+          <div class="col-md-4 col-lg-3 mb-4 mb-md-0">
+            <div class="image-wrapper">
+              <img
+                width="500"
+                [src]="productVariant.productImages[0].imageUrl"
+                class="img-fluid rounded-start album-pic"
+                alt="First Image"
+                style="max-width: 90%"
+              />
+              <img
+                width="500"
+                [src]="productVariant.productImages[1].imageUrl"
+                class="img-fluid rounded-start album-pic-exit"
+                alt="Second Image"
+                style="max-width: 90%"
+              />
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-9">
+            <h5>Price</h5>
+            <p>{{ productVariant.price | currency : "EUR" }}</p>
+          </div>
+          <div class="col-md-4 col-lg-3">
+            <h5>fit</h5>
+            <p>{{ productVariant.size_and_fit.fit }}</p>
+          </div>
+          <div class="col-md-4 col-lg-6">
+            <h5>description</h5>
+            <p>{{ productVariant.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    }
+
+    <div class="col-12" style="margin-top: 5%">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!productForm.valid"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</form>

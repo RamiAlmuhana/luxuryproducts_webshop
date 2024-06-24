@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "Tom Clancy's Rainbow Six Siege",
+    "description": "Tom Clancy's Rainbow Six® Siege is an elite, tactical team-based shooter where superior planning and execution triumph.",
+    "price": 15.99,
+    "imgURL": "https://store.ubisoft.com/on/demandware.static/-/Sites-masterCatalog/default/dw63e24d90/images/large/56c494ad88a7e300458b4d5a.jpg",
+    "specifications": "OS *: Originally released for Windows 7, the game can be played on Windows 10 and Windows 11 OSProcessor: Intel Core i5-2500K @ 3.3 GHz or better or AMD FX-8120 @ 3.1 Ghz or better\nMemory: 8 GB RAM\nGraphics: NVIDIA GeForce GTX 670 or AMD Radeon HD 7970",
+    "publisher": "Ubisoft",
+    "releaseDate": "1-Dec-2015",
+    "categoryId": 1,
+    "categoryName": "FPS"
+  }
+]

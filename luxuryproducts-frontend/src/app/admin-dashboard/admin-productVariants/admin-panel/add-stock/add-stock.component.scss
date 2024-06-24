@@ -1,0 +1,87 @@
+.btn {
+  background-color: black;
+  border: 1px solid black;
+  font-size: 15px;
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 100%;
+}
+
+.image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.album-pic {
+  opacity: 1;
+}
+
+.album-pic-exit {
+  opacity: 0;
+}
+
+.hover-image:hover .album-pic {
+  opacity: 0;
+}
+
+.hover-image:hover .album-pic-exit {
+  opacity: 1;
+}
+.btn {
+  background-color: black;
+  border: 1px solid black;
+  font-size: 15px;
+  color: white;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 100%;
+}
+
+.image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.album-pic {
+  opacity: 1;
+}
+
+.album-pic-exit {
+  opacity: 0;
+}
+
+.hover-image:hover .album-pic {
+  opacity: 0;
+}
+
+.hover-image:hover .album-pic-exit {
+  opacity: 1;
+}
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

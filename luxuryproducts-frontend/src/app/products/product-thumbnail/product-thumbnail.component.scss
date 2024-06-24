@@ -9,3 +9,44 @@
     color: black;
   }
 }
+
+.btn-details {
+  background: white;
+  color: black;
+
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 100%;
+}
+
+.image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.album-pic {
+  opacity: 1;
+}
+
+.album-pic-exit {
+  opacity: 0;
+}
+
+.hover-image:hover .album-pic {
+  opacity: 0;
+}
+
+.hover-image:hover .album-pic-exit {
+  opacity: 1;
+}

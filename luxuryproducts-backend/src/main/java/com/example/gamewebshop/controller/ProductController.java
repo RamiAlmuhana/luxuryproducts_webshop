@@ -1,47 +1,62 @@
 package com.example.gamewebshop.controller;
 
 import com.example.gamewebshop.dao.ProductDAO;
-import com.example.gamewebshop.dto.ProductDTO;
-import com.example.gamewebshop.models.Product;
+import com.example.gamewebshop.dto.ProductVariantDTOS.ProductByIdDTO;
+import com.example.gamewebshop.dto.ProductVariantDTOS.ProductDTO;
+import com.example.gamewebshop.models.Product.Product;
+import com.example.gamewebshop.models.PromoCode;
+import com.example.gamewebshop.dao.PromoCodeDAO;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4200", "http://s1148232.student.inf-hsleiden.nl:18232"})
+@AllArgsConstructor
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 @RequestMapping("/products")
 public class ProductController {
 
     private final ProductDAO productDAO;
 
-    public ProductController(ProductDAO productDAO) {
-        this.productDAO = productDAO;
+    @GetMapping
+    public ResponseEntity<List<Product>> getProductsWithVariants(){
+        return ResponseEntity.ok(this.productDAO.getProductsWithVariants());
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Product>> getAllProducts(){
         return ResponseEntity.ok(this.productDAO.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+    public ResponseEntity<ProductByIdDTO> getProductById(@PathVariable Long id){
 
-        return ResponseEntity.ok(this.productDAO.getProductById(id));
+        return ResponseEntity.ok(this.productDAO.getProductByIdDTO(id));
     }
+
+    @GetMapping("/color/{color}")
+    public ResponseEntity<List<Product>> getProductsByColor(@PathVariable String color){
+
+        return ResponseEntity.ok(this.productDAO.getProductsByColor(color));
+    }
+
+    @GetMapping("/size-fit/{fit}")
+    public ResponseEntity<List<Product>> getProductsBySizeAndFit(@PathVariable String fit){
+
+        return ResponseEntity.ok(this.productDAO.getProductsBySizeAndFit(fit));
+    }
+
+
 
     @GetMapping(params = "categoryId")
     public ResponseEntity<List<Product>> getProductsByCategory(@RequestParam Long categoryId){
 
         return ResponseEntity.ok(this.productDAO.getAllProductsByCategory(categoryId));
     }
-
-//    @PostMapping
-//    public ResponseEntity<String> createProduct(@RequestBody ProductDTO productDTO){
-//        this.productDAO.createProduct(productDTO);
-//        return ResponseEntity.ok("Created a product");
-//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO){
