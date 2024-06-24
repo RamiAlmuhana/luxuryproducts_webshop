@@ -26,7 +26,6 @@ export class ProductionstopVariantComponent {
   productVariantindex: number;
   cantDeleteProductVariant: boolean = false;
 
-  // Sample data for the select options
   products: Product[];
   productnew: Product;
   productVariant: ProductVariant;
@@ -79,9 +78,7 @@ export class ProductionstopVariantComponent {
     if (index == undefined) {
       this.productVariantSelected = false;
     } else {
-      console.log(index);
       this.productVariant = this.productnew.productVariants[index];
-      console.log(this.productVariant);
       this.productVariantSelected = true;
       this.waitForVariant = false;
     }
@@ -89,7 +86,6 @@ export class ProductionstopVariantComponent {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      console.log(this.productForm.value);
       this.adminservice
         .productionStop(this.productForm.value)
         .subscribe((text) => {

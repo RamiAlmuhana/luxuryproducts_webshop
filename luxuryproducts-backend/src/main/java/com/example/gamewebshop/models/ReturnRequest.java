@@ -29,11 +29,4 @@ public class ReturnRequest {
     @ManyToOne(cascade = CascadeType.MERGE)
     private CustomUser user;
 
-    public ReturnRequest(Long id, CustomUser user, CartProduct cartProduct, String returnStatus) {
-        this.id = id;
-        this.user = user;
-        this.cartProduct = cartProduct;
-        this.returnStatus = returnStatus;
-    }
-
 }

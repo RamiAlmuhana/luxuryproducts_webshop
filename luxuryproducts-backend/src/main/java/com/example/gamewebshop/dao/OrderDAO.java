@@ -118,6 +118,7 @@ public class OrderDAO {
         if (orderDTO.giftCardCode != null && !orderDTO.giftCardCode.isEmpty()) {
            totalPrice = updateGiftcardBalance(orderDTO.giftCardCode, totalPrice);
         }
+
         cartGiftcardService.changeCartGiftCardStatus(orderDTO.cartGiftcards);
         changeCartProductStatusAndStock(cartproducts);
 

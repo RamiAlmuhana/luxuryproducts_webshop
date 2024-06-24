@@ -52,7 +52,6 @@ export class NewProductComponent {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      console.log(this.productForm.value);
       this.adminservice
         .createProduct(this.productForm.value)
         .subscribe((text) => {

@@ -35,7 +35,6 @@ export class AdminPromocodeComponent implements OnInit {
     if (confirm('Are you sure you want to delete this promo code?')) {
       this.promoCodeService.deletePromoCode(id).subscribe(
         () => {
-          // Remove the deleted promo code from the list
           this.promoCodes = this.promoCodes.filter(
             (promoCode) => promoCode.id !== id
           );

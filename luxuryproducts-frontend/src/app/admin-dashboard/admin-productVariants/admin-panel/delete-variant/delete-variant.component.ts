@@ -29,17 +29,12 @@ export class DeleteVariantComponent {
   productVariantindex: number;
   cantDeleteProductVariant: boolean = false;
 
-  // Sample data for the select options
   products: Product[];
   productnew: Product;
   productVariant: ProductVariant;
   waitForVariant: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private productsService: ProductsService,
-    private adminservice: AdminService
-  ) {
+  constructor(private fb: FormBuilder, private adminservice: AdminService) {
     this.productForm = this.fb.group({
       product: [null, Validators.required],
       productVariantIndex: [null, Validators.required],

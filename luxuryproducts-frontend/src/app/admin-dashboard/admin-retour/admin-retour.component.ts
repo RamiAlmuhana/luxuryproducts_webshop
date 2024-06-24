@@ -40,7 +40,6 @@ export class AdminRetourComponent implements OnInit {
   }
 
   checkUserEmail(return1: Return): boolean {
-    console.log(return1);
     for (let j = 0; j < this.returnsOfUser.length; j++) {
       const returnListModel = this.returnsOfUser[j];
       if (return1.user.email == returnListModel.user.email) {

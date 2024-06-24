@@ -24,9 +24,7 @@ import { ProductsService } from '../../../../services/products.service';
 export class AddVariantComponent {
   productForm: FormGroup;
 
-  // Sample data for the select options
   products: Product[];
-  // sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   colors = ['Black', 'White', 'Silver', 'Gold', 'Red', 'Green', 'Brown'];
   sizeAndFits = [
     'Classic_Fit',
@@ -67,9 +65,9 @@ export class AddVariantComponent {
 
       try {
         new URL(imageUrl);
-        return null; // Valid URL
+        return null;
       } catch (_) {
-        return { imageUrlIsValid: true }; // Invalid URL
+        return { imageUrlIsValid: true };
       }
     };
   }
@@ -88,7 +86,6 @@ export class AddVariantComponent {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      console.log(this.productForm.value);
       this.adminservice
         .createProductVariant(this.productForm.value)
         .subscribe((text) => {

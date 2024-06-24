@@ -20,7 +20,6 @@ import { Giftcard } from '../../models/giftcard.model';
   styleUrls: ['./order-history.component.scss'],
 })
 export class OrderHistoryComponent implements OnInit {
-  //orders: Order[]; // Zorg ervoor dat dit het juiste model gebruikt
   orders: OrderUserDTO[];
   giftcards: Giftcard[] = [];
   public product!: OrderRetrievalDTO;

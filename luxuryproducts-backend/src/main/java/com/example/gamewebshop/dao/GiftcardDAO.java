@@ -55,17 +55,6 @@ public class GiftcardDAO {
         return giftcardRepository.findByCode(code);
     }
 
-    public Optional<Giftcard> useGiftCard(String code) {
-        Optional<Giftcard> optionalGiftcard = giftcardRepository.findByCode(code);
-        if (optionalGiftcard.isPresent()) {
-            Giftcard giftcard = optionalGiftcard.get();
-            if (!giftcard.isUsed()) {
-                giftcard.setUsed(true);
-                giftcardRepository.save(giftcard);
-            }
-        }
-        return optionalGiftcard;
-    }
 
 
     public List<Giftcard> getGiftcardsFromCartGiftCards(List<CartGiftcard> cartGiftcards) {

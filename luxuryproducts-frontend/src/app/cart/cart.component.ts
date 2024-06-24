@@ -171,8 +171,6 @@ export class CartComponent implements OnInit {
       (product) => product.categoryId == categoryId
     );
 
-    console.log(hasProductInCategory);
-
     if (!hasProductInCategory && this.appliedPromoCode) {
       this.removePromoCode();
     }

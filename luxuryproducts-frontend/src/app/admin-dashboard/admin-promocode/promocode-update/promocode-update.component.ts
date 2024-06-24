@@ -60,7 +60,7 @@ export class PromocodeUpdateComponent implements OnInit {
         this.promoCodeForm.patchValue({
           ...promoCode,
           categoryId: promoCode.category ? promoCode.category.id : null,
-        }); // Populate form with promo code details
+        });
       },
       (error) => {
         console.error('Error loading promo code:', error);
@@ -97,7 +97,7 @@ export class PromocodeUpdateComponent implements OnInit {
       .subscribe(
         (updatedPromoCode: PromoCode) => {
           console.log('Promo code updated successfully:', updatedPromoCode);
-          // Redirect to promo code list after successful update
+
           this.router.navigate(['admin/promocode-list']);
         },
         (error: any) => {

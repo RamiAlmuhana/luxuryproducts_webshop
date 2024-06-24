@@ -19,17 +19,5 @@ public class ReturnDTO {
     public ReturnDTO() {
     }
 
-    public ReturnDTO(CustomUser user, OrderRetrievalDTO cartProduct, String returnStatus, long userID, String returnReason, String adminReason) {
-        this.user = user;
-        this.cartProduct = cartProduct;
-        this.returnStatus = returnStatus;
-        this.userID = userID;
-        this.returnReason = returnReason;
-        this.adminReason = adminReason;
-    }
-
-
-
-
 
 }

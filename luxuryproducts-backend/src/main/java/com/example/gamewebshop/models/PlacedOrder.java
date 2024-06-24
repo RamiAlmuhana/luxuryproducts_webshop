@@ -54,14 +54,4 @@ public class PlacedOrder {
     @Column(nullable = true)
     private String giftCardCode;
 
-    public PlacedOrder(String name, String infix, String last_name, String zipcode, int houseNumber, String notes, CustomUser user, ArrayList<CartProduct> cartProducts) {
-        this.name = name;
-        this.infix = infix;
-        this.last_name = last_name;
-        this.zipcode = zipcode;
-        this.houseNumber = houseNumber;
-        this.notes = notes;
-        this.user = user;
-        this.cartProducts = cartProducts;
-    }
 }

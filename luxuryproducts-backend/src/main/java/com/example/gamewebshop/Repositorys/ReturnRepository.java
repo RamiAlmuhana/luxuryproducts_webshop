@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReturnRepository extends JpaRepository<ReturnRequest, Long> {
-    Optional<List<ReturnRequest>> findByUserId(long id);
+
     Optional<ReturnRequest> findByCartProduct(CartProduct cartProduct);
 }

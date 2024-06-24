@@ -24,7 +24,7 @@ public class PromoCode {
     private int maxUsageCount;
     private PromoCodeType type;
     private double minSpendAmount;
-    private int usageCount; // New field to track usage count
+    private int usageCount;
     private double totalDiscountAmount;
 
     @ManyToOne
@@ -41,7 +41,7 @@ public class PromoCode {
         this.type = type;
         this.category = category;
         this.minSpendAmount = minSpendAmount;
-        this.usageCount = 0; // Initialize usage count
+        this.usageCount = 0;
         this.totalDiscountAmount = 0;
     }
 

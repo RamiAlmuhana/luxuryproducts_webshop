@@ -48,7 +48,7 @@ public class PromoCodeDAO {
             }
             return promoCodeRepository.save(existingPromoCode);
         } else {
-            return null; // Or throw an exception
+            return null;
         }
     }
 

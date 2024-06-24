@@ -81,8 +81,6 @@ public class ProductDAO {
                 if (productInCategory.getId() == product.getId()) {
                    return productByIdDTOconverter(category.getId(), product);
                 }
-
-
             }
         }
         throw new ResponseStatusException(

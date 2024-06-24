@@ -28,7 +28,7 @@ public class CategoryController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Category> getCategorieById(@PathVariable String name){
+    public ResponseEntity<Category> getCategorieByName(@PathVariable String name){
         return ResponseEntity.ok(this.categoryDAO.getCategoryByName(name));
     }
 

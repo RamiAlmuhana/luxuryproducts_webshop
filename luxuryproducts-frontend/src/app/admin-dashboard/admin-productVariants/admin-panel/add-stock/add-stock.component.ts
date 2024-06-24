@@ -25,7 +25,6 @@ export class AddStockComponent {
   productVariantindex: number;
   cantDeleteProductVariant: boolean = false;
 
-  // Sample data for the select options
   products: Product[];
   productnew: Product;
   productVariant: ProductVariant;
@@ -78,9 +77,7 @@ export class AddStockComponent {
     if (index == undefined) {
       this.productVariantSelected = false;
     } else {
-      console.log(index);
       this.productVariant = this.productnew.productVariants[index];
-      console.log(this.productVariant);
       this.productVariantSelected = true;
       this.waitForVariant = false;
     }
@@ -88,7 +85,6 @@ export class AddStockComponent {
 
   onSubmit(): void {
     if (this.productForm.valid) {
-      console.log(this.productForm.value);
       this.adminservice
         .changeStock(this.productForm.value)
         .subscribe((text) => {

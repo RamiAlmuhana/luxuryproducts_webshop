@@ -36,6 +36,7 @@ public class CartProductService {
     public List<CartProduct> addProductToCart(Product product, CustomUser user) {
         Optional<Product> product1 = productRepository.findById(product.getId());
         Optional<List<CartProduct>> cartProduct1 = cartProductRepository.findAllByProductIdAndStatus(product.getId(), CartProductStatus.InCart);
+
         boolean wentThroughLoop = false;
         if (product1.isEmpty()){
             throw new ResponseStatusException(
@@ -151,6 +152,7 @@ public class CartProductService {
         List<CartProduct> productsInCart = GetProductsInCartByUserId(id);
 
         long totalprice = 0L;
+
 
         for (CartProduct cartProduct : productsInCart){
             totalprice += cartProduct.getPrice();

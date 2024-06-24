@@ -33,12 +33,4 @@ export class DashboardComponent implements OnInit {
     this.user = this.users[index];
     this.viewOrder = true;
   }
-
-  // calculateTotal(products: CartProduct[]): number {
-  //   let total = 0;
-  //   for (let product of products) {
-  //     total += product.price;
-  //   }
-  //   return total;
-  // }
 }

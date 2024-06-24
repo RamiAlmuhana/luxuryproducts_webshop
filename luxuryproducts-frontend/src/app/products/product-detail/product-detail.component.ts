@@ -197,7 +197,6 @@ export class ProductDetailComponent {
     this.cartProduct.productVariants = [];
   }
   buyProductChecker() {
-    console.log(this.cartProduct);
     this.cartProductService
       .checkCartProductStock(this.cartProduct)
       .subscribe((bool) => {

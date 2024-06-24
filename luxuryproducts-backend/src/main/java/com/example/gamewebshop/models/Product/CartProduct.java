@@ -33,6 +33,7 @@ public class CartProduct {
 
     private long price;
 
+
     private String size;
 
     private long productVariantPrice;
@@ -46,14 +47,6 @@ public class CartProduct {
     private long categoryId;
 
 
-
-
-
-
-//    @JsonIgnore
-//    @ManyToOne
-////    @JoinColumn(name="PLACED_ORDER_ID", nullable=true)
-//    private PlacedOrder placedOrder;
 
 
     @ManyToOne

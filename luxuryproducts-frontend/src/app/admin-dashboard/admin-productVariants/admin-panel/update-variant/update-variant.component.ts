@@ -56,7 +56,6 @@ export class UpdateVariantComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Fetch products from the backend
     this.productsService.getProducts().subscribe((products) => {
       this.products = products;
     });
@@ -67,7 +66,6 @@ export class UpdateVariantComponent implements OnInit {
       this.selectedProduct = product;
       this.productVariants = product.productVariants;
 
-      // Clear previous values
       this.productForm.get('productVariantIndex')!.reset();
       this.productForm.get('description')!.reset();
       this.productForm.get('price')!.reset();
@@ -91,7 +89,6 @@ export class UpdateVariantComponent implements OnInit {
         imageUrl2: variant.productImages[1].imageUrl,
       });
 
-      // Reset productVariatieDTOS
       const productVariatieDTOsFormArray = this.productForm.get(
         'productVariatieDTOS'
       ) as FormArray;

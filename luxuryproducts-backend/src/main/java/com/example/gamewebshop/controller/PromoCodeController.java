@@ -3,6 +3,7 @@ package com.example.gamewebshop.controller;
 import com.example.gamewebshop.Repositorys.PromoCodeRepository;
 import com.example.gamewebshop.models.PromoCode;
 import com.example.gamewebshop.dao.PromoCodeDAO;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,17 +14,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@AllArgsConstructor
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost:4201"})
 @RequestMapping("/promocodes")
 public class PromoCodeController {
 
     private final PromoCodeDAO promoCodeDAO;
     private final PromoCodeRepository promoCodeRepository;
-
-    public PromoCodeController(PromoCodeDAO promoCodeDAO, PromoCodeRepository promoCodeRepository) {
-        this.promoCodeDAO = promoCodeDAO;
-        this.promoCodeRepository = promoCodeRepository;
-    }
 
     @GetMapping
     public ResponseEntity<List<PromoCode>> getAllPromoCodes() {

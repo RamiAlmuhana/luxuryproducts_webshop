@@ -31,9 +31,7 @@ public class ReturnDAO {
 
 
 
-    public List<CustomUser> getAllReturns(){
-        return  this.userRepository.findAll();
-    }
+
     @Transactional
     public void saveReturnWithProducts(ReturnDTO return1, String userEmail) {
         CustomUser user = userRepository.findByEmail(userEmail);
@@ -63,7 +61,7 @@ public class ReturnDAO {
 
 
 
-    public List<ReturnDTO> getReturnsByUserId(){
+    public List<ReturnDTO> getAllReturns(){
 
         List<ReturnDTO> returnDTOS = new ArrayList<>();
 
