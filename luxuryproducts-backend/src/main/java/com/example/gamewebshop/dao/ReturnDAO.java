@@ -77,6 +77,7 @@ public class ReturnDAO {
     public ReturnDTO returnRequestConverter(ReturnRequest returnRequest){
 
         ReturnDTO returnDTO = new ReturnDTO();
+        returnDTO.returnRequestId = returnRequest.getId();
         returnDTO.returnReason = returnRequest.getReturnReason();
         returnDTO.returnStatus = returnRequest.getReturnStatus();
         returnDTO.cartProduct = orderDAO.orderRetrievalDTOConverter(returnRequest.getCartProduct());

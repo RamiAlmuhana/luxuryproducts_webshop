@@ -5,6 +5,7 @@ import com.example.gamewebshop.Repositorys.ProductRepository;
 import com.example.gamewebshop.Repositorys.ProductVariatieRepository;
 import com.example.gamewebshop.dto.ProductVariantDTOS.ProductByIdDTO;
 import com.example.gamewebshop.dto.ProductVariantDTOS.ProductDTO;
+import com.example.gamewebshop.dto.PromocodeDTO;
 import com.example.gamewebshop.models.Category;
 import com.example.gamewebshop.models.Product.Product;
 import com.example.gamewebshop.models.Product.ProductVariant;
@@ -97,13 +98,20 @@ public class ProductDAO {
         productByIdDTO.quantity = product.getQuantity();
         productByIdDTO.name = product.getName();
         productByIdDTO.categoryId = categoryId;
+        productByIdDTO.promocodeDTOS = new ArrayList<>();
 
-        Optional<PromoCode> promoCodeOptional = promoCodeDAO.getPromoCodeByCategory(categoryId);
-        if (promoCodeOptional.isPresent()){
+        Optional<List<PromoCode>> promoCodeOptionals = promoCodeDAO.getAllPromoCodeByCategory(categoryId);
+        if (promoCodeOptionals.isPresent()){
 
-            productByIdDTO.promoCode = promoCodeOptional.get().getCode();
-            productByIdDTO.promoDiscount = promoCodeOptional.get().getDiscount();
-            productByIdDTO.promoType = promoCodeOptional.get().getType().toString();
+            for (PromoCode promoCode: promoCodeOptionals.get()){
+                PromocodeDTO promocodeDTO = new PromocodeDTO();
+                promocodeDTO.promoCode = promoCode.getCode();
+                promocodeDTO.promoDiscount = promoCode.getDiscount();
+                promocodeDTO.promoType = promoCode.getType().toString();
+                productByIdDTO.promocodeDTOS.add(promocodeDTO);
+            }
+
+
         }
         return productByIdDTO;
     }

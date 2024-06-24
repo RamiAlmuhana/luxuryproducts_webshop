@@ -159,9 +159,19 @@ export class CartComponent implements OnInit {
       ? this.clearCart()
       : this.cartService.removeProductFromCart(product_index);
 
-    const hasProductInCategory = this.products_in_cart.some(
+    const productsInCart: CartProduct[] = [];
+    this.products_in_cart.forEach((product) => {
+      if (product.id == product_index) {
+      } else {
+        productsInCart.push(product);
+      }
+    });
+
+    const hasProductInCategory = productsInCart.some(
       (product) => product.categoryId == categoryId
     );
+
+    console.log(hasProductInCategory);
 
     if (!hasProductInCategory && this.appliedPromoCode) {
       this.removePromoCode();

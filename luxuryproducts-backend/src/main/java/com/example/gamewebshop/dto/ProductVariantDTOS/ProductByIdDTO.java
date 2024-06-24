@@ -1,5 +1,6 @@
 package com.example.gamewebshop.dto.ProductVariantDTOS;
 
+import com.example.gamewebshop.dto.PromocodeDTO;
 import com.example.gamewebshop.models.Product.ProductVariant;
 import jakarta.persistence.*;
 
@@ -20,11 +21,10 @@ public class ProductByIdDTO {
     @OneToMany(cascade=ALL, mappedBy="product")
     public List<ProductVariant> productVariants;
 
-    public String promoCode;
-    public double promoDiscount;
-    public String promoType;
-
     public long categoryId;
+
+
+    public List<PromocodeDTO> promocodeDTOS;
 
 
 }

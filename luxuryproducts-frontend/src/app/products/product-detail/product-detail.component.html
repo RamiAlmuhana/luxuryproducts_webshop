@@ -98,12 +98,22 @@
           type="button"
           class="btn btn-dark"
           style="width: 100%"
-          [disabled]="!loginState"
+          [disabled]="
+            !loginState ||
+            product.productVariants[productVariantIndex].productVariatie[
+              +selectedSize
+            ].productionStop == true
+          "
           (click)="onBuyProduct()"
         >
           Add to Cart
         </button>
-        @if (showCantbuy == true) {
+        @if (product.productVariants[productVariantIndex].productVariatie[
+        +selectedSize ].productionStop == true) {
+        <h6 style="color: red">
+          Production has been stopped please choose another size
+        </h6>
+        } @if (showCantbuy == true) {
         <h6 style="color: red">Can`t buy that amount. Stock is too low</h6>
         }
       </div>
@@ -149,27 +159,30 @@
           </div>
         </div>
         <hr />
-        <div *ngIf="product.promoCode">
-          <h6>PROMO CODES (1)</h6>
+        <div *ngIf="product.promocodeDTOS">
+          <h6>PROMO CODES ({{ product.promocodeDTOS.length }})</h6>
+
+          @for (promocode of product.promocodeDTOS; track $index) {
           <div
             class="product-promo-code mb-4 p-3 border border-success rounded"
           >
             <h6 class="fw-bold mb-2 text-success">PROMO CODE</h6>
             <div class="d-flex justify-content-between align-items-center">
-              <span class="promo-code">{{ product.promoCode }}</span>
+              <span class="promo-code">{{ promocode.promoCode }}</span>
               <span class="promo-discount">
-                <span *ngIf="product.promoType === 'PERCENTAGE'"
-                  >{{ product.promoDiscount }}% off</span
+                <span *ngIf="promocode.promoType === 'PERCENTAGE'"
+                  >{{ promocode.promoDiscount }}% off</span
                 >
-                <span *ngIf="product.promoType === 'FIXED_AMOUNT'"
-                  >{{ product.promoDiscount | currency : "EUR" }} off</span
+                <span *ngIf="promocode.promoType === 'FIXED_AMOUNT'"
+                  >{{ promocode.promoDiscount | currency : "EUR" }} off</span
                 >
               </span>
             </div>
           </div>
+          }
         </div>
 
-        <hr *ngIf="product.promoCode" />
+        <hr *ngIf="product.promocodeDTOS" />
         <div>
           <h6>BRAND INFO</h6>
 

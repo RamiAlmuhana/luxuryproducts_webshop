@@ -122,7 +122,7 @@ public class CartProductService {
         }
 
         for (CartProduct cartProduct : cartProduct1.get()) {
-            if (Objects.equals(cartProduct.getImageUrl(), cartProductnew.getProductVariants().getFirst().getProductImages().getFirst().getImageUrl()) && Objects.equals(cartProductnew.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getSize().toString(), cartProduct.getSize())) {
+            if (Objects.equals(cartProduct.getImageUrl(), cartProductnew.getProductVariants().getFirst().getProductImages().getFirst().getImageUrl()) && Objects.equals(cartProductnew.getProductVariants().getFirst().getProductVariatie().getFirst().getSize().getSize(), cartProduct.getSize())) {
                 long quantityOfCartProductUserWantsToAdd = cartProduct.getQuantity() + cartProductnew.getQuantity();
                 long quantityInStock = cartProductnew.getProductVariants().getFirst().getProductVariatie().getFirst().getQuantity_in_stock();
 
@@ -131,7 +131,7 @@ public class CartProductService {
 
         }
 
-       return true;
+       return cartProductnew.getProductVariants().getFirst().getProductVariatie().getFirst().getQuantity_in_stock() > cartProductnew.getQuantity();
 
     }
 

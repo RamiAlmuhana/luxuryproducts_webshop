@@ -164,7 +164,11 @@ export class ProductDetailComponent {
     this.selectedQuantity = parseInt((<HTMLInputElement>event.target).value);
   }
   OnSizechange(event: Event) {
+    var previousSize = this.selectedSize;
     this.selectedSize = (<HTMLInputElement>event.target).value;
+    if (previousSize != this.selectedSize && this.showCantbuy) {
+      this.showCantbuy = false;
+    }
   }
 
   infoCartProductVariant() {
@@ -193,6 +197,7 @@ export class ProductDetailComponent {
     this.cartProduct.productVariants = [];
   }
   buyProductChecker() {
+    console.log(this.cartProduct);
     this.cartProductService
       .checkCartProductStock(this.cartProduct)
       .subscribe((bool) => {
@@ -214,6 +219,7 @@ export class ProductDetailComponent {
       this.clearCartProduct();
     } else {
       this.showCantbuy = true;
+      this.clearCartProduct();
     }
   }
 

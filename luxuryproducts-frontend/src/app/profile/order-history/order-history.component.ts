@@ -34,7 +34,7 @@ export class OrderHistoryComponent implements OnInit {
   };
   public returnRequest: Return = {
     user: this.user,
-    id: 0,
+    returnRequestId: 0,
     cartProduct: this.product,
     returnStatus: '',
     returnReason: '',

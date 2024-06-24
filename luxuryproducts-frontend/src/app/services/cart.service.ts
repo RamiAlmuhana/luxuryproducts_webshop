@@ -85,8 +85,6 @@ export class CartService {
   }
 
   public addOrder(order: OrderDTO): Observable<Order> {
-    console.log('Ontvangen order: ' + order);
-
     return this.http.post<Order>(this.baseUrl, order).pipe(
       catchError((error) => {
         console.error('Error adding order:', error);

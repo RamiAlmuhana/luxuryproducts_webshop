@@ -123,7 +123,6 @@ public class AuthController {
         existingUser.setName(updatedUser.getName());
         existingUser.setInfix(updatedUser.getInfix());
         existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setEmail(updatedUser.getEmail());
 
 
         CustomUser savedUser = userDAO.save(existingUser);

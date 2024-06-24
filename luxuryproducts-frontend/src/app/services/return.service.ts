@@ -12,7 +12,6 @@ export class ReturnService {
   constructor(private http: HttpClient) {}
 
   public createReturnRequest(returnRequest: Return) {
-    console.log(returnRequest);
     return this.http.post(`${this.baseUrl}`, returnRequest, {
       responseType: 'text',
     });
@@ -22,10 +21,12 @@ export class ReturnService {
     return this.http.get<Return[]>(`${this.baseUrl}/myReturns`);
   }
 
-  updateReturns(returnData: { returnStatus: string; adminReason: string }, id: number) {
+  updateReturns(
+    returnData: { returnStatus: string; adminReason: string },
+    id: number
+  ) {
     return this.http.put(`${this.baseUrl}/${id}`, returnData, {
       responseType: 'text',
     });
   }
-
 }

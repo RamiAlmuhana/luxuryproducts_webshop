@@ -19,9 +19,17 @@
               <span class="fw-bold">Product Name:</span>
               {{ return1.cartProduct.name }}
             </p>
+            <p class="return1-name">
+              <span class="fw-bold">Size:</span>
+              {{ return1.cartProduct.size }}
+            </p>
+            <p class="return1-name">
+              <span class="fw-bold">Quantity:</span>
+              {{ return1.cartProduct.quantity }}
+            </p>
             <p class="return1-price">
               <span class="fw-bold">Price:</span>
-              {{ return1.cartProduct.productVariantPrice | currency : "EUR" }}
+              {{ return1.cartProduct.price | currency : "EUR" }}
             </p>
             <p class="return1-reason">
               <span class="fw-bold">Customer Reason:</span>
@@ -34,13 +42,13 @@
         </div>
         <p>
           <button
-            (click)="onAccept(return1.id)"
+            (click)="onAccept(return1.returnRequestId)"
             class="btn btn-md btn-dark w-20"
           >
             Accept
           </button>
           <button
-            (click)="onDenied(return1.id)"
+            (click)="onDenied(return1.returnRequestId)"
             class="btn btn-md btn-dark w-20"
             style="margin-left: 20px"
           >

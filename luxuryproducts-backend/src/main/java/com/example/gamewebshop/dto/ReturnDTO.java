@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 
 
 public class ReturnDTO {
+    public long returnRequestId;
     public CustomUser user;
     public OrderRetrievalDTO cartProduct;
     public String returnStatus;

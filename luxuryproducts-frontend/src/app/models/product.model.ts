@@ -1,4 +1,5 @@
 import { ProductVariant } from './product-variant.model';
+import { PromocodeDTO } from './promocodeDTO';
 
 export class Product {
   public id: number;
@@ -6,7 +7,5 @@ export class Product {
   public country: string;
   public quantity: number;
   public productVariants: ProductVariant[];
-  public promoCode?: string;
-  public promoDiscount?: number;
-  public promoType?: string;
+  public promocodeDTOS?: PromocodeDTO[];
 }

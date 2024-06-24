@@ -17,10 +17,7 @@ import { ReturnListModel } from '../../models/returnList.model';
 export class AdminRetourComponent implements OnInit {
   returns: Return[];
   returnsOfUser: ReturnListModel[] = [];
-  constructor(
-    private returnService: ReturnService,
-    private userService: UserService
-  ) {}
+  constructor(private returnService: ReturnService) {}
 
   ngOnInit(): void {
     this.loadReturns();
@@ -29,7 +26,6 @@ export class AdminRetourComponent implements OnInit {
   loadReturns(): void {
     this.returnService.getReturns().subscribe((returns) => {
       this.returns = returns;
-      console.log(returns);
       this.loadUsers();
     });
   }

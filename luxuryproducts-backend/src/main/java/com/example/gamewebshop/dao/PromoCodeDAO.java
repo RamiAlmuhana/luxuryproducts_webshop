@@ -77,4 +77,8 @@ public class PromoCodeDAO {
         return promoCodeRepository.findFirstByCategoryId(categoryId);
     }
 
+    public Optional<List<PromoCode>> getAllPromoCodeByCategory(long categoryId) {
+        return promoCodeRepository.findAllByCategoryId(categoryId);
+    }
+
 }
