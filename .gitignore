@@ -3,9 +3,9 @@ postgres-data
 luxuryproducts-frontend/.angular
 luxuryproducts-frontend/node_modules
 luxuryproducts-frontend/dist
-luxuryproducts-frontend/src/environments
+# luxuryproducts-frontend/src/environments
 
 luxuryproducts-backend/.idea
 luxuryproducts-backend/.mvn
 luxuryproducts-backend/target
-luxuryproducts-backend/src/main/resources
+# luxuryproducts-backend/src/main/resources
